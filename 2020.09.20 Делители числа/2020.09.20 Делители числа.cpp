@@ -20,14 +20,13 @@ int main(int argc, char* argv[])
 			}
 			if (i * i == n)
 			{
-				k--;
 				c = i * i;
 			}
 		}
 		cout << endl;
 		if (c == n)
 		{
-			cout << "k=" << 2 * k + 1 << endl;
+			cout << "k=" << 2 * k - 1 << endl;
 		}
 		else
 		{
