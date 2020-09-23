@@ -7,7 +7,7 @@ int main(int argc, char* argv[])
 	cin >> n;
 	if (n == 0)
 	{
-		cout << 0 << endl;
+		cout << 1 << endl;
 	}
 	else
 	{

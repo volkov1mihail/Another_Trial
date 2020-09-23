@@ -2,8 +2,9 @@
 using namespace std;
 int main(int argc, char* argv[])
 {
-	int n = 0; //Вводимое число
+	int n = -1; //Вводимое число
 	int k = 0; //Количество делителей вводимого числа
+	int c = 0;
 	cin >> n;
 	if (n == 0)
 	{
@@ -11,16 +12,27 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		for (int i = 1; i <= n; i++)
+		for (int i = 1; i*i <= n; i++)
 		{
 			if (n % i == 0)
 			{
 				k++;
-				cout << i << " ";
+			}
+			if (i * i == n)
+			{
+				k--;
+				c = i * i;
 			}
 		}
 		cout << endl;
-		cout << "k=" << k << endl;
+		if (c == n)
+		{
+			cout << "k=" << 2 * k + 1 << endl;
+		}
+		else
+		{
+			cout << "k=" << 2 * k << endl;
+		}
 	}
 	return EXIT_SUCCESS;
 }
