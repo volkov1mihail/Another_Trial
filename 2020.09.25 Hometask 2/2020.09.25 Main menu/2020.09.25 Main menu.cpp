@@ -5,10 +5,8 @@ using namespace std;
 #include <clocale>
 
 
-void printMenu(int a)
+void printMenu()
 {
-	if (a == 0)
-	{
 		setlocale(LC_ALL, "Russian");
 		cout << "Выберите действие:" << endl << endl << endl;
 		cout << "0 - Выход из программы" << endl;
@@ -18,7 +16,6 @@ void printMenu(int a)
 		cout << "4 - Найти минимальный элемент массива" << endl;
 		cout << "5 - Посчитать сумму элементов массива" << endl;
 		cout << "6 - Вывести массив в обратном порядке" << endl;
-	}
 }
 
 
@@ -36,10 +33,10 @@ void expandArray(int* &arr, int &cap)
 }
 
 
-int maxArray(int*& arr, int& cap)
+void maxArray(int*& arr, int& cap)
 {
 	int c = 0;
-	for (int i = 0; i < cap-1; ++i)
+	for (int i = 0; i < cap; ++i)
 	{
 		for (int j = 0; j < cap-1; ++j)
 		{
@@ -57,10 +54,10 @@ int maxArray(int*& arr, int& cap)
 }
 
 
-int minArray(int*& arr, int& cap)
+void minArray(int*& arr, int& cap)
 {
 	int c = 0;
-	for (int i = 0; i < cap - 1; ++i)
+	for (int i = 0; i < cap; ++i)
 	{
 		for (int j = 0; j < cap - 1; ++j)
 		{
@@ -80,21 +77,26 @@ int minArray(int*& arr, int& cap)
 
 int main(int argc, char* argv[])
 {
+	int n = 0;
+	int m = 0;
+	char g = 'g';
+	int s = 0;
 	setlocale(LC_ALL, "Russian");
 	int cap = 20;
 	int* a = new int[cap];
+	for (int i = 0; i < cap; ++i)
+	{
+		a[i] = 0;
+	}
 	int choice = -1;
 	while (choice != 0)
 	{
 		system("cls");
-		printMenu(0);
+		printMenu();
 		cin >> choice;
 		switch (choice)
 		{
 		case 1:
-			int n = 0;
-			int m = 0;
-			char g = 'g';
 			while (g == 'g')
 			{
 				cout << "Введите номер элемента массива, который хотите заменить" << endl;
@@ -106,10 +108,10 @@ int main(int argc, char* argv[])
 				cout << "Введите число" << endl;
 				cin >> m;
 				a[n] = m;
-				cout << "a[n]=" << a[n] << endl;
+				cout << "a["<<n<<"]=" << a[n] << endl;
 				cout << "Если хотите продолжить, введите \"g\"" << endl;
 				cout << "Если хотите вернуться в главное меню, введите \"e\"" << endl;
-				g = getch();
+				g = _getch();
 			}
 			break;
 		case 2:
@@ -117,6 +119,7 @@ int main(int argc, char* argv[])
 			{
 				cout << "a[" << i << "]=" << a[i] << " ";
 			}
+			cout << endl;
 			break;
 		case 3:
 			maxArray(a, cap);
@@ -125,7 +128,6 @@ int main(int argc, char* argv[])
 			minArray(a, cap);
 			break;
 		case 5:
-			int s = 0;
 			for (int i = 0; i < cap; ++i)
 			{
 				s = a[i] + s;
@@ -137,10 +139,11 @@ int main(int argc, char* argv[])
 			{
 				cout << "a[" << i << "]=" << a[i] << " ";
 			}
+			cout << endl;
 			break;
 		}
 		cout << "Для продолжения нажмите любую клавишу";
-		cin.get();
+		_getch();
 	}
 
 
