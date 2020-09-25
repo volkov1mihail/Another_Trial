@@ -5,7 +5,7 @@ using namespace std;
 #include <clocale>
 
 
-void printMenu()
+void printMenu()    //Просто вывод менюшки ввиде текста
 {
 		setlocale(LC_ALL, "Russian");
 		cout << "Выберите действие:" << endl << endl << endl;
@@ -19,13 +19,17 @@ void printMenu()
 }
 
 
-void expandArray(int* &arr, int &cap)
+void expandArray(int* &arr, int &cap)    //Удвоение длинны массива в случае, если оно потребуется
 {
 	int newCap = cap * 2;
 	int* temp = new int[newCap];
-	for (int i = 0; i < cap; ++i)
+	for (int i = 0; i < cap; ++i)        //Переписывание значений уже существующих элементов массива
 	{
 		temp[i] = arr[i];
+	}
+	for (int i = cap; i < newCap; ++i)   //Присвоение новым элементам массива значение 0, чтобы сумма элементов массива не изменилась
+	{
+		temp[i] = 0;
 	}
 	cap = newCap;
 	delete[] arr;
@@ -33,9 +37,9 @@ void expandArray(int* &arr, int &cap)
 }
 
 
-void maxArray(int*& arr, int& cap)
-{
-	int c = 0;
+void maxArray(int*& arr, int& cap)  //Нахождение номера макимального элемента массива(на самом деле, если таких элементов несколько,
+{                                   //то выдается номер последнего из них. Можно было запариться и выводить номера всех таких элементов,
+	int c = 0;                      //но...........
 	for (int i = 0; i < cap; ++i)
 	{
 		for (int j = 0; j < cap-1; ++j)
@@ -54,7 +58,7 @@ void maxArray(int*& arr, int& cap)
 }
 
 
-void minArray(int*& arr, int& cap)
+void minArray(int*& arr, int& cap)  //Все то же самое, только номер минимального члена.
 {
 	int c = 0;
 	for (int i = 0; i < cap; ++i)
@@ -77,17 +81,17 @@ void minArray(int*& arr, int& cap)
 
 int main(int argc, char* argv[])
 {
-	int n = 0;
-	int m = 0;
-	char g = 'g';
-	int s = 0;
+	int n = 0;     //Номер элемента массива, который хотят заменить
+	int m = 0;     //Число, на которое заменяют элемент массива
+	char g = 'g';  //Переменная для считывания буквы с клавиатуры
+	int s = 0;     //Сумма элементов массива
 	setlocale(LC_ALL, "Russian");
 	int cap = 20;
 	int* a = new int[cap];
-	for (int i = 0; i < cap; ++i)
-	{
-		a[i] = 0;
-	}
+	for (int i = 0; i < cap; ++i)   //Присвоение всем элементам массива случайные значения от 0 до 100, иначе они все автоматически сатновятся равны
+	{                               //какому-то страшному числу 842150451.
+		a[i] = rand() % 101;        //При каждом запуске получаются одинаковые "случайные" числа, и не ясно, как это исправить.......
+	}        
 	int choice = -1;
 	while (choice != 0)
 	{
@@ -97,7 +101,7 @@ int main(int argc, char* argv[])
 		switch (choice)
 		{
 		case 1:
-			while (g == 'g')
+			while (g == 'g')  //Проверка, продолжать ли операцию замены значений элементов массива
 			{
 				cout << "Введите номер элемента массива, который хотите заменить" << endl;
 				cin >> n;
@@ -108,14 +112,14 @@ int main(int argc, char* argv[])
 				cout << "Введите число" << endl;
 				cin >> m;
 				a[n] = m;
-				cout << "a["<<n<<"]=" << a[n] << endl;
+				cout << "a[" << n << "]=" << a[n] << endl;
 				cout << "Если хотите продолжить, введите \"g\"" << endl;
 				cout << "Если хотите вернуться в главное меню, введите \"e\"" << endl;
 				g = _getch();
 			}
 			break;
 		case 2:
-			for (int i = 0; i < cap; ++i)
+			for (int i = 0; i < cap; ++i)  //Вывод элементов массива
 			{
 				cout << "a[" << i << "]=" << a[i] << " ";
 			}
@@ -128,25 +132,24 @@ int main(int argc, char* argv[])
 			minArray(a, cap);
 			break;
 		case 5:
-			for (int i = 0; i < cap; ++i)
+			for (int i = 0; i < cap; ++i)  //Подсчет суммы элементов массива
 			{
 				s = a[i] + s;
 			}
 			cout << "Сумма элементов массива=" << s << endl;
+			s = 0;
 			break;
 		case 6:
-			for (int i = cap-1; i >=0; --i)
+			for (int i = cap - 1; i >= 0; --i)  //Вывод в обратном порядке
 			{
 				cout << "a[" << i << "]=" << a[i] << " ";
 			}
 			cout << endl;
 			break;
 		}
-		cout << "Для продолжения нажмите любую клавишу";
-		_getch();
+		cout << "Для продолжения нажмите любую клавишу";  //Сделано, чтобы экран не очищался сразу после выполнения вышеуказанных команд
+		_getch();                                         //и была возможность прочитать все, что вывела программа.
 	}
-
-
 	delete[] a;
 	return EXIT_SUCCESS;
 }
