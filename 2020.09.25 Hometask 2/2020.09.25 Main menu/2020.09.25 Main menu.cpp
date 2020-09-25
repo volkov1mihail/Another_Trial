@@ -3,6 +3,8 @@ using namespace std;
 #define _CRT_SECURE_NO_WARNINGS
 #include<conio.h>
 #include <clocale>
+#include < ctime >
+#include < cstdlib >
 
 
 void printMenu()    //Просто вывод менюшки ввиде текста
@@ -86,6 +88,7 @@ int main(int argc, char* argv[])
 	char g = 'g';  //Переменная для считывания буквы с клавиатуры
 	int s = 0;     //Сумма элементов массива
 	setlocale(LC_ALL, "Russian");
+	srand(time(NULL));
 	int cap = 20;
 	int* a = new int[cap];
 	for (int i = 0; i < cap; ++i)   //Присвоение всем элементам массива случайные значения от 0 до 100, иначе они все автоматически сатновятся равны
