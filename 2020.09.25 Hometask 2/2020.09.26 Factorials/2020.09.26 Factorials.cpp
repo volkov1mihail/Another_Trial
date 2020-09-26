@@ -63,6 +63,13 @@ int minNumber(int*& arr, int& cap)  //¬се то же самое, только номер минимального
 }
 
 
+
+void sorting(int*& arr, int& cap)
+{
+
+}
+
+
 int shortMin(int*& arr, int& cap, int x, int n)
 {
 

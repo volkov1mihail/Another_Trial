@@ -21,17 +21,32 @@ void printMenu()    //Просто вывод менюшки ввиде текста
 }
 
 
+void printArray(int*& arr, int& cap)
+{
+	if (cap >= 0)
+	{
+		for (int i = 0; i < cap; ++i)
+		{
+			cout << "a[" << i << "]=" << arr[i] << endl;
+		}
+	}
+	else
+	{
+		for (int i = 1; i <= abs(cap); ++i)
+		{
+			cout << "a[" << abs(cap)-i << "]=" << arr[abs(cap) - i] << endl;
+		}
+	}
+}
+
+
 void expandArray(int* &arr, int &cap)    //Удвоение длинны массива в случае, если оно потребуется
 {
 	int newCap = cap * 2;
-	int* temp = new int[newCap];
+	int* temp = new int[newCap] {0};
 	for (int i = 0; i < cap; ++i)        //Переписывание значений уже существующих элементов массива
 	{
 		temp[i] = arr[i];
-	}
-	for (int i = cap; i < newCap; ++i)   //Присвоение новым элементам массива значение 0, чтобы сумма элементов массива не изменилась
-	{
-		temp[i] = 0;
 	}
 	cap = newCap;
 	delete[] arr;
@@ -39,8 +54,19 @@ void expandArray(int* &arr, int &cap)    //Удвоение длинны массива в случае, есл
 }
 
 
+int sumArray(int*& arr, int& cap)
+{
+	int s = 0;
+	for (int i = 0; i < cap; ++i)  //Подсчет суммы элементов массива
+	{
+		s = arr[i] + s;
+	}
+	return s;
+}
 
-void minArray(int*& arr, int& cap)  //Все то же самое, только номер минимального элемента.
+
+
+int minArray(int*& arr, int& cap)  //Все то же самое, только номер минимального элемента.
 {
 	int c = 0;
 	int a = 101;
@@ -55,11 +81,11 @@ void minArray(int*& arr, int& cap)  //Все то же самое, только номер минимального
 			}
 		}
 	}
-	cout << "Номер минимального элемента=" << c << ", a[" << c << "]=" << arr[c] << endl;
+	return c;
 }
 
 
-void maxArray(int*& arr, int& cap)  //Нахождение номера макимального элемента массива(на самом деле, если таких элементов несколько,
+int maxArray(int*& arr, int& cap)  //Нахождение номера макимального элемента массива(на самом деле, если таких элементов несколько,
 {                                   //то выдается номер последнего из них. Можно было запариться и выводить номера всех таких элементов,
 	int c = 0;                      //но...........)
 	int a = 0;
@@ -74,78 +100,80 @@ void maxArray(int*& arr, int& cap)  //Нахождение номера макимального элемента ма
 			}
 		}
 	}
-	cout << "Номер максимального элемента=" << c << ", a[" << c << "]=" << arr[c] << endl;
+	return c;
+}
+
+
+int swit(int choice, int* &arr, int &cap)
+{
+	int n = 0;
+	int m = 0; 
+	char g = 'g';
+	switch (choice)
+	{
+	case 1:
+		while (g == 'g')  //Проверка, продолжать ли операцию замены значений элементов массива
+		{
+			cout << "Введите номер элемента массива, который хотите заменить" << endl;
+			cin >> n;
+			while (n >= cap)
+			{
+				expandArray(arr, cap);
+			}
+			cout << "Введите число" << endl;
+			cin >> m;
+			arr[n] = m;
+			cout << "a[" << n << "]=" << arr[n] << endl;
+			cout << "Если хотите продолжить, введите \"g\"" << endl;
+			cout << "Если хотите вернуться в главное меню, введите \"e\"" << endl;
+			g = _getch();
+		}
+		g = 'g';
+		break;
+	case 2:
+		printArray(arr, cap);
+		break;
+	case 3:
+		n = maxArray(arr, cap);
+		cout << "Номер максимального элемента=" << n << ", a[" << n << "]=" << arr[n] << endl;
+		break;
+	case 4:
+		n = minArray(arr, cap);
+		cout << "Номер минимального элемента=" << n << ", a[" << n << "]=" << arr[n] << endl;
+		break;
+	case 5:
+		n = sumArray(arr, cap);
+		cout << "Сумма элементов массива=" << n << endl;
+		n = 0;
+		break;
+	case 6:
+		cap = -cap;
+		printArray(arr, cap);
+		cap = -cap;
+		break;
+	}
+	cout << "Для продолжения нажмите любую клавишу";  //Сделано, чтобы экран не очищался сразу после выполнения вышеуказанных команд
+	_getch();
+	return 0;
 }
 
 int main(int argc, char* argv[])
 {
-	int n = 0;     //Номер элемента массива, который хотят заменить
-	int m = 0;     //Число, на которое заменяют элемент массива
-	char g = 'g';  //Переменная для считывания буквы с клавиатуры
-	int s = 0;     //Сумма элементов массива
 	setlocale(LC_ALL, "Russian");
 	srand(time(NULL));
 	int cap = 20;
 	int* a = new int[cap];
-	for (int i = 0; i < cap; ++i)   //Присвоение всем элементам массива случайные значения от 0 до 100, иначе они все автоматически сатновятся равны
-	{                               //какому-то страшному числу 842150451.
-		a[i] = rand() % 101;        
-	}        
+	for (int i = 0; i < cap; ++i)
+	{
+		a[i] = rand() % 101;
+	}
 	int choice = -1;
 	while (choice != 0)
 	{
 		system("cls");
 		printMenu();
 		cin >> choice;
-		switch (choice)
-		{
-		case 1:
-			while (g == 'g')  //Проверка, продолжать ли операцию замены значений элементов массива
-			{
-				cout << "Введите номер элемента массива, который хотите заменить" << endl;
-				cin >> n;
-				while (n >= cap)
-				{
-					expandArray(a, cap);
-				}
-				cout << "Введите число" << endl;
-				cin >> m;
-				a[n] = m;
-				cout << "a[" << n << "]=" << a[n] << endl;
-				cout << "Если хотите продолжить, введите \"g\"" << endl;
-				cout << "Если хотите вернуться в главное меню, введите \"e\"" << endl;
-				g = _getch();
-			}
-			break;
-		case 2:
-			for (int i = 0; i < cap; ++i)  //Вывод элементов массива
-			{
-				cout << "a[" << i << "]=" << a[i] << endl;
-			}
-			break;
-		case 3:
-			maxArray(a, cap);
-			break;
-		case 4:
-			minArray(a, cap);
-			break;
-		case 5:
-			for (int i = 0; i < cap; ++i)  //Подсчет суммы элементов массива
-			{
-				s = a[i] + s;
-			}
-			cout << "Сумма элементов массива=" << s << endl;
-			s = 0;
-			break;
-		case 6:
-			for (int i = cap - 1; i >= 0; --i)  //Вывод в обратном порядке
-			{
-				cout << "a[" << i << "]=" << a[i] << endl;
-			}
-			break;
-		}
-		cout << "Для продолжения нажмите любую клавишу";  //Сделано, чтобы экран не очищался сразу после выполнения вышеуказанных команд
-		_getch();                                         //и была возможность прочитать все, что вывела программа.
+		swit(choice, a, cap);
 	}
 	delete[] a;
 	return EXIT_SUCCESS;
