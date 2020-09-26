@@ -2,10 +2,10 @@
 using namespace std;
 #include <clocale>
 
-int factorial(int a)
+int factorial(double a)
 {
-	int b = a;
-	for (int i = 1; i <= b; i++)
+	double b = a;
+	for (int i = 1; i < b; i++)
 	{
 		a *= i;
 	}
@@ -13,78 +13,70 @@ int factorial(int a)
 }
 
 
-int addFactorial(int a, int b)  //a<b
+int deltaFactorial(double a, double b)  //a<b
 {
-	int c = factorial(a);
-	for (int i = a+1; i <= b; ++i)
+	double c = factorial(a);
+	if (a < b)
 	{
-		c = c * i;
-	}
-	return c;
-}
-
-
-int minArray(int*& arr, int& cap)  //Все то же самое, только номер минимального элемента.
-{
-	int c = 0;
-	int a = 51;
-	for (int i = 0; i < cap; ++i)
-	{
-		for (int j = 0; j < cap; ++j)
+		for (int i = a + 1; i <= b; i++)
 		{
-			if ((arr[i] <= arr[j]) & (arr[i] <= a))
-			{
-				a = arr[i];
-				c = i;
-			}
+			c = c * i;
 		}
 	}
-	return arr[c];
-}
-
-
-
-int minNumber(int*& arr, int& cap)  //Все то же самое, только номер минимального элемента.
-{
-	int c = 0;
-	int a = 51;
-	for (int i = 0; i < cap; ++i)
+	else if (a == b)
 	{
-		for (int j = 0; j < cap; ++j)
-		{
-			if ((arr[i] <= arr[j]) & (arr[i] <= a))
-			{
-				a = arr[i];
-				c = i;
-			}
-		}
+		c = c;
 	}
 	return c;
 }
 
 
 
-void sorting(int*& arr, int& cap)
+void sorting(double*& arr, int& cap)
 {
-
-}
-
-
-int shortMin(int*& arr, int& cap, int x, int n)
-{
-
+	double c = 0;
+	for (int j = 0; j < cap; ++j)
+	{
+		for (int i = 0; i < cap-1; ++i)
+		{
+			if (arr[i] > arr[i + 1])
+			{
+				c = arr[i];
+				arr[i] = arr[i + 1];
+				arr[i + 1] = c;
+			}
+		}
+	}
+	for (int i = 0; i < cap; ++i)
+	{
+		cout << "a[" << i << "]=" << arr[i] << endl;
+	}
 }
 
 
 
 int main(int argc, char* argv[])
 {
-	int cap = 10;
-	int* a = new int[cap];
-	cout << "Введите 10 чисел последовательности {Xn}. Xi должно быть меньше 50" << endl;
+	setlocale(LC_ALL, "Russian");
+	double s = 0;
+	int cap = 0;
+	cout << "Введите число элементов в последовательности {Xn}" << endl;
+	cin >> cap;
+	double* a = new double[cap] {0};
+	double* b = new double[cap] {0};
+	cout << "Введите "<<cap<<" чисел последовательности {Xn}. Xi должно быть меньше 10" << endl;
 	for (int i = 0; i < cap; ++i)
 	{
 		cin >> a[i];
-		a[i] = factorial(a[i]);
 	}
+	sorting(a, cap);
+	b[0] = factorial(a[0]);
+	cout << "b[0]=" << b[0] << endl;
+	for (int i = 1; i < cap; ++i)
+	{
+		b[i] = deltaFactorial(a[i-1], a[i]);
+		s = s + b[i];
+		cout << "b[" << i << "]=" << b[i] << endl;
+	}
+	cout << "Среднее арифметическое факториалов=" << (s + a[0]) / cap << endl;
 }
