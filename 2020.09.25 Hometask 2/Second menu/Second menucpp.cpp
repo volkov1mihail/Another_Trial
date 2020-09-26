@@ -21,15 +21,15 @@ void printMenu()    //Просто вывод менюшки ввиде текста
 }
 
 
-void addArray(int*& arr, int& cap, int n, int a, int b)    //Удвоение длинны массива в случае, если оно потребуется
+void addArray(int*& arr, int& cap, int n, int a, int b)
 {
 	int newCap = cap + n;
-	int* temp = new int[newCap];
+	int* temp = new int[newCap] {0};
 	for (int i = 0; i < cap; ++i)        //Переписывание значений уже существующих элементов массива
 	{
 		temp[i] = arr[i];
 	}
-	for (int i = cap; i < newCap; ++i)   //Присвоение новым элементам массива значение 0, чтобы сумма элементов массива не изменилась
+	for (int i = cap; i < newCap; ++i)
 	{
 		temp[i] = a + rand() % (b - a + 1);
 		cout << "a[" << i << "]=" << temp[i] << endl;
@@ -43,14 +43,10 @@ void addArray(int*& arr, int& cap, int n, int a, int b)    //Удвоение длинны мас
 void expandArray(int*& arr, int& cap, int n)    //Удвоение длинны массива в случае, если оно потребуется
 {
 	int newCap = n + 1;
-	int* temp = new int[newCap];
+	int* temp = new int[newCap] {0};
 	for (int i = 0; i < cap; ++i)        //Переписывание значений уже существующих элементов массива
 	{
 		temp[i] = arr[i];
-	}
-	for (int i = cap; i < newCap; ++i)   //Присвоение новым элементам массива значение 0, чтобы сумма элементов массива не изменилась
-	{
-		temp[i] = 0;
 	}
 	cap = newCap;
 	delete[] arr;
@@ -125,11 +121,11 @@ void moveArray(int*& arr, int& cap)
 void separateArray(int*& arr, int& cap, int n)
 {
 	int a = 0;
-	if ((n == 0))
+	if ((n == 0)or(n==cap-1))
 	{
 		reverseArray(arr, cap);
 	}
-	else if (n < cap - 1)
+	else if (n < cap-1)
 	{
 		reverseArray(arr, n);
 		for (int i = n; i < (cap + n) / 2; ++i)
@@ -144,20 +140,50 @@ void separateArray(int*& arr, int& cap, int n)
 			cout << "a[" << i << "]=" << arr[i] << endl;
 		}
 	}
-	//else if (n == cap - 1)
-	//{
-	//	--n;
-	//	reverseArray(arr, n);
-	//}
 	else
 	{
+		--n;
 		expandArray(arr, cap, n);
+		++n;
 		reverseArray(arr, n);
 	}
-	//for (int i = n-1; i < cap; ++i)
-	//{
-	//	cout << "a[" << i << "]=" << arr[i] << endl;
-	//}
+}
+
+
+void swit(int choice, int*& a, int& cap)
+{
+	int n = 0;
+	int c = 0;
+	int b = 0;
+	switch (choice)
+	{
+	case 1:
+		cout << "Введите n" << endl;
+		cin >> n;
+		cout << "Введите a" << endl;
+		cin >> c;
+		cout << "Введите b" << endl;
+		cin >> b;
+		addArray(a, cap, n, c, b);
+		break;
+	case 2:
+		reverseArray(a, cap);
+		break;
+	case 3:
+		switchArray(a, cap);
+		break;
+	case 4:
+		moveArray(a, cap);
+		break;
+	case 5:
+		cout << "Введите n" << endl;
+		cin >> n;
+		separateArray(a, cap, n);
+		break;
+	case 6:
+		printArray(a, cap);
+		break;
+	}                                     
 }
 
 
@@ -165,10 +191,6 @@ int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian");
 	srand(time(NULL));
-	int n = 0;     //Номер элемента массива, который хотят заменить
-	int c = 0;
-	int b = 0;
-	int s = 0;     //Сумма элементов массива
 	int cap = 8;
 	int* a = new int[cap];
 	for (int i = 0; i < cap; ++i)   //Присвоение всем элементам массива случайные значения от 0 до 100, иначе они все автоматически сатновятся равны
@@ -181,35 +203,7 @@ int main(int argc, char* argv[])
 		system("cls");
 		printMenu();
 		cin >> choice;
-		switch (choice)
-		{
-		case 1:
-			cout << "Введите n" << endl;
-			cin >> n;
-			cout << "Введите a" << endl;
-			cin >> c;
-			cout << "Введите b" << endl;
-			cin >> b;
-			addArray(a, cap, n, c, b);
-			break;
-		case 2:
-			reverseArray(a, cap);
-			break;
-		case 3:
-			switchArray(a, cap);
-			break;
-		case 4:
-			moveArray(a, cap);
-			break;
-		case 5:
-			cout << "Введите n" << endl;
-			cin >> n;
-			separateArray(a, cap, n);
-			break;
-		case 6:
-			printArray(a, cap);
-			break;
-		}
+		swit(choice, a, cap);
 		cout << "Для продолжения нажмите любую клавишу";  //Сделано, чтобы экран не очищался сразу после выполнения вышеуказанных команд
 		_getch();                                         //и была возможность прочитать все, что вывела программа.
 	}
