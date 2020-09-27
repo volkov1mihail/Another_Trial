@@ -153,8 +153,7 @@ int swit(int choice, int* &arr, int &cap)
 		break;
 	}
 	cout << "Для продолжения нажмите любую клавишу";  //Сделано, чтобы экран не очищался сразу после выполнения вышеуказанных команд
-	_getch();
-	return 0;
+	system("pause");
 }
 
 int main(int argc, char* argv[])
