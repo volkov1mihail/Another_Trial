@@ -1,6 +1,6 @@
 #include <iostream>
-using namespace std;
 #include <clocale>
+using namespace std;
 
 int factorial(int a)
 {
@@ -11,7 +11,6 @@ int factorial(int a)
 	}
 	return a;
 }
-
 
 
 int deltaFactorial(int a, int b, int a1)  //a<b
@@ -32,13 +31,12 @@ int deltaFactorial(int a, int b, int a1)  //a<b
 }
 
 
-
 void sorting(int*& arr, int& cap)
 {
 	int c = 0;
 	for (int j = 0; j < cap; ++j)
 	{
-		for (int i = 0; i < cap-1; ++i)
+		for (int i = 0; i < cap - 1; ++i)
 		{
 			if (arr[i] > arr[i + 1])
 			{
@@ -55,7 +53,6 @@ void sorting(int*& arr, int& cap)
 }
 
 
-
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian");
@@ -65,7 +62,7 @@ int main(int argc, char* argv[])
 	cin >> cap;
 	int* a = new int[cap] {0};
 	int* b = new int[cap] {0};
-	cout << "Введите "<<cap<<" чисел последовательности {Xn}. Xi должно быть меньше 10" << endl;
+	cout << "Введите " << cap << " чисел последовательности {Xn}. Xi должно быть меньше 10" << endl;
 	for (int i = 0; i < cap; ++i)
 	{
 		cin >> a[i];
@@ -76,7 +73,7 @@ int main(int argc, char* argv[])
 	for (int i = 1; i < cap; ++i)
 
 	{
-		b[i] = deltaFactorial(a[i-1], a[i], b[i-1]);
+		b[i] = deltaFactorial(a[i - 1], a[i], b[i - 1]);
 		s = s + b[i];
 		cout << "b[" << i << "]=" << b[i] << endl;
 	}

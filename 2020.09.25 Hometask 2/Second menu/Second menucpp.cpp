@@ -1,10 +1,10 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-using namespace std;
 #include <clocale>
 #include < ctime >
 #include < cstdlib >
 #include<conio.h>
-#define _CRT_SECURE_NO_WARNINGS
+using namespace std;
 
 
 void printMenu()    //Просто вывод менюшки ввиде текста
@@ -78,12 +78,12 @@ void swapPairsArray(int*& arr, int& cap)
 {
 	int a = 0;
 	int i = 0;
-	while (i < cap-1)
+	while (i < cap - 1)
 	{
-			a = arr[i];
-			arr[i] = arr[i + 1];
-			arr[i + 1] = a;
-			i += 2;
+		a = arr[i];
+		arr[i] = arr[i + 1];
+		arr[i + 1] = a;
+		i += 2;
 	}
 }
 
@@ -91,7 +91,7 @@ void swapPairsArray(int*& arr, int& cap)
 void shiftArray(int*& arr, int& cap)
 {
 	int c = arr[cap - 1];
-	for (int i = cap-1; i > 0; --i)
+	for (int i = cap - 1; i > 0; --i)
 	{
 		arr[i] = arr[i - 1];
 	}
@@ -102,11 +102,11 @@ void shiftArray(int*& arr, int& cap)
 void separateArray(int*& arr, int& cap, int n)
 {
 	int a = 0;
-	if ((n == 0)or(n==cap-1))
+	if ((n == 0) or (n == cap - 1))
 	{
 		reverseArray(arr, cap);
 	}
-	else if (n < cap-1)
+	else if (n < cap - 1)
 	{
 		reverseArray(arr, n);
 		for (int i = n; i <= (cap + n) / 2; ++i)
@@ -186,7 +186,7 @@ void swit(int choice, int*& a, int& cap)
 	case 6:
 		printArray(a, cap);
 		break;
-	}                                     
+	}
 }
 
 

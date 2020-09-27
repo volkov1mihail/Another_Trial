@@ -1,23 +1,23 @@
-#include <iostream>
-using namespace std;
 #define _CRT_SECURE_NO_WARNINGS
-#include<conio.h>
+#include <iostream>
 #include <clocale>
 #include < ctime >
 #include < cstdlib >
+#include<conio.h>
+using namespace std;
 
 
 void printMenu()    //Просто вывод менюшки ввиде текста
 {
-		setlocale(LC_ALL, "Russian");
-		cout << "Выберите действие:" << endl << endl << endl;
-		cout << "0 - Выход из программы" << endl;
-		cout << "1 - Добавить число в массив" << endl;
-		cout << "2 - Вывести массив на экран" << endl;
-		cout << "3 - Найти номер максимального элемента массива" << endl;
-		cout << "4 - Найти номер минимального элемента массива" << endl;
-		cout << "5 - Посчитать сумму элементов массива" << endl;
-		cout << "6 - Вывести массив в обратном порядке" << endl;
+	setlocale(LC_ALL, "Russian");
+	cout << "Выберите действие:" << endl << endl << endl;
+	cout << "0 - Выход из программы" << endl;
+	cout << "1 - Добавить число в массив" << endl;
+	cout << "2 - Вывести массив на экран" << endl;
+	cout << "3 - Найти номер максимального элемента массива" << endl;
+	cout << "4 - Найти номер минимального элемента массива" << endl;
+	cout << "5 - Посчитать сумму элементов массива" << endl;
+	cout << "6 - Вывести массив в обратном порядке" << endl;
 }
 
 
@@ -34,13 +34,13 @@ void printArray(int*& arr, int& cap)
 	{
 		for (int i = 1; i <= abs(cap); ++i)
 		{
-			cout << "a[" << abs(cap)-i << "]=" << arr[abs(cap) - i] << endl;
+			cout << "a[" << abs(cap) - i << "]=" << arr[abs(cap) - i] << endl;
 		}
 	}
 }
 
 
-void expandArray(int* &arr, int &cap)    //Удвоение длинны массива в случае, если оно потребуется
+void expandArray(int*& arr, int& cap)    //Удвоение длинны массива в случае, если оно потребуется
 {
 	int newCap = cap * 2;
 	int* temp = new int[newCap] {0};
@@ -63,7 +63,6 @@ int sumArray(int*& arr, int& cap)
 	}
 	return s;
 }
-
 
 
 int minArray(int*& arr, int& cap)  //Все то же самое, только номер минимального элемента.
@@ -104,10 +103,10 @@ int maxArray(int*& arr, int& cap)  //Нахождение номера макимального элемента мас
 }
 
 
-int swit(int choice, int* &arr, int &cap)
+int swit(int choice, int*& arr, int& cap)
 {
 	int n = 0;
-	int m = 0; 
+	int m = 0;
 	char g = 'g';
 	switch (choice)
 	{
@@ -155,6 +154,7 @@ int swit(int choice, int* &arr, int &cap)
 	cout << "Для продолжения нажмите любую клавишу";  //Сделано, чтобы экран не очищался сразу после выполнения вышеуказанных команд
 	system("pause");
 }
+
 
 int main(int argc, char* argv[])
 {
