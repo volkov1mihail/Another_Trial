@@ -2,9 +2,9 @@
 using namespace std;
 #include <clocale>
 
-int factorial(double a)
+int factorial(int a)
 {
-	double b = a;
+	int b = a;
 	for (int i = 1; i < b; i++)
 	{
 		a *= i;
@@ -13,9 +13,27 @@ int factorial(double a)
 }
 
 
-int deltaFactorial(double a, double b)  //a<b
+//int deltaFactorial(int a, int b)  //a<b
+//{
+//	int c = factorial(a);
+//	if (a < b)
+//	{
+//		for (int i = a + 1; i <= b; i++)
+//		{
+//			c = c * i;
+//		}
+//	}
+//	else if (a == b)
+//	{
+//		c = c;
+//	}
+//	return c;
+//}
+
+
+int deltaFactorial(int a, int b, int a1)  //a<b
 {
-	double c = factorial(a);
+	int c = a1;
 	if (a < b)
 	{
 		for (int i = a + 1; i <= b; i++)
@@ -25,16 +43,16 @@ int deltaFactorial(double a, double b)  //a<b
 	}
 	else if (a == b)
 	{
-		c = c;
+		c = a1;
 	}
 	return c;
 }
 
 
 
-void sorting(double*& arr, int& cap)
+void sorting(int*& arr, int& cap)
 {
-	double c = 0;
+	int c = 0;
 	for (int j = 0; j < cap; ++j)
 	{
 		for (int i = 0; i < cap-1; ++i)
@@ -62,8 +80,8 @@ int main(int argc, char* argv[])
 	int cap = 0;
 	cout << "Введите число элементов в последовательности {Xn}" << endl;
 	cin >> cap;
-	double* a = new double[cap] {0};
-	double* b = new double[cap] {0};
+	int* a = new int[cap] {0};
+	int* b = new int[cap] {0};
 	cout << "Введите "<<cap<<" чисел последовательности {Xn}. Xi должно быть меньше 10" << endl;
 	for (int i = 0; i < cap; ++i)
 	{
@@ -73,10 +91,11 @@ int main(int argc, char* argv[])
 	b[0] = factorial(a[0]);
 	cout << "b[0]=" << b[0] << endl;
 	for (int i = 1; i < cap; ++i)
+
 	{
-		b[i] = deltaFactorial(a[i-1], a[i]);
+		b[i] = deltaFactorial(a[i-1], a[i], b[i-1]);
 		s = s + b[i];
 		cout << "b[" << i << "]=" << b[i] << endl;
 	}
-	cout << "Среднее арифметическое факториалов=" << (s + a[0]) / cap << endl;
+	cout << "Среднее арифметическое факториалов=" << (s + b[0]) / cap << endl;
 }
