@@ -25,14 +25,13 @@ void addArray(int*& arr, int& cap, int n, int a, int b)
 {
 	int newCap = cap + n;
 	int* temp = new int[newCap] {0};
-	for (int i = 0; i < cap; ++i)        //Переписывание значений уже существующих элементов массива
+	for (int i = 0; i < cap; ++i)
 	{
 		temp[i] = arr[i];
 	}
 	for (int i = cap; i < newCap; ++i)
 	{
 		temp[i] = a + rand() % (b - a + 1);
-		cout << "a[" << i << "]=" << temp[i] << endl;
 	}
 	cap = newCap;
 	delete[] arr;
@@ -72,49 +71,31 @@ void reverseArray(int*& arr, int& cap)
 		arr[i] = arr[cap - 1 - i];
 		arr[cap - 1 - i] = a;
 	}
-	printArray(arr, cap);
 }
 
 
-void switchArray(int*& arr, int& cap)
+void swapPairsArray(int*& arr, int& cap)
 {
 	int a = 0;
-	if (cap % 2 == 0)
+	int i = 0;
+	while (i < cap-1)
 	{
-		for (int i = 0; i < cap; i += 2)
-		{
 			a = arr[i];
 			arr[i] = arr[i + 1];
 			arr[i + 1] = a;
-		}
+			i += 2;
 	}
-	else
-	{
-		for (int i = 0; i < cap - 1; i += 2)
-		{
-			a = arr[i];
-			arr[i] = arr[i + 1];
-			arr[i + 1] = a;
-		}
-		cout << "cap-нечетное, поэтому a[cap-1] осталось на своем месте." << endl;
-	}
-	printArray(arr, cap);
 }
 
 
-void moveArray(int*& arr, int& cap)
+void shiftArray(int*& arr, int& cap)
 {
-	int a = arr[0];
-	int b = 0;
-	int c = arr[cap-1];
-	for (int i = 1; i < cap; ++i)
+	int c = arr[cap - 1];
+	for (int i = cap-1; i > 0; --i)
 	{
-		arr[0] = arr[cap - 1];
-		b = arr[i];
-		arr[i] = a;
-		a = b;
+		arr[i] = arr[i - 1];
 	}
-	printArray(arr, cap);
+	arr[0] = c;
 }
 
 
@@ -128,16 +109,11 @@ void separateArray(int*& arr, int& cap, int n)
 	else if (n < cap-1)
 	{
 		reverseArray(arr, n);
-		for (int i = n; i < (cap + n) / 2; ++i)
+		for (int i = n; i <= (cap + n) / 2; ++i)
 		{
 			a = arr[i];
 			arr[i] = arr[cap + n - 1 - i];
 			arr[cap + n - 1 - i] = a;
-			cout << "a[" << i << "]=" << arr[i] << endl;
-		}
-		for (int i = (cap + n) / 2; i < cap; ++i)
-		{
-			cout << "a[" << i << "]=" << arr[i] << endl;
 		}
 	}
 	else
@@ -148,6 +124,28 @@ void separateArray(int*& arr, int& cap, int n)
 		reverseArray(arr, n);
 	}
 }
+
+
+//void separateArray(int*& arr, int& cap, int n)
+//{
+//	int a = 0;
+//	if ((n < 0) or (n > cap - 1))
+//	{
+//		a = 0;
+//	}
+//	else
+//	{
+//		++n;
+//		reverseArray(arr, n);
+//		--n;
+//		for (int i = n; i <= (cap + n) / 2; ++i)
+//		{
+//			a = arr[i];
+//			arr[i] = arr[cap + n - 1 - i];
+//			arr[cap + n - 1 - i] = a;
+//		}
+//	}
+//}
 
 
 void swit(int choice, int*& a, int& cap)
@@ -165,20 +163,25 @@ void swit(int choice, int*& a, int& cap)
 		cout << "Введите b" << endl;
 		cin >> b;
 		addArray(a, cap, n, c, b);
+		printArray(a, cap);
 		break;
 	case 2:
 		reverseArray(a, cap);
+		printArray(a, cap);
 		break;
 	case 3:
-		switchArray(a, cap);
+		swapPairsArray(a, cap);
+		printArray(a, cap);
 		break;
 	case 4:
-		moveArray(a, cap);
+		shiftArray(a, cap);
+		printArray(a, cap);
 		break;
 	case 5:
 		cout << "Введите n" << endl;
 		cin >> n;
 		separateArray(a, cap, n);
+		printArray(a, cap);
 		break;
 	case 6:
 		printArray(a, cap);
@@ -191,7 +194,7 @@ int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian");
 	srand(time(NULL));
-	int cap = 8;
+	int cap = 6;
 	int* a = new int[cap];
 	for (int i = 0; i < cap; ++i)   //Присвоение всем элементам массива случайные значения от 0 до 100, иначе они все автоматически сатновятся равны
 	{                               //какому-то страшному числу 842150451.
@@ -204,8 +207,8 @@ int main(int argc, char* argv[])
 		printMenu();
 		cin >> choice;
 		swit(choice, a, cap);
-		cout << "Для продолжения нажмите любую клавишу";  //Сделано, чтобы экран не очищался сразу после выполнения вышеуказанных команд
-		_getch();                                         //и была возможность прочитать все, что вывела программа.
+		system("pause");
+		cout << "Для продолжения нажмите любую клавишу";  //Сделано, чтобы экран не очищался сразу после выполнения вышеуказанных команд                                       //и была возможность прочитать все, что вывела программа.
 	}
 	delete[] a;
 	return EXIT_SUCCESS;

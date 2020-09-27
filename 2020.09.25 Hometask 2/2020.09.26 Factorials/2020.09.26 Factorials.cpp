@@ -13,23 +13,6 @@ int factorial(int a)
 }
 
 
-//int deltaFactorial(int a, int b)  //a<b
-//{
-//	int c = factorial(a);
-//	if (a < b)
-//	{
-//		for (int i = a + 1; i <= b; i++)
-//		{
-//			c = c * i;
-//		}
-//	}
-//	else if (a == b)
-//	{
-//		c = c;
-//	}
-//	return c;
-//}
-
 
 int deltaFactorial(int a, int b, int a1)  //a<b
 {
