@@ -52,7 +52,7 @@ void expandArray(int*& arr, int& cap, int n)    //׃הגמוםטו הכטםםû לאססטגא ג סכףק
 	arr = temp;
 }
 
-
+ננננננננננננננננ
 void printArray(int*& arr, int& cap)
 {
 	for (int i = 0; i < cap; ++i)
