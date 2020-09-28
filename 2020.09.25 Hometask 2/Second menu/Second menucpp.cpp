@@ -106,7 +106,8 @@ void separateArray(int*& arr, int& cap, int n)
 	{
 		reverseArray(arr, cap);
 	}
-	else if (n < cap - 1)
+	//else if (n < cap - 1)
+	else
 	{
 		reverseArray(arr, n);
 		for (int i = n; i <= (cap + n) / 2; ++i)
@@ -116,13 +117,13 @@ void separateArray(int*& arr, int& cap, int n)
 			arr[cap + n - 1 - i] = a;
 		}
 	}
-	else
-	{
-		--n;
-		expandArray(arr, cap, n);
-		++n;
-		reverseArray(arr, n);
-	}
+	//else                             //я могу это убрать, могу оставить, на остальную часть функции не вли€ет.
+	//{                                //ћаксимум, программа тратит врем€ на проверку, что, как мне кажетс€, вообще не вли€ет.
+	//	--n;                           //ќднако эта проверка дает возможность работать со случаем, когда n<cap-1....
+	//	expandArray(arr, cap, n);
+	//	++n;
+	//	reverseArray(arr, n);
+	//}
 }
 
 
