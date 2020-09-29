@@ -102,7 +102,7 @@ void shiftArray(int*& arr, int& cap)
 void separateArray(int*& arr, int& cap, int n)
 {
 	int a = 0;
-	if ((n == 0) or (n == cap - 1))
+	if ((n < 0) or (n > cap - 1))
 	{
 		reverseArray(arr, cap);
 	}
