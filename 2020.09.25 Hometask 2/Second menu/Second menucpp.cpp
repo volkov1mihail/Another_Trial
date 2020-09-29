@@ -21,22 +21,24 @@ void printMenu()    //Просто вывод менюшки ввиде текста
 }
 
 
-void addArray(int*& arr, int& cap, int n, int a, int b)
-{
-	int newCap = cap + n;
-	int* temp = new int[newCap] {0};
-	for (int i = 0; i < cap; ++i)
-	{
-		temp[i] = arr[i];
-	}
-	for (int i = cap; i < newCap; ++i)
-	{
-		temp[i] = a + rand() % (b - a + 1);
-	}
-	cap = newCap;
-	delete[] arr;
-	arr = temp;
-}
+//void addArray(int*& arr, int& cap, int n, int a, int b, int l)
+//{
+//	int newCap = cap + n;
+//	int* temp = new int[newCap] {0};
+//	for (int i = 0; i < cap; ++i)
+//	{
+//		temp[i] = arr[i];
+//	}
+//	for (int i = cap; i < newCap; ++i)
+//	{
+//		temp[i] = a + rand() % (b - a + 1);
+//	}
+//	cap = newCap;
+//	delete[] arr;
+//	arr = temp;
+//}
+
+
 
 
 void expandArray(int*& arr, int& cap, int n)    //Удвоение длинны массива в случае, если оно потребуется
@@ -50,6 +52,34 @@ void expandArray(int*& arr, int& cap, int n)    //Удвоение длинны массива в случ
 	cap = newCap;
 	delete[] arr;
 	arr = temp;
+}
+
+
+int addArray(int*& arr, int& cap, int n, int a, int b, int l)
+{
+	if (l + n > cap - 1)
+	{
+		int d = n;
+		n = l + n - 1;
+		/*l = cap;*/
+		//int newCap = cap + n;
+		//int* temp = new int[newCap] {0};
+		expandArray(arr, cap, n);
+		for (int i = l; i < cap; ++i)
+		{
+			arr[i] = a + rand() % (b - a + 1);
+		}
+		n = d;
+	}
+	else
+	{
+		for (int i = l; i < l + n; ++i)
+		{
+			arr[i] = a + rand() % (b - a + 1);
+		}
+	}
+	l = l + n;
+	return l;
 }
 
 
@@ -149,7 +179,7 @@ void separateArray(int*& arr, int& cap, int n)
 //}
 
 
-void swit(int choice, int*& a, int& cap)
+int swit(int choice, int*& a, int& cap, int l)
 {
 	int n = 0;
 	int c = 0;
@@ -163,7 +193,7 @@ void swit(int choice, int*& a, int& cap)
 		cin >> c;
 		cout << "Введите b" << endl;
 		cin >> b;
-		addArray(a, cap, n, c, b);
+		l=addArray(a, cap, n, c, b, l);
 		printArray(a, cap);
 		break;
 	case 2:
@@ -188,26 +218,28 @@ void swit(int choice, int*& a, int& cap)
 		printArray(a, cap);
 		break;
 	}
+	return l;
 }
 
 
 int main(int argc, char* argv[])
 {
+	int l = 0;
 	setlocale(LC_ALL, "Russian");
 	srand(time(NULL));
 	int cap = 6;
-	int* a = new int[cap];
-	for (int i = 0; i < cap; ++i)   //Присвоение всем элементам массива случайные значения от 0 до 100, иначе они все автоматически сатновятся равны
-	{                               //какому-то страшному числу 842150451.
-		a[i] = rand() % 101;
-	}
+	int* a = new int[cap] {0};
+	//for (int i = 0; i < cap; ++i)   //Присвоение всем элементам массива случайные значения от 0 до 100, иначе они все автоматически сатновятся равны
+	//{                               //какому-то страшному числу 842150451.
+	//	a[i] = rand() % 101;
+	//}
 	int choice = -1;
 	while (choice != 0)
 	{
 		system("cls");
 		printMenu();
 		cin >> choice;
-		swit(choice, a, cap);
+		l=swit(choice, a, cap, l);
 		system("pause");
 		cout << "Для продолжения нажмите любую клавишу";  //Сделано, чтобы экран не очищался сразу после выполнения вышеуказанных команд                                       //и была возможность прочитать все, что вывела программа.
 	}
