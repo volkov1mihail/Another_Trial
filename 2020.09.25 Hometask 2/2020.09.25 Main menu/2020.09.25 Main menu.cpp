@@ -65,20 +65,12 @@ int sumArray(int*& arr, int& cap)
 }
 
 
-int minArray(int*& arr, int& cap)  //Все то же самое, только номер минимального элемента.
+int minArray(int*& arr, int& cap)
 {
 	int c = 0;
-	int a = 101;
 	for (int i = 0; i < cap; ++i)
 	{
-		for (int j = 0; j < cap; ++j)
-		{
-			if ((arr[i] <= arr[j]) & (arr[i] <= a))
-			{
-				a = arr[i];
-				c = i;
-			}
-		}
+		c = (arr[c] >= arr[i] ? i : c);
 	}
 	return c;
 }
@@ -90,20 +82,13 @@ int maxArray(int*& arr, int& cap)  //Нахождение номера макимального элемента мас
 	int a = 0;
 	for (int i = 0; i < cap; ++i)
 	{
-		for (int j = 0; j < cap; ++j)
-		{
-			if ((arr[i] >= arr[j]) & (arr[i] >= a))
-			{
-				a = arr[i];
-				c = i;
-			}
-		}
+		c = (arr[c] <= arr[i] ? i : c);
 	}
 	return c;
 }
 
 
-int swit(int choice, int*& arr, int& cap)
+void swit(int choice, int*& arr, int& cap)
 {
 	int n = 0;
 	int m = 0;
