@@ -39,8 +39,8 @@ void conclusion(int a)
 int* initArray(int capacity)
 {
     int* result = new int[capacity + 2]{ 0 };
-    result[1] = capacity;
     result += 2;
+    result[-1] = capacity;
     return result;
 }
 
@@ -48,6 +48,7 @@ int* initArray(int capacity)
 
 void deleteArray(int* arr)
 {
+    arr -= 2;
     delete[] arr;
 }
 
@@ -287,11 +288,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> c;
         if (c == 0)
         {
-            add_M_Elements(arr1, arr1[-1], arr1[-2]);
+            add_M_Elements(arr1, arr1[-2], arr1[-1]);
         }
         else
         {
-            add_M_Elements(arr2, arr2[-1], arr2[-2]);
+            add_M_Elements(arr2, arr2[-2], arr2[-1]);
         }
         break;
     case 2:
@@ -306,11 +307,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> b;
         if (c == 0)
         {
-            addRandomElements(arr1, arr1[-1], arr1[-2], n, a, b);
+            addRandomElements(arr1, arr1[-2], arr1[-1], n, a, b);
         }
         else
         {
-            addRandomElements(arr2, arr2[-1], arr2[-2], n, a, b);
+            addRandomElements(arr2, arr2[-2], arr2[-1], n, a, b);
         }
         break;
     case 3:
@@ -319,11 +320,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> c;
         if (c == 0)
         {
-            printArray(arr1, arr1[-1]);
+            printArray(arr1, arr1[-2]);
         }
         else
         {
-            printArray(arr2, arr2[-1]);
+            printArray(arr2, arr2[-2]);
         }
         break;
     case 4:
@@ -336,11 +337,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> n;
         if (c == 0)
         {
-            b = search(arr1, arr1[-1], a, n);
+            b = search(arr1, arr1[-2], a, n);
         }
         else
         {
-            b = search(arr2, arr2[-1], a, n);
+            b = search(arr2, arr2[-2], a, n);
         }
         cout << b;
         break;
@@ -350,11 +351,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> c;
         if (c == 0)
         {
-            add(arr1, arr1[-1], arr1[-2], arr2, arr2[-1]);
+            add(arr1, arr1[-2], arr1[-1], arr2, arr2[-2]);
         }
         else
         {
-            add(arr2, arr2[-1], arr2[-2], arr1, arr1[-1]);
+            add(arr2, arr2[-2], arr2[-1], arr1, arr1[-2]);
         }
         break;
     case 6:
@@ -363,13 +364,13 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> c;
         if (c == 0)
         {
-            int* a = unify(arr1, arr1[-1], arr2, arr2[-1]);
+            int* a = unify(arr1, arr1[-2], arr2, arr2[-2]);
             printArray(a, a[-2]);
             deleteArray(a);
         }
         else
         {
-            int* a = unify(arr2, arr2[-1], arr1, arr1[-1]);
+            int* a = unify(arr2, arr2[-2], arr1, arr1[-2]);
             printArray(a, a[-2]);
             deleteArray(a);
         }
@@ -384,11 +385,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> n;
         if (c == 0)
         {
-            b = insert(arr1, arr1[-1], arr1[-2], a, n);
+            b = insert(arr1, arr1[-2], arr1[-1], a, n);
         }
         else
         {
-            b = insert(arr2, arr2[-1], arr2[-2], a, n);
+            b = insert(arr2, arr2[-2], arr2[-1], a, n);
         }
         conclusion(b);
         break;
@@ -402,11 +403,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> n;
         if (c == 0)
         {
-            b = deleteGroup(arr1, arr1[-1], a, n);
+            b = deleteGroup(arr1, arr1[-2], a, n);
         }
         else
         {
-            b = deleteGroup(arr2, arr2[-1], a, n);
+            b = deleteGroup(arr2, arr2[-2], a, n);
         }
         conclusion(b);
         break;
@@ -416,11 +417,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> c;
         if (c == 0)
         {
-            b = subSequence(arr1, arr1[-1], arr2, arr2[-1]);
+            b = subSequence(arr1, arr1[-2], arr2, arr2[-2]);
         }
         else
         {
-            b = subSequence(arr2, arr2[-1], arr1, arr1[-1]);
+            b = subSequence(arr2, arr2[-2], arr1, arr1[-2]);
         }
         conclusion(b);
         break;
