@@ -36,9 +36,10 @@ void conclusion(int a)
 
 
 
-int* initArray(int capacity)
+int* initArray(int capacity = 10)
 {
     int* result = new int[capacity + 2]{ 0 };
+    //*(result + 1) = capacity;
     result += 2;
     result[-1] = capacity;
     return result;
@@ -54,38 +55,39 @@ void deleteArray(int* arr)
 
 
 
-void expandArray(int*& arr, int& cap)    //Удвоение длинны массива в случае, если оно потребуется
+void expandArray(int*& arr)    //Удвоение длинны массива в случае, если оно потребуется
 {
-    int newCap = cap * 2;
-    int* temp = new int[newCap] {0};
-    for (int i = 0; i < cap; ++i)        //Переписывание значений уже существующих элементов массива
+    int* temp = initArray(2 * arr[-1]);
+    for (int i = 0; i < arr[-1]; ++i)        //Переписывание значений уже существующих элементов массива
     {
         temp[i] = arr[i];
     }
-    cap = newCap;
+    temp[-2] = arr[-2];
+    temp[-1] = 2 * arr[-1];
+    arr -= 2;
     delete[] arr;
     arr = temp;
 }
 
 
 
-void addElement(int*& arr, int &count, int &cap, int element)
+void addElement(int*& arr, int element)
 {
-    if (count + 1 < cap)
+    if (arr[-2] + 1 < arr[-1])
     {
-        arr[count] = element;
+        arr[arr[-2]] = element;
     }
     else
     {
-        expandArray(arr, cap);
-        arr[count] = element;
+        expandArray(arr);
+        arr[arr[-2]] = element;
     }
-    ++count;
+    ++arr[-2];
 }
 
 
 
-void add_M_Elements(int*& arr, int& count, int& cap)
+void add_M_Elements(int*& arr)
 {
     cout << "Вводите элементы, которые хотите добавить в массив." << endl;
     cout << "Чтобы остановить операцию или добавить в массив 0, введите 0." << endl;
@@ -93,33 +95,31 @@ void add_M_Elements(int*& arr, int& count, int& cap)
     while (n != 0)
     {
         cin >> n;
-        addElement(arr, count, cap, n);
-        ++count;
+        addElement(arr, n);
     }
+    --arr[-2];
     cout << "Чтобы ввести 0, как элемент массива, введите 1." << endl;
     cout << "Чтобы закончить операцию, введите 0." << endl;
     cin >> n;
     if (n == 1)
     {
-        addElement(arr, count, cap, n);
-        ++count;
+        addElement(arr, 0);
     }
 }
 
 
 
-void addRandomElements(int*& arr, int& count, int& cap, int n, int min, int max)
+void addRandomElements(int*& arr, int n, int min, int max)
 {
     for (int i = 0; i < n; ++i)
     {
-        addElement(arr, count, cap, rand() % (max - min + 1) + min);
+        addElement(arr, rand() % (max - min + 1) + min);
     }
-    count += n;
 }
 
 
 
-void printArray(int* arr, int count)
+void printArray(int* arr)
 {
     cout << "[" << arr[-2] << "/" << arr[-1] << "] {";
     for (int i = 0; i < arr[-2]; ++i)
@@ -128,12 +128,21 @@ void printArray(int* arr, int count)
     }
 }
 
+//void printArray(int* arr, int count)
+//{
+//    cout << "[" << count << "/" << arr[-1] << "] {";
+//    for (int i = 0; i < count; ++i)
+//    {
+//        cout << *(arr + i) << (i == count - 1 ? "}\n" : ", ");
+//    }
+//}
 
 
-int search(int* arr, int count, int element, int start)
+
+int search(int* arr, int element, int start)
 {
     int a = -1;
-    for (int i = start; i < count; ++i)
+    for (int i = start; i < arr[-2]; ++i)
     {
         if (arr[i] == element)
         {
@@ -146,113 +155,129 @@ int search(int* arr, int count, int element, int start)
 
 
 
-void add(int*& arr, int& count, int& cap, int* addedArr, int addedCount)
+void add(int*& arr, int* addedArr)
 {
-    for (int i = count; i < count + addedCount; ++i)
+    for (int i = arr[-2]; i < arr[-2] + addedArr[-2]; ++i)
     {
-        addElement(arr, count, cap, addedArr[i - count]);
+        addElement(arr, addedArr[i - arr[-2]]);
     }
 }
 
 
 
-int* unify(int* a, int countA, int* b, int countB)
+int* unify(int* a, int* b)
 {
-    int* arr=initArray(countA + countB + 10);
-    for (int i = 0; i < countA + countB; i += 2)
+    int* arr=initArray(2 * (a[-2] + b[-2]));
+    for (int i = 0; i < 2 * a[-2] - 2; i+=2)
     {
-        arr[i] = a[i];
-        arr[i + 1] = b[i];
+        arr[i] = a[i / 2];
     }
-    arr[-2] = countA + countB;
+    for (int i = 1; i < 2 * b[-2] - 1; i += 2)
+    {
+        arr[i] = b[(i - 1) / 2];
+    }
+    //for (int i = 0; i < a[-2] + b[-2]; i += 2)
+    //{
+    //    arr[i] = a[i];
+    //    arr[i + 1] = b[i];
+    //}
+    arr[-2] = a[-2] + b[-2];
     return arr;
 }
 
 
 
-int extract(int*& a, int& count,  int index)
+int extract(int*& a,  int index)
 {
-    if ((index < 0) or (index >= count))
+    if ((index < 0) or (index >= a[-2]))
     {
         return 1;
     }
     else
     {
         int c = a[index];
-        for (int i = index; i < count - 1; ++i)
+        for (int i = index; i < a[-2] - 1; ++i)
         {
             a[i] = a[i + 1];
         }
-        a[count - 1] = 0;
+        a[a[-2] - 1] = 0;
         return c;
+        --a[-2];
     }
 }
 
 
 
-int insert(int*& a, int& count, int& cap, int index, int element)
+int insert(int*& a, int index, int element)
 {
-    if (index < 0)
+    if ((index < 0) or (index > a[-2] + 1))
     {
         return 1;
     }
-    else if (index < cap)
-        {
-            if (count + 1 >= cap)
-            {
-                expandArray(a, cap);
-            }
-            for (int i = count + 1; i > index; --i)
-            {
-                a[i] = a[i - 1];
-            }
-            a[index] = element;
-            ++count;
-            return 0;
-        }
     else
     {
-        while (index >= cap)
+        if (a[-2] + 1 == a[-1])
         {
-            expandArray(a, cap);
+            expandArray(a);
         }
-        a[index] = element;
-        ++count;
+        for (int i = a[-2]; i >= index; --i)
+        {
+            a[i] = a[i - 1];
+        }
+        if (index != 0)
+        {
+            a[index - 1] = element;
+        }
+        else
+        {
+            a[index] = element;
+        }
+        ++a[-2];
         return 0;
     }
+    //else
+    //{
+    //    while (index >= a[-1])
+    //    {
+    //        expandArray(a);
+    //    }
+    //    a[index] = element;
+    //    ++a[-2];
+    //    return 0;
+    //}
 }
 
 
 
-int deleteGroup(int*& a, int& count, int startIndex, int n)
+int deleteGroup(int*& a, int startIndex, int n)
 {
-    if ((startIndex < 0) or (startIndex + n >= count))
+    if ((startIndex < 0) or (startIndex + n >= a[-2]))
     {
         return 1;
     }
     else
     {
-        for (int i = startIndex; i < count-n; ++i)
+        for (int i = startIndex; i < a[-2] -n; ++i)
         {
             a[i] = a[i + n];
         }
-        count -= n;
+        a[-2] -= n;
         return 0;
     }
 }
 
 
 
-int subSequence(int* a, int countA, int* b, int countB)
+int subSequence(int* a, int* b)
 {
     int k = 0;
-    int* c = initArray(countB);
-    for (int i = 0; i < countA - countB; ++i)
+    int* c = initArray(b[-2]);
+    for (int i = 0; i < a[-2] - b[-2]; ++i)
     {
-        c[0] = search(a, countA, b[0], i);
-        for (int j = 1; j < countB; ++j)
+        c[0] = search(a, b[0], i);
+        for (int j = 1; j < b[-2]; ++j)
         {
-            c[j] = search(a, countA, b[j], i);
+            c[j] = search(a, b[j], i);
             if (c[j] != c[j - 1] + 1)
             {
                 k = -1;
@@ -288,11 +313,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> c;
         if (c == 0)
         {
-            add_M_Elements(arr1, arr1[-2], arr1[-1]);
+            add_M_Elements(arr1);
         }
         else
         {
-            add_M_Elements(arr2, arr2[-2], arr2[-1]);
+            add_M_Elements(arr2);
         }
         break;
     case 2:
@@ -307,11 +332,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> b;
         if (c == 0)
         {
-            addRandomElements(arr1, arr1[-2], arr1[-1], n, a, b);
+            addRandomElements(arr1, n, a, b);
         }
         else
         {
-            addRandomElements(arr2, arr2[-2], arr2[-1], n, a, b);
+            addRandomElements(arr2, n, a, b);
         }
         break;
     case 3:
@@ -320,11 +345,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> c;
         if (c == 0)
         {
-            printArray(arr1, arr1[-2]);
+            printArray(arr1);
         }
         else
         {
-            printArray(arr2, arr2[-2]);
+            printArray(arr2);
         }
         break;
     case 4:
@@ -337,13 +362,13 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> n;
         if (c == 0)
         {
-            b = search(arr1, arr1[-2], a, n);
+            b = search(arr1, a, n);
         }
         else
         {
-            b = search(arr2, arr2[-2], a, n);
+            b = search(arr2, a, n);
         }
-        cout << b;
+        cout << b << endl;
         break;
     case 5:
         cout << "Введите 0, чтобы добавить массив b в массив a" << endl;
@@ -351,11 +376,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> c;
         if (c == 0)
         {
-            add(arr1, arr1[-2], arr1[-1], arr2, arr2[-2]);
+            add(arr1, arr2);
         }
         else
         {
-            add(arr2, arr2[-2], arr2[-1], arr1, arr1[-2]);
+            add(arr2, arr1);
         }
         break;
     case 6:
@@ -364,14 +389,14 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> c;
         if (c == 0)
         {
-            int* a = unify(arr1, arr1[-2], arr2, arr2[-2]);
-            printArray(a, a[-2]);
+            int* a = unify(arr1, arr2);
+            printArray(a);
             deleteArray(a);
         }
         else
         {
-            int* a = unify(arr2, arr2[-2], arr1, arr1[-2]);
-            printArray(a, a[-2]);
+            int* a = unify(arr2, arr1);
+            printArray(a);
             deleteArray(a);
         }
         break;
@@ -379,17 +404,17 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cout << "Введите 0, чтобы вставить элемент в массив a" << endl;
         cout << "Введите 1, чтобы вставить элемент в массив b" << endl;
         cin >> c;
-        cout << "Введите элемент, который хотите вставить" << endl;
-        cin >> a;
         cout << "Введите индекс, который нужно присвоить новому элементу" << endl;
         cin >> n;
+        cout << "Введите элемент, который хотите вставить" << endl;
+        cin >> a;
         if (c == 0)
         {
-            b = insert(arr1, arr1[-2], arr1[-1], a, n);
+            b = insert(arr1, n, a);
         }
         else
         {
-            b = insert(arr2, arr2[-2], arr2[-1], a, n);
+            b = insert(arr2, n, a);
         }
         conclusion(b);
         break;
@@ -403,11 +428,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> n;
         if (c == 0)
         {
-            b = deleteGroup(arr1, arr1[-2], a, n);
+            b = deleteGroup(arr1, a, n);
         }
         else
         {
-            b = deleteGroup(arr2, arr2[-2], a, n);
+            b = deleteGroup(arr2, a, n);
         }
         conclusion(b);
         break;
@@ -417,11 +442,11 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> c;
         if (c == 0)
         {
-            b = subSequence(arr1, arr1[-2], arr2, arr2[-2]);
+            b = subSequence(arr1, arr2);
         }
         else
         {
-            b = subSequence(arr2, arr2[-2], arr1, arr1[-2]);
+            b = subSequence(arr2, arr1);
         }
         conclusion(b);
         break;
