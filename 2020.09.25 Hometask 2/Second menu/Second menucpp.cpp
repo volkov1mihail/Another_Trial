@@ -83,7 +83,7 @@ int addArray(int*& arr, int& cap, int n, int a, int b, int l)
 }
 
 
-void printArray(int*& arr, int& cap)
+void printArray(int* arr, int cap)
 {
 	for (int i = 0; i < cap; ++i)
 	{
@@ -92,7 +92,7 @@ void printArray(int*& arr, int& cap)
 }
 
 
-void reverseArray(int*& arr, int& cap)
+void reverseArray(int* arr, int cap)
 {
 	int a = 0;
 	for (int i = 0; i < cap / 2; ++i)
@@ -104,7 +104,7 @@ void reverseArray(int*& arr, int& cap)
 }
 
 
-void swapPairsArray(int*& arr, int& cap)
+void swapPairsArray(int* arr, int cap)
 {
 	int a = 0;
 	int i = 0;
@@ -118,7 +118,7 @@ void swapPairsArray(int*& arr, int& cap)
 }
 
 
-void shiftArray(int*& arr, int& cap)
+void shiftArray(int* arr, int cap)
 {
 	int c = arr[cap - 1];
 	for (int i = cap - 1; i > 0; --i)
@@ -129,31 +129,43 @@ void shiftArray(int*& arr, int& cap)
 }
 
 
-void separateArray(int*& arr, int& cap, int n)
+//void separateArray(int*& arr, int& cap, int n)
+//{
+//	int a = 0;
+//	if ((n < 0) or (n > cap - 1))
+//	{
+//		reverseArray(arr, cap);
+//	}
+//	else if (n < cap - 1)
+//	else
+//	{
+//		reverseArray(arr, n);
+//		for (int i = n; i <= (cap + n) / 2; ++i)
+//		{
+//			a = arr[i];
+//			arr[i] = arr[cap + n - 1 - i];
+//			arr[cap + n - 1 - i] = a;
+//		}
+//	}
+//	else                             //я могу это убрать, могу оставить, на остальную часть функции не вли€ет.
+//	{                                //ћаксимум, программа тратит врем€ на проверку, что, как мне кажетс€, вообще не вли€ет.
+//	--n;                           //ќднако эта проверка дает возможность работать со случаем, когда n<cap-1....
+//	expandArray(arr, cap, n);
+//	++n;
+//	reverseArray(arr, n);
+//	}
+//}
+
+
+void separateArray(int* arr, int cap, int n)
 {
-	int a = 0;
-	if ((n < 0) or (n > cap - 1))
+	if ((n < 0) || (n >= cap))
 	{
 		reverseArray(arr, cap);
+		return;
 	}
-	//else if (n < cap - 1)
-	else
-	{
-		reverseArray(arr, n);
-		for (int i = n; i <= (cap + n) / 2; ++i)
-		{
-			a = arr[i];
-			arr[i] = arr[cap + n - 1 - i];
-			arr[cap + n - 1 - i] = a;
-		}
-	}
-	//else                             //я могу это убрать, могу оставить, на остальную часть функции не вли€ет.
-	//{                                //ћаксимум, программа тратит врем€ на проверку, что, как мне кажетс€, вообще не вли€ет.
-	//	--n;                           //ќднако эта проверка дает возможность работать со случаем, когда n<cap-1....
-	//	expandArray(arr, cap, n);
-	//	++n;
-	//	reverseArray(arr, n);
-	//}
+	reverseArray(arr, n);
+	reverseArray(arr + n, cap - n);
 }
 
 
@@ -193,7 +205,7 @@ int swit(int choice, int*& a, int& cap, int l)
 		cin >> c;
 		cout << "¬ведите b" << endl;
 		cin >> b;
-		l=addArray(a, cap, n, c, b, l);
+		l = addArray(a, cap, n, c, b, l);
 		printArray(a, cap);
 		break;
 	case 2:
@@ -229,17 +241,17 @@ int main(int argc, char* argv[])
 	srand(time(NULL));
 	int cap = 6;
 	int* a = new int[cap] {0};
-	//for (int i = 0; i < cap; ++i)   //ѕрисвоение всем элементам массива случайные значени€ от 0 до 100, иначе они все автоматически сатнов€тс€ равны
-	//{                               //какому-то страшному числу 842150451.
-	//	a[i] = rand() % 101;
-	//}
+	for (int i = 0; i < cap; ++i)   //ѕрисвоение всем элементам массива случайные значени€ от 0 до 100, иначе они все автоматически сатнов€тс€ равны
+	{                               //какому-то страшному числу 842150451.
+		a[i] = rand() % 101;
+	}
 	int choice = -1;
 	while (choice != 0)
 	{
 		system("cls");
 		printMenu();
 		cin >> choice;
-		l=swit(choice, a, cap, l);
+		l = swit(choice, a, cap, l);
 		system("pause");
 		cout << "ƒл€ продолжени€ нажмите любую клавишу";  //—делано, чтобы экран не очищалс€ сразу после выполнени€ вышеуказанных команд                                       //и была возможность прочитать все, что вывела программа.
 	}
