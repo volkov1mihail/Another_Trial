@@ -168,20 +168,22 @@ void add(int*& arr, int* addedArr)
 int* unify(int* a, int* b)
 {
     int* arr=initArray(2 * (a[-2] + b[-2]));
-    for (int i = 0; i < 2 * a[-2] - 2; i+=2)
+    for (int i = 0; i < 2 * a[-2]; i+=2)
     {
         arr[i] = a[i / 2];
     }
-    for (int i = 1; i < 2 * b[-2] - 1; i += 2)
+    for (int i = 1; i < 2 * b[-2]; i += 2)
     {
         arr[i] = b[(i - 1) / 2];
     }
-    //for (int i = 0; i < a[-2] + b[-2]; i += 2)
-    //{
-    //    arr[i] = a[i];
-    //    arr[i + 1] = b[i];
-    //}
-    arr[-2] = a[-2] + b[-2];
+    if (a[-2] >= b[-2])
+    {
+        arr[-2] = 2 * a[-2];
+    }
+    else
+    {
+        arr[-2] = 2 * b[-2];
+    }
     return arr;
 }
 
@@ -308,10 +310,10 @@ void processChoice(int*& arr1, int*& arr2, int choice)
     switch (choice)
     {
     case 1:
-        cout << "Введите 0, чтобы добавить элементы в массив a" << endl;
-        cout << "Введите 1, чтобы добавить элементы в массив b" << endl;
+        cout << "Введите 1, чтобы добавить элементы в массив a" << endl;
+        cout << "Введите 2, чтобы добавить элементы в массив b" << endl;
         cin >> c;
-        if (c == 0)
+        if (c == 1)
         {
             add_M_Elements(arr1);
         }
@@ -321,8 +323,8 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         }
         break;
     case 2:
-        cout << "Введите 0, чтобы добавить элементы в массив a" << endl;
-        cout << "Введите 1, чтобы добавить элементы в массив b" << endl;
+        cout << "Введите 1, чтобы добавить элементы в массив a" << endl;
+        cout << "Введите 2, чтобы добавить элементы в массив b" << endl;
         cin >> c;
         cout << "Введите n" << endl;
         cin >> n;
@@ -330,7 +332,7 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cin >> a;
         cout << "Введите b" << endl;
         cin >> b;
-        if (c == 0)
+        if (c == 1)
         {
             addRandomElements(arr1, n, a, b);
         }
@@ -340,10 +342,10 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         }
         break;
     case 3:
-        cout << "Введите 0, чтобы вывести массив a" << endl;
-        cout << "Введите 1, чтобы вывести массив b" << endl;
+        cout << "Введите 1, чтобы вывести массив a" << endl;
+        cout << "Введите 2, чтобы вывести массив b" << endl;
         cin >> c;
-        if (c == 0)
+        if (c == 1)
         {
             printArray(arr1);
         }
@@ -353,14 +355,14 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         }
         break;
     case 4:
-        cout << "Введите 0, чтобы найти номер элемента массива a" << endl;
-        cout << "Введите 1, чтобы найти номер элемента массива b" << endl;
+        cout << "Введите 1, чтобы найти номер элемента массива a" << endl;
+        cout << "Введите 2, чтобы найти номер элемента массива b" << endl;
         cin >> c;
         cout << "Введите элемент, который хотите найти" << endl;
         cin >> a;
         cout << "Введите индекс, с котрого начать поиск" << endl;
         cin >> n;
-        if (c == 0)
+        if (c == 1)
         {
             b = search(arr1, a, n);
         }
@@ -371,10 +373,10 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         cout << b << endl;
         break;
     case 5:
-        cout << "Введите 0, чтобы добавить массив b в массив a" << endl;
-        cout << "Введите 1, чтобы добавить массив a в массив b" << endl;
+        cout << "Введите 1, чтобы добавить массив b в массив a" << endl;
+        cout << "Введите 2, чтобы добавить массив a в массив b" << endl;
         cin >> c;
-        if (c == 0)
+        if (c == 1)
         {
             add(arr1, arr2);
         }
@@ -384,10 +386,10 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         }
         break;
     case 6:
-        cout << "Введите 0, чтобы элементы массива a стояли на нечетных номерах" << endl;
-        cout << "Введите 1, чтобы элементы массива b стояли на нечетных номерах" << endl;
+        cout << "Введите 1, чтобы элементы массива a стояли на нечетных номерах" << endl;
+        cout << "Введите 2, чтобы элементы массива b стояли на нечетных номерах" << endl;
         cin >> c;
-        if (c == 0)
+        if (c == 1)
         {
             int* a = unify(arr1, arr2);
             printArray(a);
@@ -401,14 +403,14 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         }
         break;
     case 7:
-        cout << "Введите 0, чтобы вставить элемент в массив a" << endl;
-        cout << "Введите 1, чтобы вставить элемент в массив b" << endl;
+        cout << "Введите 1, чтобы вставить элемент в массив a" << endl;
+        cout << "Введите 2, чтобы вставить элемент в массив b" << endl;
         cin >> c;
         cout << "Введите индекс, который нужно присвоить новому элементу" << endl;
         cin >> n;
         cout << "Введите элемент, который хотите вставить" << endl;
         cin >> a;
-        if (c == 0)
+        if (c == 1)
         {
             b = insert(arr1, n, a);
         }
@@ -419,14 +421,14 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         conclusion(b);
         break;
     case 8:
-        cout << "Введите 0, чтобы удалить последовательность из массива a" << endl;
-        cout << "Введите 1, чтобы удалить последовательность из массива b" << endl;
+        cout << "Введите 1, чтобы удалить последовательность из массива a" << endl;
+        cout << "Введите 2, чтобы удалить последовательность из массива b" << endl;
         cin >> c;
         cout << "Введите индекс, с которого начинается последовательность" << endl;
         cin >> a;
         cout << "Введите количество элементов последовательности" << endl;
         cin >> n;
-        if (c == 0)
+        if (c == 1)
         {
             b = deleteGroup(arr1, a, n);
         }
@@ -437,10 +439,10 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         conclusion(b);
         break;
     case 9:
-        cout << "Введите 0, чтобы найти последовательность b в массиве a" << endl;
-        cout << "Введите 1, чтобы найти последовательность a в массиве b" << endl;
+        cout << "Введите 1, чтобы найти последовательность b в массиве a" << endl;
+        cout << "Введите 2, чтобы найти последовательность a в массиве b" << endl;
         cin >> c;
-        if (c == 0)
+        if (c == 1)
         {
             b = subSequence(arr1, arr2);
         }
@@ -448,7 +450,7 @@ void processChoice(int*& arr1, int*& arr2, int choice)
         {
             b = subSequence(arr2, arr1);
         }
-        conclusion(b);
+        cout << b << endl;
         break;
     }
 }
