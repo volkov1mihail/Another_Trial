@@ -39,7 +39,6 @@ void conclusion(int a)
 int* initArray(int capacity = 10)
 {
     int* result = new int[capacity + 2]{ 0 };
-    //*(result + 1) = capacity;
     result += 2;
     result[-1] = capacity;
     return result;
@@ -63,9 +62,7 @@ void expandArray(int*& arr)    //Удвоение длинны массива в случае, если оно потр
         temp[i] = arr[i];
     }
     temp[-2] = arr[-2];
-    temp[-1] = 2 * arr[-1];
-    arr -= 2;
-    delete[] arr;
+    deleteArray(arr);
     arr = temp;
 }
 
@@ -73,15 +70,11 @@ void expandArray(int*& arr)    //Удвоение длинны массива в случае, если оно потр
 
 void addElement(int*& arr, int element)
 {
-    if (arr[-2] + 1 < arr[-1])
-    {
-        arr[arr[-2]] = element;
-    }
-    else
+    if (arr[-2] == arr[-1])
     {
         expandArray(arr);
-        arr[arr[-2]] = element;
     }
+    arr[arr[-2]] = element;
     ++arr[-2];
 }
 
@@ -157,32 +150,58 @@ int search(int* arr, int element, int start)
 
 void add(int*& arr, int* addedArr)
 {
-    for (int i = arr[-2]; i < arr[-2] + addedArr[-2]; ++i)
+    for (int i = 0; i < addedArr[-2]; ++i)
     {
-        addElement(arr, addedArr[i - arr[-2]]);
+        addElement(arr, addedArr[i]);
     }
 }
 
 
 
+//int* unify(int* a, int* b)
+//{
+//    int* arr=initArray(2 * (a[-2] + b[-2]));
+//    for (int i = 0; i < 2 * a[-2]; i+=2)
+//    {
+//        arr[i] = a[i / 2];
+//    }
+//    for (int i = 1; i < 2 * b[-2]; i += 2)
+//    {
+//        arr[i] = b[(i - 1) / 2];
+//    }
+//    if (a[-2] >= b[-2])
+//    {
+//        arr[-2] = 2 * a[-2];
+//    }
+//    else
+//    {
+//        arr[-2] = 2 * b[-2];
+//    }
+//    return arr;
+//}
+
+
+
 int* unify(int* a, int* b)
 {
-    int* arr=initArray(2 * (a[-2] + b[-2]));
-    for (int i = 0; i < 2 * a[-2]; i+=2)
+    int c = 0;
+    if (a[-2] >= b[-2])
+    {
+        c = 2 * a[-2];
+    }
+    else
+    {
+        c = 2 * b[-2];
+    }
+    int* arr = initArray(c);
+    arr[-2] = c;
+    for (int i = 0; i < 2 * a[-2]; i += 2)
     {
         arr[i] = a[i / 2];
     }
     for (int i = 1; i < 2 * b[-2]; i += 2)
     {
         arr[i] = b[(i - 1) / 2];
-    }
-    if (a[-2] >= b[-2])
-    {
-        arr[-2] = 2 * a[-2];
-    }
-    else
-    {
-        arr[-2] = 2 * b[-2];
     }
     return arr;
 }
