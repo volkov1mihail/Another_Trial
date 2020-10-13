@@ -20,7 +20,8 @@ void printMenu()
 
 
 
-void processChoice(ArrayList& a, ArrayList& b, int choice, int element, int index)
+//void processChoice(ArrayList& a, ArrayList& b, int choice, int element, int index)
+void processChoice(ArrayList& a, int choice, int element, int index)
 {
 	switch (choice)
 	{
@@ -83,14 +84,15 @@ int main()
 	srand(time(NULL));
 	setlocale(LC_ALL, "Russian");
 	ArrayList a;
-	ArrayList b;
+	//ArrayList b;
 	int choice = 0;
 	do
 	{
 		system("cls");
 		printMenu();
 		std::cin >> choice;
-		processChoice(a, b, choice, element, index);
+		processChoice(a, choice, element, index);
+		//processChoice(a, b, choice, element, index);
 		system("pause");
 	} while (choice != 0);
 
