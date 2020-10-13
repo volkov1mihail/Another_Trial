@@ -51,17 +51,28 @@ void processChoice(ArrayList& a, ArrayList& b, int choice, int element, int inde
 		break;
 	case 6:
 		std::cout << "Вводите элементы, которые хотите добавить в массив." << std::endl;
-		std::cout << "Чтобы остановить операцию или добавить в массив 0, введите 0." << std::endl;
-		b.add_M_Elements();
-		std::cout << a.addAll(b) << std::endl;
+		std::cout << "Чтобы остановить операцию, введите 0." << std::endl;
+		std::cout << a.add_M_Elements(a.count) << std::endl;
 		break;
 	case 7:
 		std::cout << "Введите индекс, с которого хотите добавлять элементы в список" << std::endl;
 		std::cin >> index;
-		b.add_M_Elements();
-		std::cout << a.addAll(index, b) << std::endl;
+		std::cout << a.add_M_Elements(index) << std::endl;
 		break;
 	}
+	//case 6:
+	//	std::cout << "Вводите элементы, которые хотите добавить в массив." << std::endl;
+	//	std::cout << "Чтобы остановить операцию или добавить в массив 0, введите 0." << std::endl;
+	//	b.add_M_Elements();
+	//	std::cout << a.addAll(b) << std::endl;
+	//	break;
+	//case 7:
+	//	std::cout << "Введите индекс, с которого хотите добавлять элементы в список" << std::endl;
+	//	std::cin >> index;
+	//	b.add_M_Elements();
+	//	std::cout << a.addAll(index, b) << std::endl;
+	//	break;
+	//}
 }
 
 

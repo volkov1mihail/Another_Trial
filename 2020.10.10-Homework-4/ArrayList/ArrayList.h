@@ -20,8 +20,8 @@ struct ArrayList {
 
 	bool addAll(int index, ArrayList& list);
 
-	bool add_M_Elements();
-
+	bool add_M_Elements(int index);
+	//bool add_M_Elements(int index);
 	void clear();
 
 	bool contains(int element);

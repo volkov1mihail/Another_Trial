@@ -95,24 +95,38 @@ bool ArrayList::addAll(int index, ArrayList& list)
 }
 
 
-bool ArrayList::add_M_Elements()
+//bool ArrayList::add_M_Elements()
+//{
+//	cout << "Вводите элементы, которые хотите добавить в массив." << endl;
+//	cout << "Чтобы остановить операцию или добавить в массив 0, введите 0." << endl;
+//	int n = 1;
+//	while (n != 0)
+//	{
+//		cin >> n;
+//		return add(n);
+//	}
+//	--count;
+//	cout << "Чтобы ввести 0, как элемент массива, введите 1." << endl;
+//	cout << "Чтобы закончить операцию, введите 0." << endl;
+//	cin >> n;
+//	if (n == 1)
+//	{
+//		return add(0);
+//	}
+//}
+
+
+bool ArrayList::add_M_Elements(int index)
 {
-	cout << "Вводите элементы, которые хотите добавить в массив." << endl;
-	cout << "Чтобы остановить операцию или добавить в массив 0, введите 0." << endl;
 	int n = 1;
+	int i = 0;
 	while (n != 0)
 	{
 		cin >> n;
-		return add(n);
+		return add(index + i, n);
+		++i;
 	}
 	--count;
-	cout << "Чтобы ввести 0, как элемент массива, введите 1." << endl;
-	cout << "Чтобы закончить операцию, введите 0." << endl;
-	cin >> n;
-	if (n == 1)
-	{
-		return add(0);
-	}
 }
 
 
