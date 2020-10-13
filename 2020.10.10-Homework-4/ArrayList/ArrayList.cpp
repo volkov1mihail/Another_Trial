@@ -1,87 +1,236 @@
-#include<iostream>
-#include<clocale>
-#include<ctime>
 #include"ArrayList.h"
 
 using namespace std;
 
 
-void printMenu()
+ArrayList::ArrayList()
 {
-	cout << "МЕНЮ" << endl;
-	cout << "0 - Выход из программы" << endl;
-	cout << "1 - Вывести массив на экран" << endl;
-	cout << "2 - Добавить элемент" << endl;
-	cout << "3 - Добавить элемент в позицию" << endl;
-	cout << "4 - Удалить элемент по индексу" << endl;
-	cout << "5 - Найти элемент" << endl;
-	cout << "6 - Добавить несколько элементов" << endl;
-	cout << "7 - Добавить несколько элементов, начиная с некоторой позиции" << endl;
+	capacity = 10;
+	count = 0;
+	data = new int[10]{ 0 };
 }
 
 
-
-void processChoice(ArrayList& a, ArrayList& b, int choice, int element, int index)
+ArrayList::ArrayList(int cap)
 {
-	switch (choice)
+	capacity = cap;
+	count = 0;
+	data = new int[cap] {0};
+}
+
+
+ArrayList::~ArrayList()
+{
+	delete[] data;
+}
+
+
+bool ArrayList::add(int element)
+{
+	if (count == capacity)
 	{
-	case 1:
-		a.print();
-		break;
-	case 2:
-		cout << "Введите элемент, который хотите добавить в список" << endl;
-		cin >> element;
-		cout << a.add(element) << endl;
-		break;
-	case 3:
-		cout << "Введите элемент, который хотите добавить в список" << endl;
-		cin >> element;
-		cout << "Введите индекс, который хотите присвоить введенному элементу" << endl;
-		cin >> index;
-		cout << a.add(index, element) << endl;
-		break;
-	case 4:
-		cout << "Введите индекс элемента, который хотите удалить" << endl;
-		cin >> index;
-		cout << a.remove(index) << endl;
-		break;
-	case 5:
-		cout << "Введите элемент, который хотите найти" << endl;
-		cin >> element;
-		cout << a.indexOf(element) << endl;
-		break;
-	case 6:
-		b.add_M_Elements();
-		cout << a.addAll(b) << endl;
-		break;
-	case 7:
-		cout << "Введите индекс, с которого хотите добавлять элементы в список" << endl;
-		cin >> index;
-		b.add_M_Elements();
-		cout << a.addAll(index, b) << endl;
-		break;
+		return false;
+	}
+	else
+	{
+		data[count] = element;
+		++count;
+		return true;
 	}
 }
 
 
-
-int main()
+bool ArrayList::add(int index, int element)
 {
-	int element = 0;
-	int index = 0;
-	srand(time(NULL));
-	setlocale(LC_ALL, "Russian");
-	ArrayList a;
-	ArrayList b;
-	int choice = 0;
-	do
+	if (count == capacity)
 	{
-		system("cls");
-		printMenu();
-		cin >> choice;
-		processChoice(a, b, choice, element, index);
-		system("pause");
-	} while (choice != 0);
+		return false;
+	}
+	else
+	{
+		for (int i = count + 1; i > index; --i)
+		{
+			data[i] = data[i - 1];
+		}
+		data[index] = element;
+		++count;
+		return true;
+	}
+}
 
-	return EXIT_SUCCESS;
+
+bool ArrayList::addAll(ArrayList& list)
+{
+	if (count > capacity - list.count)
+	{
+		return false;
+	}
+	else
+	{
+		for (int i = count; i < count + list.count; ++i)
+		{
+			add(list.data[i - count]);
+		}
+		count += list.count;
+		return true;
+	}
+}
+
+
+bool ArrayList::addAll(int index, ArrayList& list)
+{
+	if (count > capacity - list.count)
+	{
+		return false;
+	}
+	else
+	{
+		for (int i = index; i < index + list.count; ++i)
+		{
+			add(i, list.data[i - index]);
+		}
+		count += list.count;
+		return true;
+	}
+}
+
+
+bool ArrayList::add_M_Elements()
+{
+	cout << "Вводите элементы, которые хотите добавить в массив." << endl;
+	cout << "Чтобы остановить операцию или добавить в массив 0, введите 0." << endl;
+	int n = 1;
+	while (n != 0)
+	{
+		cin >> n;
+		return add(n);
+	}
+	--count;
+	cout << "Чтобы ввести 0, как элемент массива, введите 1." << endl;
+	cout << "Чтобы закончить операцию, введите 0." << endl;
+	cin >> n;
+	if (n == 1)
+	{
+		return add(0);
+	}
+}
+
+
+void ArrayList::clear()
+{
+	for (int i = 0; i < count; ++i)
+	{
+		data[i] = 0;
+	}
+	count = 0;
+}
+
+
+bool ArrayList::contains(int element)
+{
+	int c = 0;
+	for (int i = 0; i < count; ++i)
+	{
+		if (data[i] == element)
+		{
+			c = 1;
+			break;
+			return true;
+		}
+	}
+	if (c == 0)
+	{
+		return false;
+	}
+}
+
+
+int ArrayList::get(int index)
+{
+	if ((index >= count) or (index < 0))
+	{
+		return -1;
+	}
+	else
+	{
+		return data[index];
+	}
+}
+
+
+int ArrayList::indexOf(int element)
+{
+	int c = 0;
+	for (int i = 0; i < count; ++i)
+	{
+		if (data[i] == element)
+		{
+			c = 1;
+			break;
+			return i;
+		}
+	}
+	if (c == 0)
+	{
+		return -1;
+	}
+}
+
+
+bool ArrayList::isEmpty()
+{
+	return(count == 0 ? true : false);
+}
+
+
+void ArrayList::print()
+{
+	printf("[%d/%d]{", count, capacity);
+	if (count == 0)
+	{
+		printf("EMPTY");
+	}
+	else
+	{
+		for (int i = 0; i < count; ++i)
+		{
+			printf("%d%s", data[i], (i == count - 1 ? "" : ", "));
+		}
+	}
+	printf("}\n");
+}
+
+
+bool ArrayList::remove(int index)
+{
+	if ((index >= count) or (index < 0))
+	{
+		return false;
+	}
+	else
+	{
+		for (int i = index; i < count - 1; ++i)
+		{
+			data[i] = data[i + 1];
+		}
+		data[count] = 0;
+		--count;
+		return true;
+	}
+}
+
+
+bool ArrayList::swap(int index1, int index2)
+{
+	if ((index1 >= count) or (index1 < 0) or (index2 >= count) or (index2 < 0))
+	{
+		return false;
+	}
+	else
+	{
+		int c = data[index1];
+		data[index1] = data[index2];
+		data[index2] = c;
+		return true;
+	}
 }
