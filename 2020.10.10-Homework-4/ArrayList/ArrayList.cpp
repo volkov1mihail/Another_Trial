@@ -119,13 +119,16 @@ bool ArrayList::addAll(int index, ArrayList& list)
 bool ArrayList::add_M_Elements(int index)
 {
 	int n = 1;
-	int i = 0;
+	int j = 0;
+	ArrayList b;
 	while (n != 0)
 	{
 		cin >> n;
-		return add(index + i, n);
-		++i;
+		b.data[j] = n;
+		++b.count;
+		++j;
 	}
+	return addAll(index, b);
 	--count;
 }
 
