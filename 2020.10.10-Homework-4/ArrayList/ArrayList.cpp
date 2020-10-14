@@ -116,21 +116,21 @@ bool ArrayList::addAll(int index, ArrayList& list)
 //}
 
 
-bool ArrayList::add_M_Elements(int index)
-{
-	int n = 1;
-	int j = 0;
-	ArrayList b;
-	while (n != 0)
-	{
-		cin >> n;
-		b.data[j] = n;
-		++b.count;
-		++j;
-	}
-	return addAll(index, b);
-	--count;
-}
+//bool ArrayList::add_M_Elements(int index)
+//{
+//	int n = 1;
+//	int j = 0;
+//	ArrayList b;
+//	while (n != 0)
+//	{
+//		cin >> n;
+//		b.data[j] = n;
+//		++b.count;
+//		++j;
+//	}
+//	return addAll(index, b);
+//	--count;
+//}
 
 
 void ArrayList::clear()

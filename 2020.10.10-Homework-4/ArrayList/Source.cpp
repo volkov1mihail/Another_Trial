@@ -20,8 +20,8 @@ void printMenu()
 
 
 
-//void processChoice(ArrayList& a, ArrayList& b, int choice, int element, int index)
-void processChoice(ArrayList& a, int choice, int element, int index)
+void processChoice(ArrayList& a, ArrayList& b, int choice, int element, int index, int j)
+//void processChoice(ArrayList& a, int choice, int element, int index)
 {
 	switch (choice)
 	{
@@ -53,46 +53,52 @@ void processChoice(ArrayList& a, int choice, int element, int index)
 	case 6:
 		std::cout << "Вводите элементы, которые хотите добавить в массив." << std::endl;
 		std::cout << "Чтобы остановить операцию, введите 0." << std::endl;
-		std::cout << a.add_M_Elements(a.count) << std::endl;
+		while ((element != 0) and (b.count < b.capacity))
+		{
+			std::cin >> element;
+			b.data[j] = element;
+			++b.count;
+			++j;
+		}
+		std::cout << a.addAll(a.count, b) << std::endl;
+		b.clear();
 		break;
 	case 7:
 		std::cout << "Введите индекс, с которого хотите добавлять элементы в список" << std::endl;
 		std::cin >> index;
-		std::cout << a.add_M_Elements(index) << std::endl;
+		std::cout << "Вводите элементы, которые хотите добавить в массив." << std::endl;
+		std::cout << "Чтобы остановить операцию, введите 0." << std::endl;
+		while ((element != 0) and (b.count < b.capacity))
+		{
+			std::cin >> element;
+			b.data[j] = element;
+			++b.count;
+			++j;
+		}
+		std::cout << a.addAll(index, b) << std::endl;
+		b.clear();
 		break;
 	}
-	//case 6:
-	//	std::cout << "Вводите элементы, которые хотите добавить в массив." << std::endl;
-	//	std::cout << "Чтобы остановить операцию или добавить в массив 0, введите 0." << std::endl;
-	//	b.add_M_Elements();
-	//	std::cout << a.addAll(b) << std::endl;
-	//	break;
-	//case 7:
-	//	std::cout << "Введите индекс, с которого хотите добавлять элементы в список" << std::endl;
-	//	std::cin >> index;
-	//	b.add_M_Elements();
-	//	std::cout << a.addAll(index, b) << std::endl;
-	//	break;
-	//}
 }
 
 
 int main()
 {
-	int element = 0;
+	int element = 1;
 	int index = 0;
+	int j = 0;
 	srand(time(NULL));
 	setlocale(LC_ALL, "Russian");
 	ArrayList a;
-	//ArrayList b;
+	ArrayList b;
 	int choice = 0;
 	do
 	{
 		system("cls");
 		printMenu();
 		std::cin >> choice;
-		processChoice(a, choice, element, index);
-		//processChoice(a, b, choice, element, index);
+		//processChoice(a, choice, element, index);
+		processChoice(a, b, choice, element, index, j);
 		system("pause");
 	} while (choice != 0);
 
