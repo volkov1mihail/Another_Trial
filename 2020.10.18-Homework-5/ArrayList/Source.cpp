@@ -6,13 +6,13 @@ using namespace std;
 
 void printMenu()
 {
-	 cout << "МЕНЮ" <<  endl;
-	 cout << "0 - Выход из программы" <<  endl;
-	 cout << "1 - Добавить в список 10 случайных положительных двузначных чисел и вывести список" <<  endl;
-	 cout << "2 - Добавить в список 10 случайных отрицательных двузначных чисел и вывести список" <<  endl;
-	 cout << "3 - Поменять местами первый минимальный и последний максимальный элемент и вывести список" <<  endl;
-	 cout << "4 - Перемешать все элементы массива и вывести массив" <<  endl;
-	 cout << "5 - Заменить каждый отрицательный элемент массива на 0" <<  endl;
+	cout << "МЕНЮ" << endl;
+	cout << "0 - Выход из программы" << endl;
+	cout << "1 - Добавить в список 10 случайных положительных двузначных чисел и вывести список" << endl;
+	cout << "2 - Добавить в список 10 случайных отрицательных двузначных чисел и вывести список" << endl;
+	cout << "3 - Поменять местами первый минимальный и последний максимальный элемент и вывести список" << endl;
+	cout << "4 - Перемешать все элементы массива и вывести массив" << endl;
+	cout << "5 - Заменить каждый отрицательный элемент массива на 0" << endl;
 }
 
 
@@ -22,76 +22,79 @@ void processChoice(ArrayList& a, int choice)
 	{
 	case 1:
 	{
-		for (int i = 0; i <= 10; ++i)
+		for (int i = 0; i < 10; ++i)
 		{
 			a.add(rand() % 90 + 10);
 		}
-		a.toString();
+		cout << a.toString() << endl;
 		break;
 	}
 	case 2:
 	{
-		for (int i = 0; i <= 10; ++i)
+		for (int i = 0; i < 10; ++i)
 		{
-			a.add(-(rand() % 90 + 10));
+			a.add(0 - (rand() % 90 + 10));
 		}
-		a.toString();
+		cout << a.toString() << endl;
 		break;
 	}
 	case 3:
 	{
-		ArrayList b(a.capacity);
+		ArrayList b(a.length());
 		for (int i = 0; i < a.length(); ++i)
 		{
-			b.data[i] = a.data[i];
+			b.set(i, a.get(i));
 		}
 		int c = 0;
 		for (int i = 0; i < b.length() - 1; ++i)
 		{
 			for (int j = 0; j < b.length() - 1; ++j)
 			{
-				if (b.data[i] >= b.data[i + 1])
+				if (b.get(i) >= b.get(i + 1))
 				{
-					c = b.data[i];
-					b.data[i] = b.data[i + 1];
-					b.data[i + 1] = c;
+					b.swap(i, i + 1);
 				}
 			}
 		}
-		a.swap(a.indexOf(b.data[0]), a.indexOf(b.data[b.length()]));
-		a.toString();
+		a.swap(a.indexOf(b.get(0)), a.indexOf(b.get(b.length())));
+		cout << a.toString() << endl;
 		break;
 	}
 	case 4:
 	{
-		int* d = new int[a.length()];
-		int* f = new int[a.length()];
-		d[0] = rand() % (a.length());
-		f[0] = a.data[d[0]];
+		//int* d = new int[a.length()];
+		//int* f = new int[a.length()];
+		//d[0] = rand() % (a.length());
+		//f[0] = a.get(d[0]);
+		//for (int i = 1; i < a.length() - 1; ++i)
+		//{
+		//	d[i] = d[i - 1];
+		//	for (int j = 0; j < i; ++j)
+		//	{
+		//		if (d[i] == d[j])
+		//		{
+		//			d[i] = rand() % (a.length());
+		//		}
+		//	}
+		//	f[i] = a.get(d[i]);
+		//}
+		//for (int i = 0; i < a.length(); ++i)
+		//{
+		//	a.set(i, f[i]);
+		//}
+		//cout<<a.toString()<<endl;
 		for (int i = 1; i < a.length() - 1; ++i)
 		{
-			d[i] = d[i - 1];
-			for (int j = 0; j < i; ++j)
-			{
-				if (d[i] == d[j])
-				{
-					d[i] = rand() % (a.length());
-				}
-			}
-			f[i] = a.data[d[i]];
+			a.swap(i, rand() % a.length());
 		}
-		for (int i = 0; i < a.length(); ++i)
-		{
-			a.data[i] = f[i];
-		}
-		a.toString();
+		cout << a.toString() << endl;
 		break;
 	}
 	case 5:
 	{
 		for (int i = 0; i < a.length(); ++i)
 		{
-			a.data[i] = (a.data[i] < 0 ? 0 : a.data[i]);
+			a.set(i, (a.get(i) < 0 ? 0 : a.get(i)));
 		}
 		break;
 	}
@@ -109,7 +112,7 @@ int main()
 	{
 		system("cls");
 		printMenu();
-		std::cin >> choice;
+		cin >> choice;
 		processChoice(a, choice);
 		system("pause");
 	} while (choice != 0);

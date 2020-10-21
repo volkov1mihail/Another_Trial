@@ -7,26 +7,52 @@ ArrayList::~ArrayList()
 }
 
 
+//void ArrayList::expand()
+//{
+//	ArrayList temp(capacity * 2);
+//	for (int i = 0; i < count; ++i)
+//	{
+//		temp.data[i] = data[i];
+//	}
+//	capacity *= 2;
+//	temp.count = count;
+//	delete[] data;
+//	data = temp.data;
+//}
+
+
 void ArrayList::expand()
 {
-	ArrayList temp(capacity * 2);
+	int* temp = new int[capacity * 2];
 	for (int i = 0; i < count; ++i)
 	{
-		temp.data[i] = data[i];
+		temp[i] = data[i];
 	}
-	temp.count = count;
+	capacity *= 2;
 	delete[] data;
-	data = temp.data;
+	data = temp;
 }
 
 
 int ArrayList::numLength(int number)
 {
 	int result = 1;
-	while (number > 9)
+	if (number >= 0)
 	{
-		number /= 10;
-		result++;
+		while (number > 9)
+		{
+			number /= 10;
+			++result;
+		}
+	}
+	else
+	{
+		while (number < -9)
+		{
+			number /= 10;
+			++result;
+		}
+		//++result;
 	}
 	return result;
 }
@@ -39,14 +65,40 @@ void ArrayList::addSymbolToStr(int& index, char symbol)
 }
 
 
+//void ArrayList::addNumberToStr(int& index, int number)
+//{
+//	int length = numLength(number);
+//	for (int i = 0; i < length; ++i)
+//	{
+//		int digit = number % 10;
+//		str[index + length - 1 - i] = '0' + digit;
+//		number /= 10;
+//	}
+//	index += length;
+//}
+
+
 void ArrayList::addNumberToStr(int& index, int number)
 {
 	int length = numLength(number);
-	for (int i = 0; i < length; ++i)
+	if (number >= 0)
 	{
-		int digit = number % 10;
-		str[index + length - 1 - i] = '0' + digit;
-		number /= 10;
+		for (int i = 0; i < length; ++i)
+		{
+			int digit = number % 10;
+			str[index + length - 1 - i] = '0' + digit;
+			number /= 10;
+		}
+	}
+	else
+	{
+		for (int i = 0; i < length; ++i)
+		{
+			int digit = -number % 10;
+			str[index + length - 1 - i] = '0' + digit;
+			number /= 10;
+		}
+		str[index - 1] = '-';
 	}
 	index += length;
 }
@@ -58,7 +110,8 @@ bool ArrayList::add(int element)
 	{
 		expand();
 	}
-	data[count++] = element;
+	data[count] = element;
+	++count;
 	return true;
 }
 
@@ -261,9 +314,17 @@ char* ArrayList::toString()
 	{
 		s += numLength(data[i]);
 	}
-	int length = 5 + s;
+	s += numLength(count) + numLength(capacity);
+	int length = 10 + s;
 	str = new char[length];
 	int index = 0;
+	addSymbolToStr(index, '[');
+	addNumberToStr(index, count);
+	addSymbolToStr(index, '/');
+	addNumberToStr(index, capacity);
+	addSymbolToStr(index, ']');
+	addSymbolToStr(index, ' ');
+	addSymbolToStr(index, ' ');
 	addSymbolToStr(index, '(');
 	for (int i = 0; i < count - 1; ++i)
 	{

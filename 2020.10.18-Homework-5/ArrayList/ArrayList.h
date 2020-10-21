@@ -3,7 +3,6 @@ struct ArrayList
 {
 private:
 	int count;
-public:
 	int capacity;
 	int* data;
 	char* str;
