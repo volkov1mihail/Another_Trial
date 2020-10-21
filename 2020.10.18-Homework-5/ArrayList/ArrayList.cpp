@@ -92,6 +92,7 @@ void ArrayList::addNumberToStr(int& index, int number)
 	}
 	else
 	{
+		index++;
 		for (int i = 0; i < length; ++i)
 		{
 			int digit = -number % 10;
