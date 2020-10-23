@@ -62,27 +62,6 @@ void processChoice(ArrayList& a, int choice)
 	}
 	case 4:
 	{
-		//int* d = new int[a.length()];
-		//int* f = new int[a.length()];
-		//d[0] = rand() % (a.length());
-		//f[0] = a.get(d[0]);
-		//for (int i = 1; i < a.length() - 1; ++i)
-		//{
-		//	d[i] = d[i - 1];
-		//	for (int j = 0; j < i; ++j)
-		//	{
-		//		if (d[i] == d[j])
-		//		{
-		//			d[i] = rand() % (a.length());
-		//		}
-		//	}
-		//	f[i] = a.get(d[i]);
-		//}
-		//for (int i = 0; i < a.length(); ++i)
-		//{
-		//	a.set(i, f[i]);
-		//}
-		//cout<<a.toString()<<endl;
 		for (int i = 1; i < a.length() - 1; ++i)
 		{
 			a.swap(i, rand() % a.length());

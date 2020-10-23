@@ -4,21 +4,11 @@
 ArrayList::~ArrayList()
 {
 	delete[] data;
+	if (str != nullptr)
+	{
+		delete[] str;
+	}
 }
-
-
-//void ArrayList::expand()
-//{
-//	ArrayList temp(capacity * 2);
-//	for (int i = 0; i < count; ++i)
-//	{
-//		temp.data[i] = data[i];
-//	}
-//	capacity *= 2;
-//	temp.count = count;
-//	delete[] data;
-//	data = temp.data;
-//}
 
 
 void ArrayList::expand()
@@ -52,7 +42,6 @@ int ArrayList::numLength(int number)
 			number /= 10;
 			++result;
 		}
-		//++result;
 	}
 	return result;
 }
@@ -63,19 +52,6 @@ void ArrayList::addSymbolToStr(int& index, char symbol)
 	str[index] = symbol;
 	++index;
 }
-
-
-//void ArrayList::addNumberToStr(int& index, int number)
-//{
-//	int length = numLength(number);
-//	for (int i = 0; i < length; ++i)
-//	{
-//		int digit = number % 10;
-//		str[index + length - 1 - i] = '0' + digit;
-//		number /= 10;
-//	}
-//	index += length;
-//}
 
 
 void ArrayList::addNumberToStr(int& index, int number)
@@ -273,39 +249,10 @@ int ArrayList::swap(int index1, int index2)
 }
 
 
-//int ArrayList::length()
-//{
-//	int length = 0;
-//	for (int i = 0; i < count; ++i)
-//	{
-//		length += numLength(data[i]);
-//	}
-//	return length;
-//}
-
-
 int ArrayList::length()
 {
 	return count;
 }
-
-
-//char* ArrayList::toString()
-//{
-//	int totalLength = 5 + length();
-//	int index = 0;
-//	addSymbolToStr(index, '(');
-//	for (int i = 0; i < count - 1; ++i)
-//	{
-//		addNumberToStr(index, data[i]);
-//		addSymbolToStr(index, ',');
-//		addSymbolToStr(index, ' ');
-//	}
-//	addNumberToStr(index, data[count - 1]);
-//	addSymbolToStr(index, ')');
-//	addSymbolToStr(index, '\0');
-//	return str;
-//}
 
 
 char* ArrayList::toString()
