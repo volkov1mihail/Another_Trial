@@ -5,7 +5,7 @@ ArrayList::ArrayList(const ArrayList& list)
 {
 	count = list.count;
 	capacity = list.capacity;
-	str = list.str;
+	str = nullptr;
 	for (int i = 0; i < count; ++i)
 	{
 		data[i] = list.data[i];
