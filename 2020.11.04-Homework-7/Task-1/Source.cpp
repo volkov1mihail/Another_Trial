@@ -10,7 +10,7 @@ int main()
 	cout << "list1 = " << list1 << endl;
 	cout << "list2 = " << list2 << endl;
 	cout << "list3 = " << list3 << endl;
-	cout << "list3 = list1 + 5";
+	cout << "list3 = list1 + 5" << endl;
 	list3 = list1 + 5;
 	cout << "list1 = " << list1 << endl;
 	cout << "list2 = " << list2 << endl;
@@ -19,7 +19,7 @@ int main()
 	cout << "list1 = " << list1 << endl;
 	cout << "list2 = " << list2 << endl;
 	cout << "list3 = " << list3 << endl;
-	cout << "list3 = list1 + list2";
+	cout << "list3 = list1 + list2" << endl;
 	list3 = list1 + list2;
 	cout << "list1 = " << list1 << endl;
 	cout << "list2 = " << list2 << endl;

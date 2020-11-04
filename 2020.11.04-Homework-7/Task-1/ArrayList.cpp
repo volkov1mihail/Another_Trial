@@ -5,6 +5,7 @@ ArrayList::ArrayList(const ArrayList& list)
 {
 	count = list.count;
 	capacity = list.capacity;
+	data = new int[capacity] {0};
 	for (int i = 0; i < count; ++i)
 	{
 		data[i] = list.data[i];
@@ -223,7 +224,7 @@ ArrayList& ArrayList::operator= (const ArrayList& list)
 	{
 		delete[] data;
 		capacity = list.capacity;
-		int* data = new int[capacity] {0};
+		data = new int[capacity] {0};
 		count = list.count;
 		for (int i = 0; i < count; ++i)
 		{
@@ -237,7 +238,7 @@ ArrayList& ArrayList::operator= (const ArrayList& list)
 ArrayList operator+ (const ArrayList& list, int item)
 {
 	ArrayList result(list);
-	result += item;
+	result.add(item);
 	return result;
 }
 
@@ -293,11 +294,18 @@ ArrayList operator- (int item, const ArrayList& list)
 
 std::ostream& operator<<(std::ostream& stream, const ArrayList& list)
 {
-	std::cout << "[" << list.count << "/" << list.capacity << "]  {";
-	for (int i = 0; i < list.count - 1; ++i)
+	stream << "[" << list.count << "/" << list.capacity << "]  {";
+	if (list.count != 0)
 	{
-		std::cout << list.data[i] << " ";
+		for (int i = 0; i < list.count - 1; ++i)
+		{
+			stream << list.data[i] << ", ";
+		}
+		stream << list.data[list.count - 1] << "}" << std::endl;
 	}
-	std::cout << list.data[list.count - 1] << "}" << std::endl;
+	else
+	{
+		stream << "0}" << std::endl;
+	}
 	return stream;
 }
