@@ -25,7 +25,7 @@ LinkedList::~LinkedList()
 
 bool LinkedList::indexValid(int index)
 {
-	return (index > 0 && index < count);
+	return ((index >= 0) && (index < count));
 }
 
 int LinkedList::length()
@@ -299,6 +299,10 @@ bool LinkedList::swap(int index1, int index2)
 
 int LinkedList::extract(int index)
 {
+	if (!indexValid)
+	{
+		return -999999;
+	}
 	if (index == 0)
 	{
 		extractHead();
@@ -314,9 +318,9 @@ int LinkedList::extract(int index)
 		{
 			temp = temp->next;
 		}
-		return temp->data;
-		Node* node = temp;
-		temp = temp->next;
+		return temp->next->data;
+		Node* node = temp->next;
+		temp->next = temp->next->next;
 		delete node;
 		--count;
 	}
@@ -330,19 +334,19 @@ int LinkedList::extractTail()
 	}
 	else if (count == 1)
 	{
+		return tail->data;
 		head = tail = nullptr;
-		return 0;
 		count--;
 	}
 	else
 	{
 		Node* temp = head->next;
+		return tail->data;
 		for (int i = 1; i < count - 2; ++i)
 		{
 			temp = temp->next;
 		}
 		temp->next = nullptr;
-		return tail->data;
 		--count;
 	}
 }
@@ -355,16 +359,16 @@ int LinkedList::extractHead()
 	}
 	else if (count == 1)
 	{
+		return head->data;
 		head = tail = nullptr;
-		return 0;
 		count--;
 	}
 	else
 	{
 		Node* node = head;
-		head = head->next;
-		delete node;
 		return head->data;
+		head=head->next;
+		delete node;
 		--count;
 	}
 }
