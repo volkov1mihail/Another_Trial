@@ -195,23 +195,25 @@ void LinkedList::operator+=(int element)
 
 void LinkedList::operator-=(int index)
 {
-	if (index == 0)
-	{
-		Node* node = head;
-		head = head->next;
-		delete node;
-	}
-	if (indexValid(index))
-	{
-		Node* temp = head;
-		for (int i = 0; i < index - 1; ++i)
-		{
-			temp = temp->next;
-		}
-		Node* node = temp;
-		temp = temp->next;
-		delete node;
-	}
+	extract(index);
+	//if (index == 0)
+	//{
+	//	Node* node = head;
+	//	head = head->next;
+	//	delete node;
+	//	return;
+	//}
+	//if (indexValid(index))
+	//{
+	//	Node* temp = head;
+	//	for (int i = 0; i < index - 1; ++i)
+	//	{
+	//		temp = temp->next;
+	//	}
+	//	Node* node = temp;
+	//	temp = temp->next;
+	//	delete node;
+	//}
 }
 
 LinkedList& LinkedList::operator= (const LinkedList& list)
@@ -240,66 +242,83 @@ int LinkedList::indexOf(int element)
 {
 	Node* temp = head;
 	int c = -1;
-	for (int i = 0; i < count - 1; ++i)
+	for (int i = 0; i < count; ++i)  // 0 1 2 3, i=3, a[i]=2
 	{
-		if (head->data == element)
+		if (temp->data == element)
 		{
 			c = i;
 			break;
 		}
 		temp = temp->next;
 	}
+	if ((c < 0) && (count > 1))
+	{
+		c = (tail->data == element ? count - 1 : c);
+	}
 	return c;
 }
 
 bool LinkedList::contains(int element)
 {
-	Node* temp = head;
-	int c = 0;
-	for (int i = 0; i < count - 1; ++i)
-	{
-		if (head->data == element)
-		{
-			c = 1;
-			break;
-		}
-		temp = temp->next;
-	}
-	return c;
+	//Node* temp = head;
+	//int c = 0;
+	//for (int i = 0; i < count - 1; ++i)
+	//{
+	//	if (head->data == element)
+	//	{
+	//		c = 1;
+	//		break;
+	//	}
+	//	temp = temp->next;
+	//}
+	//return c;
+	return (indexOf(element) < 0 ? false : true);
 }
 
-bool LinkedList::swap(int index1, int index2)
-{
-	if ((!indexValid(index1)) or (!indexValid(index2)))
-	{
-		return false;
-	}
-	else if (index1 == index2)
-	{
-		return true;
-	}
-	else
-	{
-		Node* temp1 = head;
-		Node* temp2 = head;
-		for (int i = 0; i < index1 - 1; ++i)
-		{
-			temp1 = temp1->next;
-		}
-		for (int i = 0; i < index2 - 1; ++i)
-		{
-			temp2 = temp2->next;
-		}
-		Node* temp3 = temp1;
-		temp1 = temp2;
-		temp2 = temp1;
-		return true;
-	}
-}
+//bool LinkedList::swap(int index1, int index2)
+//{
+//	if ((!indexValid(index1)) or (!indexValid(index2)))
+//	{
+//		return false;
+//	}
+//	else if (index1 == index2)
+//	{
+//		return true;
+//	}
+//	else
+//	{
+//		Node* temp1 = head;
+//		Node* temp2 = head;
+//		for (int i = 0; i < index1 - 1; ++i)
+//		{
+//			temp1 = temp1->next;
+//		}
+//		for (int i = 0; i < index2 - 1; ++i)
+//		{
+//			temp2 = temp2->next;
+//		}
+//		//Node* temp3 = temp1;
+//		//Node* temp4 = temp1->next;
+//		//temp1 = temp2;
+//		//temp1->next = temp2->next;
+//		//temp2 = temp3;
+//		//temp2->next = temp4;
+//		Node* temp11 = temp1->next;
+//		Node* temp111 = temp1->next->next;
+//		Node* temp22 = temp2->next;
+//		Node* temp222 = temp2->next->next;
+//		temp1->next = temp22;
+//		temp1->next->next = temp222;
+//		temp2->next = temp11;
+//		temp2->next->next = temp111;
+//		return true;
+//	}
+//}
 
 int LinkedList::extract(int index)
 {
-	if (!indexValid)
+
+	if (!indexValid(index))
 	{
 		return -999999;
 	}
@@ -318,57 +337,152 @@ int LinkedList::extract(int index)
 		{
 			temp = temp->next;
 		}
-		return temp->next->data;
+		int c = temp->next->data;
 		Node* node = temp->next;
 		temp->next = temp->next->next;
 		delete node;
 		--count;
+		return c;
 	}
 }
 
 int LinkedList::extractTail()
 {
+	int c = 0;
 	if (count == 0)
 	{
 		return 0;
 	}
 	else if (count == 1)
 	{
-		return tail->data;
+		c = tail->data;
 		head = tail = nullptr;
 		count--;
+		return c;
 	}
 	else
 	{
 		Node* temp = head->next;
-		return tail->data;
+		c = tail->data;
 		for (int i = 1; i < count - 2; ++i)
 		{
 			temp = temp->next;
 		}
 		temp->next = nullptr;
 		--count;
+		return c;
 	}
 }
 
 int LinkedList::extractHead()
 {
+	int c = 0;
 	if (count == 0)
 	{
 		return 0;
 	}
 	else if (count == 1)
 	{
-		return head->data;
+		c = head->data;
 		head = tail = nullptr;
 		count--;
+		return c;
 	}
 	else
 	{
+		c = head->data;
 		Node* node = head;
-		return head->data;
-		head=head->next;
+		head = head->next;
 		delete node;
 		--count;
+		return c;
+	}
+}
+
+bool LinkedList::swap(int index1, int index2)
+{
+	if ((!indexValid(index1)) or (!indexValid(index2)))
+	{
+		return false;
+	}
+	else if (index1 == index2)
+	{
+		return true;
+	}
+	if (index1 == 0)
+	{
+		if (index2 == 1)
+		{
+			Node* node1 = head;
+			Node* node2 = head->next->next;
+			head = head->next;
+			head->next = node1;
+			head->next->next = node2;
+			return true;
+		}
+		else if (index2 == count - 1)
+		{
+			Node* node1 = head->next;
+			Node* node2 = tail;
+			tail = head;
+			tail->next = nullptr;
+			head = node2;
+			head->next = node1;
+			return true;
+		}
+		else
+		{
+			Node* temp = head;
+			for (int i = 0; i < index2-1; ++i)
+			{
+				temp = temp->next;
+			}
+			Node* node2 = head->next;
+			Node* node3 = temp->next;
+			Node* node1 = temp->next->next;
+			temp->next = head;
+			temp->next->next = node1;
+			head = node3;
+			head->next = node2;
+			return true;
+		}
+	}
+	else
+	{
+		if (index2 == count - 1)
+		{
+			Node* temp1 = head;
+			for (int i = 0; i < index1; ++i)
+			{
+				temp1 = temp1->next;
+			}
+			Node* node1 = tail;
+			Node* node2 = temp1->next->next;
+			tail = temp1->next;
+			tail->next = nullptr;
+			temp1->next = node1;
+			temp1->next->next = node2;
+			return true;
+		}
+		else
+		{
+			Node* temp1 = head;
+			for (int i = 0; i < index1-1; ++i)
+			{
+				temp1 = temp1->next;
+			}
+			Node* temp2 = head;
+			for (int i = 0; i < index2-1; ++i)
+			{
+				temp2 = temp2->next;
+			}
+			Node* node1 = temp1->next;
+			Node* node2 = temp1->next->next;
+			temp1->next = temp2->next;
+			temp1->next->next = temp2->next->next;
+			temp2->next = node1;
+			temp2->next->next = node2;
+			return true;
+		}
 	}
 }
