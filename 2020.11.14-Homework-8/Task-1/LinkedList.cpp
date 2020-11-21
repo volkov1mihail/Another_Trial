@@ -119,10 +119,10 @@ bool LinkedList::set(int index, int element)
 	{
 		head->data = element;
 	}
-	else if (index == count - 1)
-	{
-		tail->data = element;
-	}
+	//else if (index == count - 1)
+	//{
+	//	tail->data = element;
+	//}
 	else
 	{
 		Node* temp = head;
@@ -357,6 +357,7 @@ int LinkedList::extractTail()
 	{
 		c = tail->data;
 		head = tail = nullptr;
+		delete head;
 		count--;
 		return c;
 	}
@@ -385,6 +386,7 @@ int LinkedList::extractHead()
 	{
 		c = head->data;
 		head = tail = nullptr;
+		delete head;
 		count--;
 		return c;
 	}
@@ -418,6 +420,8 @@ bool LinkedList::swap(int index1, int index2)
 			head = head->next;
 			head->next = node1;
 			head->next->next = node2;
+			delete node1;
+			delete node2;
 			return true;
 		}
 		else if (index2 == count - 1)
@@ -428,6 +432,8 @@ bool LinkedList::swap(int index1, int index2)
 			tail->next = nullptr;
 			head = node2;
 			head->next = node1;
+			delete node1;
+			delete node2;
 			return true;
 		}
 		else
@@ -444,6 +450,9 @@ bool LinkedList::swap(int index1, int index2)
 			temp->next->next = node1;
 			head = node3;
 			head->next = node2;
+			delete node1;
+			delete node2;
+			delete node3;
 			return true;
 		}
 	}
@@ -462,6 +471,8 @@ bool LinkedList::swap(int index1, int index2)
 			tail->next = nullptr;
 			temp1->next = node1;
 			temp1->next->next = node2;
+			delete node1;
+			delete node2;
 			return true;
 		}
 		else
@@ -482,6 +493,8 @@ bool LinkedList::swap(int index1, int index2)
 			temp1->next->next = temp2->next->next;
 			temp2->next = node1;
 			temp2->next->next = node2;
+			delete node1;
+			delete node2;
 			return true;
 		}
 	}
