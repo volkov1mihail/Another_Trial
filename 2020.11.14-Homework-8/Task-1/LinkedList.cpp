@@ -118,11 +118,13 @@ bool LinkedList::set(int index, int element)
 	if (index == 0)
 	{
 		head->data = element;
+		return true;
 	}
-	//else if (index == count - 1)
-	//{
-	//	tail->data = element;
-	//}
+	else if (index == count - 1)
+	{
+		tail->data = element;
+		return true;
+	}
 	else
 	{
 		Node* temp = head;
@@ -357,7 +359,6 @@ int LinkedList::extractTail()
 	{
 		c = tail->data;
 		head = tail = nullptr;
-		delete head;
 		count--;
 		return c;
 	}
@@ -386,7 +387,6 @@ int LinkedList::extractHead()
 	{
 		c = head->data;
 		head = tail = nullptr;
-		delete head;
 		count--;
 		return c;
 	}

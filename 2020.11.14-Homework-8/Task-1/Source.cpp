@@ -75,6 +75,11 @@ int main()
 	cout << list1 << endl;
 	list1.set(4, 65);
 	cout << list1 << endl;
+	cout << "Some shit" << endl;
+	list1.addToTail(10);
+	cout << list1 << endl;
+	list1.set(5, 44);
+
 
 	cout << "list 1[2] = " << list1[2] << endl;
 	list1[1] = 12354;
