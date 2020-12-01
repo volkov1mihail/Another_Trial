@@ -129,6 +129,19 @@ bool megaKostyl1(string& str)
 }
 
 
+bool megaKostylv2(string& str)
+{
+	for (int i = 0; i < 19; ++i)
+	{
+		if ((str[i] - '0') > (9223372036854775807 / (10 * (18 - i))) % 10)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+
 bool sizeOfInt(string& str)
 {
 	cout << "¬ведите число типа long long" << endl;
