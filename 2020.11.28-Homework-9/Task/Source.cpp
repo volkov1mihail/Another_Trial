@@ -189,7 +189,7 @@ int signOfNumber()
 	char d = '0';
 	cout << "Чтобы ввести положительное число, нажмите 1" << endl;
 	cout << "Чтобы ввести отрицательное число, нажмите 0" << endl;
-	d=getchar();
+	d = getchar();
 	c = getchar();
 	if (c == '1')
 	{
@@ -272,21 +272,22 @@ double stringToDouble(string& str)
 	}
 	else
 	{
-		for (int i = c + 1; str[i] != '\0'; ++i)
+		for (int i = c + 1; str[i] != '\0' && isDigitInt(str[i]); ++i)
 		{
 			if (i - c == 1)
 			{
-				return result + (str[i] - '0') / 10;
+				result = result + 1.0 * (str[i] - '0') / 10;
 			}
 			else if (i - c == 2)
 			{
-				return result + (str[i] - '0') / 100;
+				result = result + 1.0 * (str[i] - '0') / 100;
 			}
 			else
 			{
-				return result + (str[i] - '0') / 1000;
+				result = result + 1.0 * (str[i] - '0') / 1000;
 			}
 		}
+		return result;
 	}
 }
 
@@ -297,12 +298,18 @@ bool sizeOfDouble(string& str)
 	cin >> str;
 	trim(str);
 	int c = 0;
-	for (int i = 0; str[i] != '\0' && str[i] != '.'; ++i)
+	int d = 0;
+	for (int i = 0; str[i] != '\0'; ++i)
 	{
 		++c;
 		if (!isDigitDouble(str[i]))
 		{
 			return false;
+		}
+		if (str[i] == '.')
+		{
+			d = 1;
+			break;
 		}
 	}
 	if (c == 309)
