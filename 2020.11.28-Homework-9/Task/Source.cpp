@@ -2,6 +2,8 @@
 #include<iomanip>
 #include<clocale>
 #include<ctime>
+#include <cstdlib>
+#include <string>
 using namespace std;
 
 void printMenu()
@@ -149,7 +151,8 @@ bool megaKostylv2(string& str)
 bool sizeOfInt(string& str)
 {
 	cout << "Введите число типа long long" << endl;
-	cin >> str;
+	getchar();
+	getline(cin, str);
 	trim(str);
 	int c = 0;
 	for (int i = 0; str[i] != '\0'; ++i)
@@ -198,12 +201,10 @@ bool sizeOfInt(string& str)
 
 int signOfNumber()
 {
-	char c = '0';
-	char d = '0';
+	char c = '2';
 	cout << "Чтобы ввести положительное число, нажмите 1" << endl;
 	cout << "Чтобы ввести отрицательное число, нажмите 0" << endl;
-	d = getchar();
-	c = getchar();
+	cin >> c;
 	if (c == '1')
 	{
 		return 1;
@@ -308,7 +309,8 @@ double stringToDouble(string& str)
 bool sizeOfDouble(string& str)
 {
 	cout << "Введите число типа double" << endl;
-	cin >> str;
+	getchar();
+	getline(cin, str);
 	trim(str);
 	int c = 0;
 	int d = 0;
@@ -456,7 +458,5 @@ int main()
 		processChoice(str, ll, d, choice);
 		system("pause");
 	} while (choice != 0);
-	//double d = -173333300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000111111;
-	//cout << d;
 	return 0;
 }
