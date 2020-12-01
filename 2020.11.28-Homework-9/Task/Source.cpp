@@ -61,75 +61,71 @@ void trim(string& str)
 
 bool megaKostyl1(string& str)
 {
-	if ((str[0] - '0') < 9)
+	if ((str[1] - '0') > 2)
 	{
-		return true;
+		return false;
 	}
-	if ((str[1] - '0') < 2)
+	if ((str[2] - '0') > 2)
 	{
-		return true;
+		return false;
 	}
-	if ((str[2] - '0') < 2)
+	if ((str[3] - '0') > 3)
 	{
-		return true;
+		return false;
 	}
-	if ((str[3] - '0') < 3)
+	if ((str[4] - '0') > 3)
 	{
-		return true;
+		return false;
 	}
-	if ((str[4] - '0') < 3)
+	if ((str[5] - '0') > 7)
 	{
-		return true;
+		return false;
 	}
-	if ((str[5] - '0') < 7)
+	if ((str[6] - '0') > 2)
 	{
-		return true;
+		return false;
 	}
-	if ((str[6] - '0') < 2)
+	if ((str[8] - '0') > 3)
 	{
-		return true;
+		return false;
 	}
-	if ((str[8] - '0') < 3)
+	if ((str[9] - '0') > 6)
 	{
-		return true;
+		return false;
 	}
-	if ((str[9] - '0') < 6)
+	if ((str[10] - '0') > 8)
 	{
-		return true;
+		return false;
 	}
-	if ((str[10] - '0') < 8)
+	if ((str[11] - '0') > 5)
 	{
-		return true;
+		return false;
 	}
-	if ((str[11] - '0') < 5)
+	if ((str[12] - '0') > 4)
 	{
-		return true;
+		return false;
 	}
-	if ((str[12] - '0') < 4)
+	if ((str[13] - '0') > 7)
 	{
-		return true;
+		return false;
 	}
-	if ((str[13] - '0') < 7)
+	if ((str[14] - '0') > 7)
 	{
-		return true;
+		return false;
 	}
-	if ((str[14] - '0') < 7)
+	if ((str[15] - '0') > 5)
 	{
-		return true;
+		return false;
 	}
-	if ((str[15] - '0') < 5)
+	if ((str[16] - '0') > 8)
 	{
-		return true;
+		return false;
 	}
-	if ((str[16] - '0') < 8)
+	if ((str[18] - '0') > 8)
 	{
-		return true;
+		return false;
 	}
-	if ((str[18] - '0') < 8)
-	{
-		return true;
-	}
-	return false;
+	return true;
 }
 
 
