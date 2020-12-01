@@ -85,6 +85,10 @@ bool megaKostyl1(string& str)
 	{
 		return false;
 	}
+	if ((str[7] - '0') > 0)
+	{
+		return false;
+	}
 	if ((str[8] - '0') > 3)
 	{
 		return false;
