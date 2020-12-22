@@ -28,6 +28,7 @@ int main()
 	x = x * acos(-1) / 180;
 	cout << "Введите n - порядок точности" << endl;
 	cin >> n;
+	cout << "p=" << p << endl;
 	cout << "cos(" << setprecision(n)<< x << ")=" << cos(x) << endl;
 	cout << "cos(" << x << ")~" << myFunction(x, n) << endl;
 	return 0;
