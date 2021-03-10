@@ -73,29 +73,35 @@ bool operand2(char c[])
 	return true;
 }
 
-template<class T1, class T2>
-void calc(T1 a, T2 b, char op)
+int operation(int a, int b, char op)
 {
+	int(*ops[5])(int, int) = { sum, diff, prod, div, mod };
 	if (op == '+')
 	{
-		cout << a << " " << op << " " << b << " = " << sum(a, b) << endl;
+		return ops[0](a, b);
 	}
 	if (op == '-')
 	{
-		cout << a << " " << op << " " << b << " = " << diff(a, b) << endl;
+		return ops[1](a, b);
 	}
 	if (op == '*')
 	{
-		cout << a << " " << op << " " << b << " = " << prod(a, b) << endl;
+		return ops[2](a, b);
 	}
 	//if (op == '/')
 	//{
-	//	cout << a << " " << op << " " << b << " = " << div(a, b) << endl;
+	//return ops[3](a, b);
 	//}
 	if (op == '%')
 	{
-		cout << a << " " << op << " " << b << " = " << mod(a, b) << endl;
+		return ops[4](a, b);
 	}
+}
+
+template<class T1, class T2>
+void calc(T1 a, T2 b, char op)
+{
+		cout << a << " " << op << " " << b << " = " << operation(a, b, op) << endl;
 }
 
 int main(int argc, char* argv[])
