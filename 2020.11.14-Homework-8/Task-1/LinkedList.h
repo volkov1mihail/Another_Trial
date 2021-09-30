@@ -90,4 +90,9 @@ public:
 	/// <param name="">индекс второго элемента</param>
 	/// <returns>false - если индексы были некорректны</returns>
 	bool swap(int, int);
+
+
+	bool last(Node* last);
+	bool prelast(Node* prelast);
+	bool get_ptr(int n, Node* node);
 };

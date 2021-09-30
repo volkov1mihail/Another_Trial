@@ -439,7 +439,7 @@ bool LinkedList::swap(int index1, int index2)
 		else
 		{
 			Node* temp = head;
-			for (int i = 0; i < index2-1; ++i)
+			for (int i = 0; i < index2 - 1; ++i)
 			{
 				temp = temp->next;
 			}
@@ -478,12 +478,12 @@ bool LinkedList::swap(int index1, int index2)
 		else
 		{
 			Node* temp1 = head;
-			for (int i = 0; i < index1-1; ++i)
+			for (int i = 0; i < index1 - 1; ++i)
 			{
 				temp1 = temp1->next;
 			}
 			Node* temp2 = head;
-			for (int i = 0; i < index2-1; ++i)
+			for (int i = 0; i < index2 - 1; ++i)
 			{
 				temp2 = temp2->next;
 			}
@@ -496,6 +496,61 @@ bool LinkedList::swap(int index1, int index2)
 			delete node1;
 			delete node2;
 			return true;
+		}
+	}
+}
+
+
+
+
+
+bool LinkedList::last(Node* last)
+{
+	last = tail;
+}
+
+
+bool LinkedList::prelast(Node* prelast)
+{
+	Node* node1 = head;
+	if (count == 0 or count == 1)
+	{
+		prelast = nullptr;
+	}
+	else if (count == 2)
+	{
+		prelast = head;
+	}
+	else
+	{
+		prelast = head;
+		node1->next->next;
+		while (node1 != tail)
+		{
+			prelast->next;
+			node1->next;
+		}
+		prelast->next;
+	}
+}
+
+
+bool LinkedList::get_ptr(int n, Node* node)
+{
+	if (n < 0 or n > count or (n == 0 and count != 0))
+	{
+		return false;
+	}
+	else if (n == 0 and count == 0)
+	{
+		node = nullptr;
+	}
+	else
+	{
+		node = head;
+		for (int i = 1; i < n; i++)
+		{
+			node->next;
 		}
 	}
 }
