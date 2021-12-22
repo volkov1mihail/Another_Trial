@@ -115,10 +115,10 @@ int main()
 	cout << *last2(v4, 5);
 	cout << endl;
 	// #10
-	vector<double> v7{ 1.8, 2.6, 3.4, 4.3, 4.3, 5.2, 6.6 };
+	vector<double> v7{ 1.8, 2.6, 3.4, 4.3, 4.3, 4.3, 4.3, 5.2, 6.6 };
 	int i = 0;
 	int j = 0;
-	ij(v7, 4.5, i, j);
+	ij(v7, 4.3, i, j);
 	print(v7);
 	cout << i << " " << j;
 
@@ -214,12 +214,16 @@ void ij(vector<double>& v, double x, int& i, int& j)
 		++i;
 	}
 	j = i;
+	++ii;
 	if (ii == v.end() || *ii == x)
 	{
+		++i;
+		++j;
 		return;
 	}
 	else
 	{
+		--ii;
 		jj = upper_bound(v.begin(), v.end(), x);
 		for (ii; ii != jj; ++ii)
 		{
