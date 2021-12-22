@@ -95,7 +95,6 @@ void delLeftLeave(BNode* r) {
 }
 BNode* secondLeftLeave(BNode* r) {
 	BNode* k = r;
-	BNode* k1 = k;
 	BNode* start = r;
 	while (k->left != nullptr && k->right != nullptr) {
 		while (k->left != nullptr) {
