@@ -24,6 +24,8 @@ auto second_occurrence(vector<T>& v, T a)
 {
 	{
 		auto i = find(v.begin(), v.end(), a);
+		if (i == v.end())
+			return i;
 		i = find(++i, v.end(), a);
 		return i;
 	}
