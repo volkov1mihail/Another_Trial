@@ -39,12 +39,12 @@ using namespace std;
 int main()
 {
 	srand(time(0));
-	//sin();
-	//sin_2();
-	//pi();
-	//pi_2();
-	//int n = prime_numbers(1000000);
-	//n = prime_numbers_2(1000000);
+	sin();
+	sin_2();
+	pi();
+	pi_2();
+	int n = prime_numbers(1000000);
+	n = prime_numbers_2(1000000);
 	double d = diameter();
 	return 0;
 }
@@ -612,60 +612,60 @@ double diameter()
 }
 
 
-double diameter_2(int n)
-{
-
-	double max = 0;
-	double d = 0;
-	double t = omp_get_wtime();
-#pragma omp parallel for schedule(static) reduction (max: max)
-	for (int i = 0; i < n - 1; ++i)
-	{
-		for (int j = i; j < n; ++j)
-		{
-			d = distance(p[i], p[j]);
-			if (max < d)
-			{
-				max = d;
-			}
-		}
-	}
-	cout << "Time static:: " << omp_get_wtime() - t << endl;
-
-
-	max = 0;
-	d = 0;
-	t = omp_get_wtime();
-#pragma omp parallel for schedule(dynamic, 1000) reduction (max: max)
-	for (int i = 0; i < n - 1; ++i)
-	{
-		for (int j = i; j < n; ++j)
-		{
-			d = distance(p[i], p[j]);
-			if (max < d)
-			{
-				max = d;
-			}
-		}
-	}
-	cout << "Time dynamic:: " << omp_get_wtime() - t << endl;
-
-
-
-	max = 0;
-	d = 0;
-	t = omp_get_wtime();
-#pragma omp parallel for schedule(guided, 1000) reduction (max: max)
-	for (int i = 0; i < n - 1; ++i)
-	{
-		for (int j = i; j < n; ++j)
-		{
-			d = distance(p[i], p[j]);
-			if (max < d)
-			{
-				max = d;
-			}
-		}
-	}
-	cout << "Time guided:: " << omp_get_wtime() - t << endl;
-}
+//double diameter_2(int n)
+//{
+//
+//	double max = 0;
+//	double d = 0;
+//	double t = omp_get_wtime();
+//#pragma omp parallel for schedule(static) reduction (max: max)
+//	for (int i = 0; i < n - 1; ++i)
+//	{
+//		for (int j = i; j < n; ++j)
+//		{
+//			d = distance(p[i], p[j]);
+//			if (max < d)
+//			{
+//				max = d;
+//			}
+//		}
+//	}
+//	cout << "Time static:: " << omp_get_wtime() - t << endl;
+//
+//
+//	max = 0;
+//	d = 0;
+//	t = omp_get_wtime();
+//#pragma omp parallel for schedule(dynamic, 1000) reduction (max: max)
+//	for (int i = 0; i < n - 1; ++i)
+//	{
+//		for (int j = i; j < n; ++j)
+//		{
+//			d = distance(p[i], p[j]);
+//			if (max < d)
+//			{
+//				max = d;
+//			}
+//		}
+//	}
+//	cout << "Time dynamic:: " << omp_get_wtime() - t << endl;
+//
+//
+//
+//	max = 0;
+//	d = 0;
+//	t = omp_get_wtime();
+//#pragma omp parallel for schedule(guided, 1000) reduction (max: max)
+//	for (int i = 0; i < n - 1; ++i)
+//	{
+//		for (int j = i; j < n; ++j)
+//		{
+//			d = distance(p[i], p[j]);
+//			if (max < d)
+//			{
+//				max = d;
+//			}
+//		}
+//	}
+//	cout << "Time guided:: " << omp_get_wtime() - t << endl;
+//}
