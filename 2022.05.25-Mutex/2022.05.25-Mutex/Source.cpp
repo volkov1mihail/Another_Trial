@@ -303,7 +303,6 @@ void check_all_cvm()
 
 void factory_3()
 {
-	int c;
 	while (work1)
 	{
 		unique_lock <mutex> l(m);
@@ -314,13 +313,13 @@ void factory_3()
 		}
 		else
 		{
-			c = r(mt);
-			q.push(c);
-			cout << "v1::  " << c << endl;
+			q.push(r(mt));
+			v1.push_back(q.front());
 			cv.notify_one();
 			this_thread::sleep_for(chrono::milliseconds(r(mt)));
 		}
 	}
+	cv.notify_all();
 }
 
 
@@ -330,7 +329,15 @@ void consumer_3()
 	{
 		unique_lock <mutex> l(m);
 		cv.wait(l, f);
-		cout << "v2::  " << q.front() << endl;
+		if (q.empty()) return;
+		else
+		{
+			v2.push_back(q.front());
+			q.pop();
+			cv.notify_all();
+			return;
+		}
+		v2.push_back(q.front());
 		q.pop();
 	}
 }
@@ -348,18 +355,13 @@ void check_all_3()
 	f1.join();
 	f2.join();
 	work2 = false;
-	cout << "q= ";
 	c1.join();
-	cout << "q= ";
 	c2.join();
-	cout << "q= ";
 	c3.join();
-	cout << "q= ";
-	while (!q.empty())
-	{
-		int val = q.front();
-		q.pop();
-		cout << val << " ";
-	}
 	cout << endl;
+	v1 == v2 ? cout << "v1 = v2" << endl : cout << "v1 != v2" << endl;
+	cout << "v2= ";
+	for (int i = 0; i < v2.size(); i++) {
+		cout << v2[i] << " ";
+	}
 }
