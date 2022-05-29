@@ -176,8 +176,8 @@ int main()
 	//check_all();
 	//check_all_m();
 	//check_all_cv();
-	//check_all_cvm();
-	check_all_3();
+	check_all_cvm();
+	//check_all_3();
 	return 0;
 }
 
@@ -248,7 +248,9 @@ void factory_cvm()
 		}
 		else
 		{
-			q.push(r(mt));
+			int c = r(mt);
+			q.push(c);
+			v1.push_back(c);
 			m.unlock();
 		}
 	}
@@ -267,7 +269,7 @@ void consumer_cvm()
 		}
 		else
 		{
-			cout << q.front() << " ";
+			v2.push_back(q.front());
 			q.pop();
 			m.unlock();
 		}
@@ -290,14 +292,17 @@ void check_all_cvm()
 	c1.join();
 	c2.join();
 	c3.join();
-	cout << "q= ";
-	while (!q.empty())
-	{
-		int val = q.front();
-		q.pop();
-		cout << val << " ";
+	cout << "v1=";
+	for (int i = 0; i < v1.size(); i++) {
+		cout << v1[i] << " ";
 	}
 	cout << endl;
+	cout << "v2=";
+	for (int i = 0; i < v2.size(); i++) {
+		cout << v2[i] << " ";
+	}
+	cout << endl;
+	v1 == v2 ? cout << "v1 = v2" << endl : cout << "v1 != v2" << endl;
 }
 
 
