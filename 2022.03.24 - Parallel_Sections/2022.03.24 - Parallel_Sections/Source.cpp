@@ -376,7 +376,7 @@ int prime_numbers_2(int n)
 {
 	int c = 1;
 	double t = omp_get_wtime();
-#pragma omp parallel for schedule(static) reduction (+: c)
+#pragma omp parallel for schedule(static, 10) reduction (+: c)
 	for (int i = 3; i <= n; i += 2)
 	{
 		if (prime(i))
@@ -622,7 +622,7 @@ double diameter()
 //	double max = 0;
 //	double d = 0;
 //	double t = omp_get_wtime();
-//#pragma omp parallel for schedule(static) reduction (max: max)
+//#pragma omp parallel for schedule(static, 10) reduction (max: max)
 //	for (int i = 0; i < n - 1; ++i)
 //	{
 //		for (int j = i; j < n; ++j)
