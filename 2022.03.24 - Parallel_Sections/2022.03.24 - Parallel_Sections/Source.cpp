@@ -450,7 +450,7 @@ double diameter()
 	{
 #pragma omp section
 		{
-			for (int i = 0; i < 10000/sqrt(2); ++i)
+			for (int i = 0; i < 10000 / sqrt(2); ++i)
 			{
 				for (int j = i; j < 10000; ++j)
 				{
@@ -481,7 +481,7 @@ double diameter()
 	cout << "Time 2:: " << omp_get_wtime() - t << endl;
 
 
-	int a = 10000 - 10000 / sqrt(3) - 10000*(1 - 1 / sqrt(3)) / sqrt(2);
+	int a = 10000 * sqrt(2 / 3);
 	d = 0;
 	d1 = 0;
 	double d2 = 0;
@@ -507,7 +507,7 @@ double diameter()
 		}
 #pragma omp section
 		{
-			for (int i = a; i < 10000 - 10000 / sqrt(3); ++i)
+			for (int i = a; i < a + (10000 - a) / sqrt(2); ++i)
 			{
 				for (int j = i; j < 10000; ++j)
 				{
@@ -545,9 +545,9 @@ double diameter()
 	c1 = 0;
 	c2 = 0;
 	double c3 = 0;
-	int a2 = 10000 - sqrt(2) * 10000 / 2;
-	int a1 = a2 - sqrt(2) * a2 / 2;
-	int a3 = 2 * a2 - sqrt(2) * a2 / 2;
+	int a1 = 10000 * sqrt(3) / 2;
+	int a2 = 10000 / sqrt(2);
+	int a3 = a2 + (10000 - a2) / sqrt(2);
 	t = omp_get_wtime();
 #pragma omp parallel sections
 	{
