@@ -158,6 +158,58 @@ void modNewton(pair<double, double>& p, double e)
 }
 
 
+//void Newton(pair<double, double>& p, double e)
+//{
+//	cout << "Начальное приближение: [" << p.first << "," << p.second << "]" << endl;
+//	double x0 = (p.first + p.second) / 2;
+//	int i = 1;
+//	double x1 = x0 - (pow(2, -x0) - sin(x0)) / (-pow(2, -x0) * log(2) - cos(x0));
+//	while (abs(x1 - x0) > 2 * e)
+//	{
+//		x0 = x1;
+//		x1 = x0 - (pow(2, -x0) - sin(x0)) / (-pow(2, -x0) * log(2) - cos(x0));
+//		++i;
+//		if (i > 1000000)
+//		{
+//			cout << "Количество итераций превысило 1000000, сходимость маловероятна." << endl;
+//			break;
+//		}
+//	}
+//	if (i <= 1000000)
+//	{
+//		double c = (x1 + x0) / 2;
+//		cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(pow(2, -c) - sin(c)) << ". Количество итераций: " << i << endl;
+//	}
+//}
+//
+//
+//void modNewton(pair<double, double>& p, double e)
+//{
+//	cout << "Начальное приближение: [" << p.first << "," << p.second << "]" << endl;
+//	double x0 = (p.first + p.second) / 2;
+//	int i = 1;
+//	double a = 1 / (-pow(2, -x0) * log(2) - cos(x0));
+//	double x1 = x0 - (pow(2, -x0) - sin(x0)) * a;
+//	while (abs(x1 - x0) > 2 * e)
+//	{
+//
+//		x0 = x1;
+//		x1 = x0 - (pow(2, -x0) - sin(x0)) * a;
+//		++i;
+//		if (i > 1000000)
+//		{
+//			cout << "Количество итераций превысило 1000000, сходимость маловероятна." << endl;
+//			break;
+//		}
+//	}
+//	if (i <= 1000000)
+//	{
+//		double c = (x1 + x0) / 2;
+//		cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(pow(2, -c) - sin(c)) << ". Количество итераций: " << i << endl;
+//	}
+//}
+
+
 void secant(pair<double, double>& p, double e)
 {
 	cout << "Начальное приближение: [" << p.first << "," << p.second << "]" << endl;
