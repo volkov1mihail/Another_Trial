@@ -3,6 +3,7 @@
 #include <vector>
 #include <utility>
 #include <iomanip>
+#include <ctime>
 using namespace std;
 
 void bisection(pair<double, double>& p, double e);
@@ -10,8 +11,22 @@ void Newton(pair<double, double>& p, double e);
 void modNewton(pair<double, double>& p, double e);
 void secant(pair<double, double>& p, double e);
 
+double function(double x)
+{
+	return pow(2, -x) - sin(x);
+}
+double f_deriv(double x)
+{
+	return -pow(2, -x) * log(2) - cos(x);
+}
+double s_deriv(double x)
+{
+	return pow(2, -x) * log(2) * log(2) + sin(x);
+}
+
 int main()
 {
+	srand(time(0));
 	setlocale(LC_ALL, "Russian");
 	cout << "ЧИСЛЕННЫЕ МЕТОДЫ РЕШЕНИЯ НЕЛИНЕЙНЫХ УРАВНЕНИЙ" << endl;
 	int  N = 0;
@@ -19,7 +34,7 @@ int main()
 	double b = 0;
 	double e = 0;
 	double h = 0;
-	cout << setprecision(10) << "Введите значение A" << endl;
+	cout << setprecision(18) << "Введите значение A" << endl;
 	cin >> a;
 	cout << "Ведите значение B" << endl;
 	cin >> b;
@@ -32,12 +47,12 @@ int main()
 	double x1 = a;
 	double x2 = x1 + h;
 	double y2;
-	double y1 = pow(2, -x1) - sin(x1);
+	double y1 = function(x1);
 	vector < pair <double, double>> v;
 	pair<double, double> p;
 	while (x2 <= b)
 	{
-		y2 = pow(2, -x2) - sin(x2);
+		y2 = function(x2);
 		if (y1 * y2 < 0)
 		{
 			cout << "[a" << v.size() << ",b" << v.size() << "]=[" << x1 << "," << x2 << "]" << endl;
@@ -85,41 +100,103 @@ void bisection(pair<double, double>& p, double e)
 	while (b - a > 2 * e)
 	{
 		c = (a + b) / 2;
-		(pow(2, -a) - sin(a))* (pow(2, -b) - sin(b)) <= 0 ? a = c : b = c;
+		cout << "c = " << c << endl;
+		function(a)* function(c) <= 0 ? b = c : a = c;
 		++i;
 	}
-	cout << "xm = " << c << ",  d = " << (b - a) / 2 << ",  |f(xm)-0| = " << abs(pow(2, -c) - sin(c)) << ". Количество итераций: " << i << endl;
+	c = (a + b) / 2;
+	cout << "c = " << c << endl;
+	cout << "xm = " << c << ",  d = " << (b - a) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". Количество итераций: " << i << endl;
 }
+
+
+//void Newton(pair<double, double>& p, double e)
+//{
+//	cout << "Начальное приближение: [" << p.first << "," << p.second << "]" << endl;
+//	double x0 = (p.first + p.second) / 2;
+//	if (function(x0) * s_deriv(x0) <= 0)
+//	{
+//		cout << "Не выполнено условие 3 из теоремы о сходимости." << endl;
+//	}
+//	else
+//	{
+//		int i = 1;
+//		double x1 = x0 - function(x0) / f_deriv(x0);
+//		while (abs(x1 - x0) > 2 * e)
+//		{
+//			x0 = x1;
+//			x1 = x0 - function(x0) / f_deriv(x0);
+//			++i;
+//			if (i > 1000000)
+//			{
+//				cout << "Количество итераций превысило 1000000, сходимость маловероятна." << endl;
+//				break;
+//			}
+//		}
+//		if (i <= 1000000)
+//		{
+//			double c = (x1 + x0) / 2;
+//			cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". Количество итераций: " << i << endl;
+//		}
+//	}
+//}
+
+
+//void modNewton(pair<double, double>& p, double e)
+//{
+//	cout << "Начальное приближение: [" << p.first << "," << p.second << "]" << endl;
+//	double x0 = (p.first + p.second) / 2;
+//	if (function(x0) * s_deriv(x0) <= 0)
+//	{
+//		cout << "Не выполнено условие 3 из теоремы о сходимости." << endl;
+//	}
+//	else
+//	{
+//		int i = 1;
+//		double a = 1 / f_deriv(x0);
+//		double x1 = x0 - function(x0) * a;
+//		while (abs(x1 - x0) > 2 * e)
+//		{
+//
+//			x0 = x1;
+//			x1 = x0 - function(x0) * a;
+//			++i;
+//			if (i > 1000000)
+//			{
+//				cout << "Количество итераций превысило 1000000, сходимость маловероятна." << endl;
+//				break;
+//			}
+//		}
+//		if (i <= 1000000)
+//		{
+//			double c = (x1 + x0) / 2;
+//			cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". Количество итераций: " << i << endl;
+//		}
+//	}
+//}
 
 
 void Newton(pair<double, double>& p, double e)
 {
 	cout << "Начальное приближение: [" << p.first << "," << p.second << "]" << endl;
 	double x0 = (p.first + p.second) / 2;
-	if ((pow(2, -x0) - sin(x0)) * (pow(2, -x0) * log(2) * log(2) + sin(x0)) <= 0)
+	int i = 1;
+	double x1 = x0 - function(x0) / f_deriv(x0);
+	while (abs(x1 - x0) > 2 * e)
 	{
-		cout << "Не выполнено условие 3 из теоремы о сходимости." << endl;
+		x0 = x1;
+		x1 = x0 - function(x0) / f_deriv(x0);
+		++i;
+		if (i > 1000000)
+		{
+			cout << "Количество итераций превысило 1000000, сходимость маловероятна." << endl;
+			break;
+		}
 	}
-	else
+	if (i <= 1000000)
 	{
-		int i = 1;
-		double x1 = x0 - (pow(2, -x0) - sin(x0)) / (-pow(2, -x0) * log(2) - cos(x0));
-		while (abs(x1 - x0) > 2 * e)
-		{
-			x0 = x1;
-			x1 = x0 - (pow(2, -x0) - sin(x0)) / (-pow(2, -x0) * log(2) - cos(x0));
-			++i;
-			if (i > 1000000)
-			{
-				cout << "Количество итераций превысило 1000000, сходимость маловероятна." << endl;
-				break;
-			}
-		}
-		if (i <= 1000000)
-		{
-			double c = (x1 + x0) / 2;
-			cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(pow(2, -c) - sin(c)) << ". Количество итераций: " << i << endl;
-		}
+		double c = (x1 + x0) / 2;
+		cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". Количество итераций: " << i << endl;
 	}
 }
 
@@ -128,33 +205,45 @@ void modNewton(pair<double, double>& p, double e)
 {
 	cout << "Начальное приближение: [" << p.first << "," << p.second << "]" << endl;
 	double x0 = (p.first + p.second) / 2;
-	if ((pow(2, -x0) - sin(x0)) * (pow(2, -x0) * log(2) * log(2) + sin(x0)) <= 0)
+	int i = 1;
+	double a = 1 / f_deriv(x0);
+	double x1 = x0 - function(x0) * a;
+	while (abs(x1 - x0) > 2 * e)
 	{
-		cout << "Не выполнено условие 3 из теоремы о сходимости." << endl;
-	}
-	else
-	{
-		int i = 1;
-		double a = 1 / (-pow(2, -x0) * log(2) - cos(x0));
-		double x1 = x0 - (pow(2, -x0) - sin(x0)) * a;
-		while (abs(x1 - x0) > 2 * e)
-		{
 
-			x0 = x1;
-			x1 = x0 - (pow(2, -x0) - sin(x0)) * a;
-			++i;
-			if (i > 1000000)
-			{
-				cout << "Количество итераций превысило 1000000, сходимость маловероятна." << endl;
-				break;
-			}
-		}
-		if (i <= 1000000)
+		x0 = x1;
+		x1 = x0 - function(x0) * a;
+		++i;
+		if (i > 1000000)
 		{
-			double c = (x1 + x0) / 2;
-			cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(pow(2, -c) - sin(c)) << ". Количество итераций: " << i << endl;
+			cout << "Количество итераций превысило 1000000, сходимость маловероятна." << endl;
+			break;
 		}
 	}
+	if (i <= 1000000)
+	{
+		double c = (x1 + x0) / 2;
+		cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". Количество итераций: " << i << endl;
+	}
+}
+
+
+void secant(pair<double, double>& p, double e)
+{
+	cout << "Начальное приближение: [" << p.first << "," << p.second << "]" << endl;
+	double x0 = p.first;
+	double x1 = p.second;
+	double x2 = x1 - (x1 - x0) * function(x1) / (function(x1) - function(x0));
+	int i = 2;
+	while (abs(x2 - x1) > e)
+	{
+		x0 = x1;
+		x1 = x2;
+		x2 = x1 - (x1 - x0) * function(x1) / (function(x1) - function(x0));
+		++i;
+	}
+	double c = (x2 + x1) / 2;
+	cout << "xm = " << c << ",  d = " << abs(x2 - x1) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". Количество итераций: " << i << endl;
 }
 
 
@@ -162,12 +251,30 @@ void modNewton(pair<double, double>& p, double e)
 //{
 //	cout << "Начальное приближение: [" << p.first << "," << p.second << "]" << endl;
 //	double x0 = (p.first + p.second) / 2;
+//	int k = 0;
+//	if (function(x0) * s_deriv(x0) <= 0)
+//	{
+//		while (function(x0) * s_deriv(x0) <= 0)
+//		{
+//			x0 = p.first + (rand() % 100) / 100 * (p.second - p.first);
+//			++k;
+//			if (k > 1000000)
+//			{
+//				cout << "Не выполнено условие 3 из теоремы о сходимости для более чем миллиона точек, сходимость маловероятна." << endl;
+//				break;
+//			}
+//		}
+//	}
+//	if (k > 1000000)
+//		return;
+//	if (k > 0)
+//		cout << "Шагов для подбора x0: " << k << endl;
 //	int i = 1;
-//	double x1 = x0 - (pow(2, -x0) - sin(x0)) / (-pow(2, -x0) * log(2) - cos(x0));
+//	double x1 = x0 - function(x0) / f_deriv(x0);
 //	while (abs(x1 - x0) > 2 * e)
 //	{
 //		x0 = x1;
-//		x1 = x0 - (pow(2, -x0) - sin(x0)) / (-pow(2, -x0) * log(2) - cos(x0));
+//		x1 = x0 - function(x0) / f_deriv(x0);
 //		++i;
 //		if (i > 1000000)
 //		{
@@ -178,7 +285,7 @@ void modNewton(pair<double, double>& p, double e)
 //	if (i <= 1000000)
 //	{
 //		double c = (x1 + x0) / 2;
-//		cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(pow(2, -c) - sin(c)) << ". Количество итераций: " << i << endl;
+//		cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". Количество итераций: " << i << endl;
 //	}
 //}
 //
@@ -187,14 +294,31 @@ void modNewton(pair<double, double>& p, double e)
 //{
 //	cout << "Начальное приближение: [" << p.first << "," << p.second << "]" << endl;
 //	double x0 = (p.first + p.second) / 2;
+//	int k = 0;
+//	if (function(x0) * s_deriv(x0) <= 0)
+//	{
+//		while (function(x0) * s_deriv(x0) <= 0)
+//		{
+//			x0 = p.first + (rand() % 100) / 100 * (p.second - p.first);
+//			++k;
+//			if (k > 1000000)
+//			{
+//				cout << "Не выполнено условие 3 из теоремы о сходимости для более чем миллиона точек, сходимость маловероятна." << endl;
+//				break;
+//			}
+//		}
+//	}
+//	if (k > 1000000)
+//		return;
+//	if (k > 0)
+//		cout << "Шагов для подбора x0: " << k << endl;
 //	int i = 1;
-//	double a = 1 / (-pow(2, -x0) * log(2) - cos(x0));
-//	double x1 = x0 - (pow(2, -x0) - sin(x0)) * a;
+//	double a = 1 / f_deriv(x0);
+//	double x1 = x0 - function(x0) * a;
 //	while (abs(x1 - x0) > 2 * e)
 //	{
-//
 //		x0 = x1;
-//		x1 = x0 - (pow(2, -x0) - sin(x0)) * a;
+//		x1 = x0 - function(x0) * a;
 //		++i;
 //		if (i > 1000000)
 //		{
@@ -205,25 +329,6 @@ void modNewton(pair<double, double>& p, double e)
 //	if (i <= 1000000)
 //	{
 //		double c = (x1 + x0) / 2;
-//		cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(pow(2, -c) - sin(c)) << ". Количество итераций: " << i << endl;
+//		cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". Количество итераций: " << i << endl;
 //	}
 //}
-
-
-void secant(pair<double, double>& p, double e)
-{
-	cout << "Начальное приближение: [" << p.first << "," << p.second << "]" << endl;
-	double x0 = p.first;
-	double x1 = p.second;
-	double x2 = x1 - (x1 - x0) * (pow(2, -x1) - sin(x1)) / ((pow(2, -x1) - sin(x1)) - (pow(2, -x0) - sin(x0)));
-	int i = 2;
-	while (abs(x2 - x1) > e)
-	{
-		x0 = x1;
-		x1 = x2;
-		x2 = x1 - (x1 - x0) * (pow(2, -x1) - sin(x1)) / ((pow(2, -x1) - sin(x1)) - (pow(2, -x0) - sin(x0)));
-		++i;
-	}
-	double c = (x2 + x1) / 2;
-	cout << "xm = " << c << ",  d = " << abs(x2 - x1) / 2 << ",  |f(xm)-0| = " << abs(pow(2, -c) - sin(c)) << ". Количество итераций: " << i << endl;
-}
