@@ -9,10 +9,11 @@ using namespace std;
 double func(double x)
 {
 	return log(1 + x);
+	//return x*x*x-x*x+3*x-5;
 }
 
 void nodes(int m, vector<vector<double>>& v, double a, double b);
-void print(vector<vector<double>> v);
+void print(vector<vector<double>> v, int n);
 vector<vector<double>> sort(vector<vector<double>> v, double x);
 double Lagrange(vector<vector<double>> v, double x, int n);
 double Newton(vector<vector<double>> v, double x, int n);
@@ -22,7 +23,7 @@ int main()
 {
 	srand(time(0));
 	setlocale(LC_ALL, "Russian");
-	cout << setprecision(10) << "Задача алгебраического интерполирования, вариант 2" << endl;
+	cout << setprecision(13) << "Задача алгебраического интерполирования, вариант 2, функция f(x) = ln(1+x)" << endl;
 	int t = 1;
 	cout << "Введите число табличных значений" << endl;
 	int m = 0;
@@ -45,7 +46,7 @@ int main()
 	nodes(m, v, a, b);
 	while (t == 1)
 	{
-		print(v);
+		print(v, m + 1);
 		while (c != 1 and c != 0)
 		{
 			cout << endl << "Чтобы выбрать один из узлов за точку интерполяции, введите 0" << endl;
@@ -73,7 +74,7 @@ int main()
 		}
 		v1 = sort(v, x);
 		cout << "Отсортированная таблица значений:" << endl;
-		print(v1);
+		print(v1, n + 1);
 
 		s = Lagrange(v1, x, n);
 		cout << endl << "Метод Лагранжа:" << endl;
@@ -107,7 +108,7 @@ void nodes(int m, vector<vector<double>>& v, double a, double b)
 	}
 }
 
-void print(vector<vector< double>> v)
+void print(vector<vector< double>> v, int n)
 {
 	int k = 0;
 	if (v[1][2] == 0)
@@ -121,11 +122,15 @@ void print(vector<vector< double>> v)
 	}
 	else
 	{
+		int count = 0;
 		cout << "xk				||xk-x|				|f(xk)" << endl;
 		for (auto i : v)
 		{
+			if (count == n)
+				break;
 			cout << "x" << i[0] << " = " << i[1] << "			||x" << i[0] << "-x| = " << i[2] << "			|f(x" << i[0] << ") = " << i[3] << endl;
 			++k;
+			++count;
 		}
 	}
 }
