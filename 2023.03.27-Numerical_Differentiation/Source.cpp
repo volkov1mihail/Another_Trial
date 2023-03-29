@@ -92,16 +92,16 @@ int main()
 
 	v[0].push_back((-3 * v[0][1] + 4 * v[1][1] - v[2][1]) / (2 * h));
 	v[0].push_back(abs(v[0][2] - f_deriv(v[0][0])));
-	v[v.size()-1].push_back((3 * v[v.size()-1][1] - 4 * v[v.size() - 2][1] + v[v.size() - 3][1]) / (2 * h));
-	v[v.size()-1].push_back(abs(v[v.size() - 1][2] - f_deriv(v[v.size() - 1][0])));
+	v[v.size() - 1].push_back((3 * v[v.size() - 1][1] - 4 * v[v.size() - 2][1] + v[v.size() - 3][1]) / (2 * h));
+	v[v.size() - 1].push_back(abs(v[v.size() - 1][2] - f_deriv(v[v.size() - 1][0])));
 
 	v[0].push_back((2 * v[0][1] - 5 * v[1][1] + 4 * v[2][1] - v[3][1]) / (h * h));
 	v[0].push_back(abs(v[0][4] - s_deriv(v[0][0])));
-	v[v.size()-1].push_back((2 * v[v.size()-1][1] - 5 * v[v.size() - 2][1] + 4 * v[v.size() - 3][1] - v[v.size() - 4][1]) / (h * h));
-	v[0].push_back(abs(v[v.size() - 1][4] - s_deriv(v[v.size() - 1][0])));
+	v[v.size() - 1].push_back((2 * v[v.size() - 1][1] - 5 * v[v.size() - 2][1] + 4 * v[v.size() - 3][1] - v[v.size() - 4][1]) / (h * h));
+	v[v.size() - 1].push_back(abs(v[v.size() - 1][4] - s_deriv(v[v.size() - 1][0])));
 	for (int i = 1; i < v.size() - 1; ++i)
 	{
-		v[i].push_back((v[i + 1][1] - v[i - 1][1]) / (2*h));
+		v[i].push_back((v[i + 1][1] - v[i - 1][1]) / (2 * h));
 		v[i].push_back(abs(v[i][2] - f_deriv(v[i][0])));
 		v[i].push_back((v[i + 1][1] - 2 * v[i][1] + v[i - 1][1]) / (h * h));
 		v[i].push_back(abs(v[i][4] - s_deriv(v[i][0])));

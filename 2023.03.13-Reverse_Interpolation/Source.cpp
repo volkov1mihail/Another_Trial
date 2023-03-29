@@ -8,8 +8,8 @@ using namespace std;
 
 double func(double x)
 {
-	return log(1 + x);
-	//return sin(5 * x);
+	//return log(1 + x);
+	return sin(2 * x);
 }
 
 
@@ -229,6 +229,41 @@ void boolean(int& count, double y1, double y2, vector<pair<double, double>>& w, 
 	}
 }
 
+void boolean(int& count, double y1, double y2, vector<pair<double, double>>& w, pair<double, double>& p, int& rise, double& memory, double x0, double x1, double F, vector<pair<double, double>>& values)
+{
+	pair<double, double> p1;
+	if (y1 <= y2 && rise == 0)
+	{
+		cout << "[a" << count << ",b" << count << "]=[" << p.first << "," << p.second << "],		f'(a) = " << memory << ",	f'(b) = " << y2 << endl;
+		w.push_back(p);
+		p1.first = memory;
+		p1.second = y2;
+		values.push_back(p1);
+		memory = y1;
+		p.first = x0;
+		p.second = x1;
+		rise = 1;
+		++count;
+	}
+	else if ((y1 >= y2 && rise == 0) or (y1 <= y2 && rise == 1))
+	{
+		p.second = x1;
+	}
+	else if (y1 >= y2 && rise == 1)
+	{
+		cout << "[a" << count << ",b" << count << "]=[" << p.first << "," << p.second << "],		f'(a) = " << memory << ",	f'(b) = " << y2 << endl;
+		w.push_back(p);
+		p1.first = memory;
+		p1.second = y2;
+		values.push_back(p1);
+		memory = y1;
+		p.first = x0;
+		p.second = x1;
+		rise = 0;
+		++count;
+	}
+}
+
 vector<pair<double, double>> procedure(vector<vector<double>>& v, int n, int N, double F)
 {
 	double h = (v[v.size() - 1][1] - v[0][1]) / N;
@@ -283,59 +318,61 @@ vector<pair<double, double>> procedure(vector<vector<double>>& v, int n, int N, 
 	return w;
 }
 
-vector<pair<double, double>> procedure2(vector<vector<double>>& v, int n, int N, double F)
-{
-	double h = (v[v.size() - 1][1] - v[0][1]) / N;
-	double x0 = v[0][1];
-	double x1 = x0 + h;
-
-	vector<double> A = coefficients(v, n);
-	pair<double, double> p;
-	vector<pair<double, double>> w;
-	double y1 = v[0][3];
-	double y2;
-
-	int k = n;
-	while (k < v.size() - 2)
-	{
-		v[k + 1].swap(v[(k - n) % (n + 1)]);
-		A = coefficients(v, n);
-		y1 = Newton(v, A, x0, n);
-		while (x0 - v[(k - n) % (n + 1)][1] < v[k + 2][1] - x0)
-		{
-			y2 = Newton(v, A, x1, n);
-			if ((y1 - F) * (y2 - F) < 0)
-			{
-				cout << "[a" << w.size() << ",b" << w.size() << "]=[" << x0 << "," << x1 << "];		f'(a) = " << y1 << ", 	f'(b) = " << y2 << endl;
-				p.first = x0;
-				p.second = x1;
-				w.push_back(p);
-			}
-			x0 += h;
-			x1 += h;
-			y1 = y2;
-		}
-		++k;
-	}
-	A = coefficients(v, n);
-	y1 = Newton(v, A, x0, n);
-	while (x0 < v[(k - n) % (n + 1)][1])
-	{
-		y2 = Newton(v, A, x1, n);
-		if ((y1 - F) * (y2 - F) < 0)
-		{
-			cout << "[a" << w.size() << ",b" << w.size() << "]=[" << x0 << "," << x1 << "];		f'(a) = " << y1 << ", 	f'(b) = " << y2 << endl;
-			p.first = x0;
-			p.second = x1;
-			w.push_back(p);
-		}
-		x0 += h;
-		x1 += h;
-		y1 = y2;
-	}
-	cout << "Количество промежутков смены знака функции f'(x)-F равно " << w.size() << endl;
-	return w;
-}
+//vector<pair<double, double>> procedure(vector<vector<double>>& v, int n, int N, double F, vector<pair<double, double>>& values)
+//{
+//	double h = (v[v.size() - 1][1] - v[0][1]) / N;
+//	vector<double> end = v[v.size() - 1];
+//	double x0 = v[0][1];
+//	double x1 = x0 + h;
+//	int count = 0;
+//
+//	vector<double> A = coefficients(v, n);
+//	pair<double, double> p, p1;
+//	p.first = x0;
+//	p.second = x1;
+//	vector<pair<double, double>> w;
+//
+//	double y1 = v[0][3];
+//	double y2 = Newton(v, A, x1, n);
+//	int rise = (y1 <= y2 ? 1 : 0);
+//	double memory = y1;
+//
+//	int k = n;
+//	while (k < v.size() - 2)
+//	{
+//		v[k + 1].swap(v[(k - n) % (n + 1)]);
+//		A = coefficients(v, n);
+//		y1 = Newton(v, A, x0, n);
+//		while (x0 - v[(k - n) % (n + 1)][1] < v[k + 2][1] - x0)
+//		{
+//			y2 = Newton(v, A, x1, n);
+//			boolean(count, y1, y2, w, p, rise, memory, x0, x1, F, values);
+//			x0 += h;
+//			x1 += h;
+//			y1 = y2;
+//		}
+//		++k;
+//	}
+//	A = coefficients(v, n);
+//	y1 = Newton(v, A, x0, n);
+//	while (x0 < v[(k - n) % (n + 1)][1])
+//	{
+//		y2 = Newton(v, A, x1, n);
+//		boolean(count, y1, y2, w, p, rise, memory, x0, x1, F);
+//		x0 += h;
+//		x1 += h;
+//		y1 = y2;
+//	}
+//	p.second = end[1];
+//	cout << "[a" << count << ",b" << count << "]=[" << p.first << "," << p.second << "],		f'(a) = " << memory << ",	f'(b) = " << end[3] << endl;
+//	w.push_back(p);
+//	p1.first = memory;
+//	p1.second = y2;
+//	values.push_back(p1);
+//	++count;
+//	cout << "Количество промежутков монотонности равно " << count << endl << endl;
+//	return w;
+//}
 
 void search1(vector<vector<double>> v, pair<double, double> p, double F, int n)
 {
@@ -383,7 +420,53 @@ void search2(vector<vector<double>> v, pair<double, double> p, double F, int n, 
 		bisection(p, e, x, x.size(), F);
 	}
 }
-
+//
+//void search1(vector<vector<double>> v, pair<double, double> p, double F, int n, pair<double, double> p1)
+//{
+//	vector<vector<double>> x;
+//	for (int i = 0; i < v.size(); ++i)
+//	{
+//		if ((F >= p1.first && F <= p1.second or F <= p1.first && F >= p1.second) && (v[i][1] >= p.first && v[i][1] <= p.second))
+//			x.push_back(v[i]);
+//	}
+//	if (x.size() > n + 1)
+//	{
+//		x = sort(swap(x), F);
+//		double answer = Lagrange(x, F, n);
+//		cout << "X = f^-1(F) = " << answer << ",	|f(X)-F| = " << abs(F - func(answer)) << endl;
+//	}
+//	else if (x.size() == n + 1)
+//	{
+//		x = swap(x);
+//		double answer = Lagrange(x, F, n);
+//		cout << "X = f^-1(F) = " << answer << ",	|f(X)-F| = " << abs(F - func(answer)) << endl;
+//	}
+//	else
+//	{
+//		x = swap(x);
+//		double answer = Lagrange(x, F, x.size());
+//		cout << "X = f^-1(F) = " << answer << ",	|f(X)-F| = " << abs(F - func(answer)) << endl;
+//	}
+//}
+//
+//void search2(vector<vector<double>> v, pair<double, double> p, double F, int n, double e, pair<double, double> p1)
+//{
+//	vector<vector<double>> x;
+//	for (int i = 0; i < v.size(); ++i)
+//	{
+//		if ((F>=p1.first && F<=p1.second or F <= p1.first && F >= p1.second)&&(v[i][1] >= p.first && v[i][1] <= p.second))
+//			x.push_back(v[i]);
+//	}
+//
+//	if (x.size() > n + 1)
+//	{
+//		bisection(p, e, x, n, F);
+//	}
+//	else
+//	{
+//		bisection(p, e, x, x.size(), F);
+//	}
+//}
 int main()
 {
 	srand(time(0));
@@ -409,6 +492,7 @@ int main()
 	int n = m + 1;
 	vector<vector<double>> v = nodes(m, a, b);
 	vector<vector<double>> v2 = v;
+	//vector<pair<double, double>> values;
 	print(v);
 
 	int t = 1;
@@ -425,7 +509,13 @@ int main()
 		cout << "Ведите значение N - число начальных промежутков для поиска промежутков монотонности" << endl;
 		cin >> N;
 
-		cout << endl << "3.1, первый способ:" << endl << endl;
+		//cout << endl << "3.1, первый способ:" << endl << endl;
+		//vector<pair<double, double>> w = procedure(v2, n, N, F, values);
+		//for (int i = 0; i < w.size(); ++i)
+		//{
+		//	search1(v2, w[i], F, n, values[i]);
+		//}
+
 		vector<pair<double, double>> w = procedure(v2, n, N, F);
 		for (int i = 0; i < w.size(); ++i)
 		{
@@ -452,3 +542,59 @@ int main()
 	}
 	return 0;
 }
+
+
+
+//vector<pair<double, double>> procedure2(vector<vector<double>>& v, int n, int N, double F)
+//{
+//	double h = (v[v.size() - 1][1] - v[0][1]) / N;
+//	double x0 = v[0][1];
+//	double x1 = x0 + h;
+//
+//	vector<double> A = coefficients(v, n);
+//	pair<double, double> p;
+//	vector<pair<double, double>> w;
+//	double y1 = v[0][3];
+//	double y2;
+//
+//	int k = n;
+//	while (k < v.size() - 2)
+//	{
+//		v[k + 1].swap(v[(k - n) % (n + 1)]);
+//		A = coefficients(v, n);
+//		y1 = Newton(v, A, x0, n);
+//		while (x0 - v[(k - n) % (n + 1)][1] < v[k + 2][1] - x0)
+//		{
+//			y2 = Newton(v, A, x1, n);
+//			if ((y1 - F) * (y2 - F) < 0)
+//			{
+//				cout << "[a" << w.size() << ",b" << w.size() << "]=[" << x0 << "," << x1 << "];		f'(a) = " << y1 << ", 	f'(b) = " << y2 << endl;
+//				p.first = x0;
+//				p.second = x1;
+//				w.push_back(p);
+//			}
+//			x0 += h;
+//			x1 += h;
+//			y1 = y2;
+//		}
+//		++k;
+//	}
+//	A = coefficients(v, n);
+//	y1 = Newton(v, A, x0, n);
+//	while (x0 < v[(k - n) % (n + 1)][1])
+//	{
+//		y2 = Newton(v, A, x1, n);
+//		if ((y1 - F) * (y2 - F) < 0)
+//		{
+//			cout << "[a" << w.size() << ",b" << w.size() << "]=[" << x0 << "," << x1 << "];		f'(a) = " << y1 << ", 	f'(b) = " << y2 << endl;
+//			p.first = x0;
+//			p.second = x1;
+//			w.push_back(p);
+//		}
+//		x0 += h;
+//		x1 += h;
+//		y1 = y2;
+//	}
+//	cout << "Количество промежутков смены знака функции f'(x)-F равно " << w.size() << endl;
+//	return w;
+//}
