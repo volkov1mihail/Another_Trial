@@ -1,6 +1,8 @@
 #include <iostream>
+#include <iomanip>
+#include <ctime>
 
-float* float_array(int n)
+float* float_array(long n)
 {
 	float* a = new float[n];
 	for (int i = 0; i < n; ++i)
@@ -10,7 +12,7 @@ float* float_array(int n)
 	return a;
 }
 
-double* double_array(int n)
+double* double_array(long n)
 {
 	double* a = new double[n];
 	for (int i = 0; i < n; ++i)
@@ -21,47 +23,67 @@ double* double_array(int n)
 }
 
 template <class T>
-void moving_average(T* a, int n, int k)
+int moving_average(T* a, long n, int k)
 {
+	unsigned int start_time = clock();
 	T average = 0;
 	for (int i = 0; i < k; ++i)
 	{
 		average += a[i];
 	}
 	average /= k;
-	//std::cout << average << "  ";
+
 	for (int i = k; i < n; ++i)
 	{
 		average += (a[i] - a[i - k]) / k;
-		//std::cout << average << "  ";
 	}
+	unsigned int end_time = clock();
+	return end_time - start_time;
 }
 
+template <class T>
+void sample(T* a, long n, int k)
+{
+	int c = moving_average(a, n, k);
+	std::cout << "Время работы программы: " << c << std::endl;
+	std::cout << " Производительность: " << (double)(n - k) / c << std::endl;
+}
 
 int main(int argc, char* argv[])
 {
 	srand(time(0));
 	setlocale(LC_ALL, "Russian");
 	int k = 0;
-	int n = 0;
-	std::cout << "Введите общее количество элементов n" << std::endl;
+	long n = 0;
+	std::cout << std::setprecision(13) << "Введите общее количество элементов n" << std::endl;
 	std::cin >> n;
-	std::cout << "Введите количество отслеживаемых элементов k" << std::endl;
-	std::cin >> k;
 
-
+	int windows[6]{ 4, 8, 16, 32, 64, 128 };
 	float* a_f = float_array(n);
 	double* a_d = double_array(n);
-	//for (int i = 0; i < n; ++i)
-	//{
-	//	std::cout << a_f[i] << std::endl;
-	//}
-	int start_time = clock();
-	std::cout << "float:" << std::endl;
-	moving_average(a_f, n, k);
-	std::cout << std::endl << "double:" << std::endl;
-	moving_average(a_d, n, k);
 
-	std::cout << "Время работы программы:" << clock() - start_time << std::endl;
+	std::cout << "float:" << std::endl;
+	for (int i = 0; i < 6; ++i)
+		sample(a_f, n, windows[i]);
+
+	std::cout << std::endl << "double:" << std::endl;
+	for (int i = 0; i < 6; ++i)
+		sample(a_d, n, windows[i]);
+
+	std::cout << std::endl << "Чтобы ввести новую длину окна k, введите желаемое значение" << std::endl;
+	std::cout << "Чтобы завершить работу программы, нижмите 0" << std::endl;
+	std::cin >> k;
+
+	while (k != 0)
+	{
+		std::cout << "float:" << std::endl;
+		sample(a_f, n, k);
+		std::cout << std::endl << "double:" << std::endl;
+		sample(a_d, n, k);
+
+		std::cout << std::endl << "Чтобы ввести новую длину окна k, введите желаемое значение" << std::endl;
+		std::cout << "Чтобы завершить работу программы, нижмите 0" << std::endl;
+		std::cin >> k;
+	}
 	return 0;
 }
