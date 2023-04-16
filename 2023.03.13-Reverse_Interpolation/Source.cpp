@@ -9,9 +9,15 @@ using namespace std;
 double func(double x)
 {
 	//return log(1 + x);
-	return sin(2 * x);
+	return sin(x)-x*x/2;
 }
 
+void print_coeff(vector<double> v)
+{
+	for (auto x : v)
+		cout << x << endl;
+	return;
+}
 
 vector<vector<double>> nodes(int m, double a, double b)
 {
@@ -20,7 +26,8 @@ vector<vector<double>> nodes(int m, double a, double b)
 	for (int i = 0; i <= m; ++i)
 	{
 		p.push_back(i);
-		p.push_back(a + (b - a) * double((i + double((rand() % 100)) / 100)) / (m + 1));
+		//p.push_back(a + (b - a) * double((i + double((rand() % 100)) / 100)) / (m + 1));
+		p.push_back(a + (b - a) * i/m);
 		p.push_back(0);
 		p.push_back(func(p[1]));
 		v.push_back(p);
@@ -31,10 +38,12 @@ vector<vector<double>> nodes(int m, double a, double b)
 
 void print(vector<vector< double>> v)
 {
+	int k = 0;
 	cout << "xk			 |f(xk)" << endl;
 	for (auto i : v)
 	{
-		cout << "x" << i[0] << " =	" << i[1] << "			|f(x" << i[0] << ") = " << i[3] << endl;
+		cout << k<<"	x" << i[0] << " =	" << i[1] << "			|f(x" << i[0] << ") = " << i[3] << endl;
+		++k;
 	}
 }
 
@@ -376,6 +385,7 @@ vector<pair<double, double>> procedure(vector<vector<double>>& v, int n, int N, 
 
 void search1(vector<vector<double>> v, pair<double, double> p, double F, int n)
 {
+	vector<double> coeff;
 	vector<vector<double>> x;
 	for (int i = 0; i < v.size(); ++i)
 	{
@@ -385,18 +395,27 @@ void search1(vector<vector<double>> v, pair<double, double> p, double F, int n)
 	if (x.size() > n + 1)
 	{
 		x = sort(swap(x), F);
+		print(x);
+		coeff = coefficients(x, n);
+		print_coeff(coeff);
 		double answer = Lagrange(x, F, n);
 		cout << "X = f^-1(F) = " << answer << ",	|f(X)-F| = " << abs(F - func(answer)) << endl;
 	}
 	else if (x.size() == n + 1)
 	{
-		x = swap(x);
+		x = sort(swap(x),F);
+		print(x);
+		coeff = coefficients(x, n);
+		print_coeff(coeff);
 		double answer = Lagrange(x, F, n);
 		cout << "X = f^-1(F) = " << answer << ",	|f(X)-F| = " << abs(F - func(answer)) << endl;
 	}
 	else
 	{
-		x = swap(x);
+		x = sort(swap(x),F);
+		print(x);
+		coeff = coefficients(x, x.size()-1);
+		print_coeff(coeff);
 		double answer = Lagrange(x, F, x.size());
 		cout << "X = f^-1(F) = " << answer << ",	|f(X)-F| = " << abs(F - func(answer)) << endl;
 	}
@@ -509,7 +528,7 @@ int main()
 		cout << "Ведите значение N - число начальных промежутков для поиска промежутков монотонности" << endl;
 		cin >> N;
 
-		//cout << endl << "3.1, первый способ:" << endl << endl;
+		cout << endl << "3.1, первый способ:" << endl << endl;
 		//vector<pair<double, double>> w = procedure(v2, n, N, F, values);
 		//for (int i = 0; i < w.size(); ++i)
 		//{
