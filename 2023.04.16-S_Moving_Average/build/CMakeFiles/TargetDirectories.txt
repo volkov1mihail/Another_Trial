@@ -1,0 +1,3 @@
+C:/Users/volko/OneDrive/Документы/GitHub/Another_Trial/2023.04.16-S_Moving_Average/build/CMakeFiles/2023.04.16-S_Moving_Average.dir
+C:/Users/volko/OneDrive/Документы/GitHub/Another_Trial/2023.04.16-S_Moving_Average/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/volko/OneDrive/Документы/GitHub/Another_Trial/2023.04.16-S_Moving_Average/build/CMakeFiles/ZERO_CHECK.dir
