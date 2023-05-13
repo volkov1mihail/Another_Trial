@@ -238,40 +238,40 @@ void boolean(int& count, double y1, double y2, vector<pair<double, double>>& w, 
 	}
 }
 
-//void boolean(int& count, double y1, double y2, vector<pair<double, double>>& w, pair<double, double>& p, int& rise, double& memory, double x0, double x1, double F, vector<pair<double, double>>& values)
-//{
-//	pair<double, double> p1;
-//	if (y1 <= y2 && rise == 0)
-//	{
-//		cout << "[a" << count << ",b" << count << "]=[" << p.first << "," << p.second << "],		f'(a) = " << memory << ",	f'(b) = " << y2 << endl;
-//		w.push_back(p);
-//		p1.first = memory;
-//		p1.second = y2;
-//		values.push_back(p1);
-//		memory = y1;
-//		p.first = x0;
-//		p.second = x1;
-//		rise = 1;
-//		++count;
-//	}
-//	else if ((y1 >= y2 && rise == 0) or (y1 <= y2 && rise == 1))
-//	{
-//		p.second = x1;
-//	}
-//	else if (y1 >= y2 && rise == 1)
-//	{
-//		cout << "[a" << count << ",b" << count << "]=[" << p.first << "," << p.second << "],		f'(a) = " << memory << ",	f'(b) = " << y2 << endl;
-//		w.push_back(p);
-//		p1.first = memory;
-//		p1.second = y2;
-//		values.push_back(p1);
-//		memory = y1;
-//		p.first = x0;
-//		p.second = x1;
-//		rise = 0;
-//		++count;
-//	}
-//}
+void boolean(int& count, double y1, double y2, vector<pair<double, double>>& w, pair<double, double>& p, int& rise, double& memory, double x0, double x1, double F, vector<pair<double, double>>& values)
+{
+	pair<double, double> p1;
+	if (y1 <= y2 && rise == 0)
+	{
+		cout << "[a" << count << ",b" << count << "]=[" << p.first << "," << p.second << "],		f'(a) = " << memory << ",	f'(b) = " << y2 << endl;
+		w.push_back(p);
+		p1.first = memory;
+		p1.second = y2;
+		values.push_back(p1);
+		memory = y1;
+		p.first = x0;
+		p.second = x1;
+		rise = 1;
+		++count;
+	}
+	else if ((y1 >= y2 && rise == 0) or (y1 <= y2 && rise == 1))
+	{
+		p.second = x1;
+	}
+	else if (y1 >= y2 && rise == 1)
+	{
+		cout << "[a" << count << ",b" << count << "]=[" << p.first << "," << p.second << "],		f'(a) = " << memory << ",	f'(b) = " << y2 << endl;
+		w.push_back(p);
+		p1.first = memory;
+		p1.second = y2;
+		values.push_back(p1);
+		memory = y1;
+		p.first = x0;
+		p.second = x1;
+		rise = 0;
+		++count;
+	}
+}
 
 vector<pair<double, double>> procedure(vector<vector<double>>& v, int n, int N, double F)
 {
