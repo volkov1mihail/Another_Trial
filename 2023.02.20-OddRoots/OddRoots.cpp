@@ -233,7 +233,8 @@ void secant(pair<double, double>& p, double e)
 	cout << "Начальное приближение: [" << p.first << "," << p.second << "]" << endl;
 	double x0 = p.first;
 	double x1 = p.second;
-	double x2 = x1 - (x1 - x0) * function(x1) / (function(x1) - function(x0));
+	double g = function(x1);
+	double x2 = x1 - (x1 - x0) * g / (g - function(x0));
 	int i = 2;
 	while (abs(x2 - x1) > e)
 	{
@@ -694,65 +695,65 @@ vector<vector<double>> search(vector<vector<double>> v, pair<double, double> p, 
 	return v1;
 }
 
-int main()
-{
-	srand(time(0));
-	setlocale(LC_ALL, "Russian");
-	cout << setprecision(13) << "Задача обратного интерполирования, вариант 2, функция f(x) = ln(1+x)" << endl;
-	cout << "Введите число табличных значений" << endl;
-	int m = 0;
-	cin >> m;
-	--m;
-	double a = 0;
-	double b = 0;
-	double F = 0;
-	cout << "Введите левую границу отрезка а > -1" << endl;
-	cin >> a;
-	cout << "Введите правую границу отрезка b > " << a << endl;
-	cin >> b;
-	cout << "Введите значение функции F" << endl;
-	cin >> F;
-
-	double X = 0;
-	int n = m + 1;
-	vector<vector<double>> v = nodes(m, a, b);
-	vector<vector<double>> v2;
-	print(v);
-	while (n > m)
-	{
-		cout << "Введите степень интерполирования многочлена n <= " << m << endl;
-		cin >> n;
-	}
-	int N = 0;
-	cout << "Ведите значение N - число начальных промежутков для поиска промежутков монотонности" << endl;
-	cin >> N;
-	vector<pair<double, double>> w = procedure(v, n, N, F);
-	cout << "Количество отрезков перемены знака равно " << w.size() << endl << endl;
-
-	cout << "3.1, первый способ:" << endl;
-	vector<double> coeff;
-	for (int i = 0; i < w.size(); ++i)
-	{
-		v2 = search(v, w[i], F, n);
-		cout << endl << "Таблица для построения интерполяционного многочлена обратной функции:" << endl;
-		print_reverse(v2, n);
-		//X = Lagrange(v2, F, n);
-		coeff = coefficients(v2, n);
-		X = Newton(v2, coeff, F, n);
-		cout << "Значение интерполяционного многочлена X = f^-1(F): " << X << endl;
-		cout << "Модуль невязки |f(X)-F|: " << abs(func(X) - F) << endl;
-	}
-
-	cout << "3.1, второй способ:" << endl;
-	cout << "Введите точность е" << endl;
-	double e;
-	cin >> e;
-	for (int i = 0; i < w.size(); ++i)
-	{
-		v2 = sort(v, (w[i].first + w[i].second) / 2);
-		coeff = coefficients(v, n);
-		bisection(w[i], e, v2, coeff, n, F);
-	}
-
-	return 0;
-}
+//int main()
+//{
+//	srand(time(0));
+//	setlocale(LC_ALL, "Russian");
+//	cout << setprecision(13) << "Задача обратного интерполирования, вариант 2, функция f(x) = ln(1+x)" << endl;
+//	cout << "Введите число табличных значений" << endl;
+//	int m = 0;
+//	cin >> m;
+//	--m;
+//	double a = 0;
+//	double b = 0;
+//	double F = 0;
+//	cout << "Введите левую границу отрезка а > -1" << endl;
+//	cin >> a;
+//	cout << "Введите правую границу отрезка b > " << a << endl;
+//	cin >> b;
+//	cout << "Введите значение функции F" << endl;
+//	cin >> F;
+//
+//	double X = 0;
+//	int n = m + 1;
+//	vector<vector<double>> v = nodes(m, a, b);
+//	vector<vector<double>> v2;
+//	print(v);
+//	while (n > m)
+//	{
+//		cout << "Введите степень интерполирования многочлена n <= " << m << endl;
+//		cin >> n;
+//	}
+//	int N = 0;
+//	cout << "Ведите значение N - число начальных промежутков для поиска промежутков монотонности" << endl;
+//	cin >> N;
+//	vector<pair<double, double>> w = procedure(v, n, N, F);
+//	cout << "Количество отрезков перемены знака равно " << w.size() << endl << endl;
+//
+//	cout << "3.1, первый способ:" << endl;
+//	vector<double> coeff;
+//	for (int i = 0; i < w.size(); ++i)
+//	{
+//		v2 = search(v, w[i], F, n);
+//		cout << endl << "Таблица для построения интерполяционного многочлена обратной функции:" << endl;
+//		print_reverse(v2, n);
+//		//X = Lagrange(v2, F, n);
+//		coeff = coefficients(v2, n);
+//		X = Newton(v2, coeff, F, n);
+//		cout << "Значение интерполяционного многочлена X = f^-1(F): " << X << endl;
+//		cout << "Модуль невязки |f(X)-F|: " << abs(func(X) - F) << endl;
+//	}
+//
+//	cout << "3.1, второй способ:" << endl;
+//	cout << "Введите точность е" << endl;
+//	double e;
+//	cin >> e;
+//	for (int i = 0; i < w.size(); ++i)
+//	{
+//		v2 = sort(v, (w[i].first + w[i].second) / 2);
+//		coeff = coefficients(v, n);
+//		bisection(w[i], e, v2, coeff, n, F);
+//	}
+//
+//	return 0;
+//}
