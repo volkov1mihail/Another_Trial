@@ -24,7 +24,7 @@ double secant(pair<double, double>& p, double(*f)(double, vec, int), vec coeff, 
 double Simpson(double a, double b, double(*f)(double, int), int k);
 double weight(double x)
 {
-	return sqrt(x);
+	return sqrt(sqrt(x));
 }
 double moment(double x, int k)
 {
@@ -36,6 +36,11 @@ double moment(double x, int k)
 double func(double x, int k)
 {
 	return sin(x);
+	//return 1 / sqrt((1 + x * x) * (4 + 3 * x * x));
+}
+double func_M(double x, int k)
+{
+	return exp(2 * x);
 }
 double w_func(double x, int k)
 {
@@ -51,7 +56,7 @@ double interp(double(*f)(double, int), vec coeff, int k, vector<double> nodes)
 double polynomial(double x, int k);
 double w_func_Mehler(double x, int k)
 {
-	return func(x, k) / sqrt(1 - x * x);
+	return func_M(x, k) / sqrt(1 - x * x);
 }
 double w_polynomial(double x, int k)
 {
@@ -180,10 +185,10 @@ int main()
 	}
 
 	int N1;
-	cout << endl << "Введите N, для которого осуществить проверку точности КФ Гаусса на многочленах степени 0..N+2" << endl;
+	cout << endl << "Введите N, для которого осуществить проверку точности КФ Гаусса на многочленах степени 0..2N-1" << endl;
 	cin >> N1;
 	rand_coeff.clear();
-	for (int i = 0; i <= N + 2; ++i)
+	for (int i = 0; i < 2 * N; ++i)
 	{
 		while (c == 0)
 			c = (rand() % 1000) / 100;
@@ -191,7 +196,7 @@ int main()
 	}
 	double result_i;
 	coeff = vec(coeff_Gauss[N1 - 1]);
-	for (int i = 0; i <= N1 + 2; ++i)
+	for (int i = 0; i <= 2 * N1 - 1; ++i)
 	{
 		result_i = interp(polynomial, coeff, i, nodes_Legendre[N1 - 1]);
 		cout << i << " степень:		Приближенное значение интеграла: " << result_i;
@@ -235,7 +240,9 @@ int main()
 	}
 
 	cout << "КФ Мелера, ее узлы и коэффициенты. Вычисление интегралов при помощи КФ Мелера" << endl;
-	double integral_M = Simpson(-1 + e / 1000, 1 - e / 1000, w_func_Mehler, 0);
+	//double integral_M = Simpson(-1 + e / 10000, 1 - e / 10000, w_func_Mehler, 0);
+	double integral_M = 7.1615284390503;
+	cout << "Точное значение интеграла: " << integral_M << endl;
 	vector<double> nodes_Mehler1;
 	vector<double> nodes_Mehler2;
 	vector<double> nodes_Mehler3;
@@ -257,38 +264,38 @@ int main()
 
 		for (int i = 0; i < N1; ++i)
 		{
-			nodes_Mehler1.push_back(cos((2 * i - 1) / M_PI));
+			nodes_Mehler1.push_back(cos((2 * i - 1) * M_PI / (2 * N1)));
 			coeff_Mehler1.push_back(M_PI / N1);
 		}
 		for (int i = 0; i < N2; ++i)
 		{
-			nodes_Mehler2.push_back(cos((2 * i - 1) / M_PI));
+			nodes_Mehler2.push_back(cos((2 * i - 1) * M_PI / (2 * N2)));
 			coeff_Mehler2.push_back(M_PI / N2);
 		}
 		for (int i = 0; i < N3; ++i)
 		{
-			nodes_Mehler3.push_back(cos((2 * i - 1) / M_PI));
+			nodes_Mehler3.push_back(cos((2 * i - 1) * M_PI / (2 * N3)));
 			coeff_Mehler3.push_back(M_PI / N3);
 		}
 
 		cout << endl << "Узлы и коэффициенты КФ Мелера для N1:" << endl;
 		for (int j = 0; j < N1; ++j)
 			cout << j << "	Узел: " << nodes_Mehler1[j] << ". Коэффициент: " << coeff_Mehler1[j] << endl;
-		double result_M1 = interp(func, vec(coeff_Mehler1), 0, nodes_Mehler1);
+		double result_M1 = interp(func_M, vec(coeff_Mehler1), 0, nodes_Mehler1);
 		double c1 = abs(result_M1 - integral_M);
 		cout << "Приближенное значение интеграла: " << result_M1 << ", абсолютная фактическая разность: " << c1 << endl;
 
 		cout << endl << endl << "Узлы и коэффициенты КФ Мелера для N2:" << endl;
 		for (int j = 0; j < N2; ++j)
 			cout << j << "	Узел: " << nodes_Mehler2[j] << ". Коэффициент: " << coeff_Mehler2[j] << endl;
-		double result_M2 = interp(func, vec(coeff_Mehler2), 0, nodes_Mehler2);
+		double result_M2 = interp(func_M, vec(coeff_Mehler2), 0, nodes_Mehler2);
 		double c2 = abs(result_M2 - integral_M);
 		cout << "Приближенное значение интеграла: " << result_M2 << ", абсолютная фактическая разность: " << c2 << endl;
 
 		cout << endl << endl << "Узлы и коэффициенты КФ Мелера для N3:" << endl;
 		for (int j = 0; j < N3; ++j)
 			cout << j << "	Узел: " << nodes_Mehler3[j] << ". Коэффициент: " << coeff_Mehler3[j] << endl;
-		double result_M3 = interp(func, vec(coeff_Mehler3), 0, nodes_Mehler3);
+		double result_M3 = interp(func_M, vec(coeff_Mehler3), 0, nodes_Mehler3);
 		double c3 = abs(result_M3 - integral_M);
 		cout << "Приближенное значение интеграла: " << result_M3 << ", абсолютная фактическая разность: " << c3 << endl;
 
@@ -309,6 +316,12 @@ int main()
 		cout << endl << "Если хотите установить другие значения N1, N2 и N3, введите 1" << endl;
 		cout << "В противном случае, введите 0" << endl;
 		cin >> t;
+		nodes_Mehler1.clear();
+		nodes_Mehler2.clear();
+		nodes_Mehler3.clear();
+		coeff_Mehler1.clear();
+		coeff_Mehler2.clear();
+		coeff_Mehler3.clear();
 	}
 	//-----------------------------------------------------------------------------------------------------
 	//Задание 5.3
@@ -318,19 +331,19 @@ int main()
 	double m1, h;
 	vector<double> nodes_Legendre3, coeff_Gauss3;
 	double result_G;
-	double d;
 	while (t == 1)
 	{
 		cout << "Введите левый конец промежутка интегрирования a" << endl;
 		cin >> a;
 		cout << "Введите правый конец промежутка интегрирования b" << endl;
 		cin >> b;
-		cout << "Введите количество узлов N от 0 до " << N << endl;
+		cout << "Введите количество узлов N от 1 до " << N << endl;
 		cin >> N1;
+		for (int j = 0; j < nodes_Legendre[N1 - 1].size(); ++j)
+			cout << j << "	Узел: " << nodes_Legendre[N1 - 1][j] << ". Коэффициент: " << coeff_Gauss[N1 - 1][j] << endl;
 		cout << "Введите количество промежутков деления m" << endl;
 		cin >> m1;
 		h = (b - a) / m1;
-		//integral2 = Simpson(a, b, w_func, 0);
 		integral2 = Simpson(a, b, func, 0);
 
 		result_G = 0;
@@ -338,7 +351,6 @@ int main()
 		for (int i = 0; i < N1; ++i)
 		{
 			for (int j = 0; j < m1; ++j)
-				//c += w_func(a + h * (nodes_Legendre[N1 - 1][i] + 2 * j + 1) / 2, 0);
 				c += func(a + h * (nodes_Legendre[N1 - 1][i] + 2 * j + 1) / 2, 0);
 			result_G += c * coeff_Gauss[N1 - 1][i];
 			c = 0;
@@ -488,3 +500,4 @@ double polynomial(double x, int k)
 	}
 	return result;
 }
+
