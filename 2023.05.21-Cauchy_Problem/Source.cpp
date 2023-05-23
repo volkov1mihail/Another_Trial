@@ -83,7 +83,7 @@ int main()
 	for (int i = 0; i < 5; ++i)
 	{
 		v2.push_back(v1[i]);
-		q[0].push_back(v1[i].first * h);
+		q[0].push_back(func(v1[i].first, v1[i].second) * h);
 	}
 	Adams(v2, q, N);
 
@@ -94,7 +94,7 @@ int main()
 	cout << endl << "ћетод –унге- утты:" << endl;
 	vector<pair<double, double>> v3 = Runge_Kutta(x0, y0, h, N);
 	for (int i = 0; i <= N; ++i)
-		cout << "y(x_" << i << ") = " << v3[i].second << ", значение абсолютной погрешности: " << abs(v3[i].second - v[i].second) << endl;
+		cout << "y(x_" << i << ") = " << v3[i].second << ", значение абсолютной погрешности: " << abs(v3[i].second - v[i + 2].second) << endl;
 
 	cout << endl << "ћетод Ёйлера:" << endl;
 	vector<pair<double, double>> v4;
@@ -106,7 +106,7 @@ int main()
 		p.second += h * func(p.first, p.second);
 		p.first += h;
 		v4.push_back(p);
-		cout << "y(x_" << i << ") = " << v4[i].second << ", значение абсолютной погрешности: " << abs(v4[i].second - v[i].second) << endl;
+		cout << "y(x_" << i << ") = " << v4[i].second << ", значение абсолютной погрешности: " << abs(v4[i].second - v[i + 2].second) << endl;
 	}
 
 	cout << endl << "”лучшенный метод Ёйлера I:" << endl;
@@ -121,7 +121,7 @@ int main()
 		p.second += h * func(p.first + h / 2, t);
 		p.first += h;
 		v5.push_back(p);
-		cout << "y(x_" << i << ") = " << v5[i].second << ", значение абсолютной погрешности: " << abs(v5[i].second - v[i].second) << endl;
+		cout << "y(x_" << i << ") = " << v5[i].second << ", значение абсолютной погрешности: " << abs(v5[i].second - v[i + 2].second) << endl;
 	}
 
 	cout << endl << "”лучшенный метод Ёйлера II:" << endl;
@@ -135,7 +135,7 @@ int main()
 		p.second += h * (func(p.first, p.second) + func(p.first + h, t)) / 2;
 		p.first += h;
 		v6.push_back(p);
-		cout << "y(x_" << i << ") = " << v6[i].second << ", значение абсолютной погрешности: " << abs(v6[i].second - v[i].second) << endl;
+		cout << "y(x_" << i << ") = " << v6[i].second << ", значение абсолютной погрешности: " << abs(v6[i].second - v[i + 2].second) << endl;
 	}
 	return 0;
 }
@@ -200,7 +200,7 @@ void Adams(vector<pair<double, double>>& v1, vector<vector<double>>& q, int N)
 		p.first = v1[v1.size() - 1].first + h;
 		p.second = v1[v1.size() - 1].second + q[0][q[0].size() - 1] + q[1][q[1].size() - 1] / 2 + 5 * q[2][q[2].size() - 1] / 12 + 3 * q[3][q[3].size() - 1] / 8 + 251 * q[4][q[4].size() - 1] / 720;
 		v1.push_back(p);
-		q[0].push_back(h * p.second);
+		q[0].push_back(h * func(p.first, p.second));
 		q[1].push_back(q[0][q[0].size() - 1] - q[0][q[0].size() - 2]);
 		q[2].push_back(q[1][q[1].size() - 1] - q[1][q[1].size() - 2]);
 		q[3].push_back(q[2][q[2].size() - 1] - q[2][q[2].size() - 2]);
