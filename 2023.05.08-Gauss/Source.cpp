@@ -32,7 +32,8 @@ double secant(pair<double, double>& p, double(*f)(double, vec, int), vec coeff, 
 double Simpson(double a, double b, double(*f)(double, int), int k);
 double weight(double x)
 {
-	return sqrt(sqrt(x));
+	return cos(x);
+	//return sqrt(sqrt(x));
 }
 double moment(double x, int k)
 {
@@ -506,12 +507,17 @@ void coeff_shift(vector<vector<double>>& coeff, vector<vector<double>>& nodes, d
 
 double polynomial(double x, int k)
 {
-	double result = rand_coeff[0];
-	double c = x;
-	for (int i = 1; i <= k; ++i)
+	//double result = rand_coeff[0];
+	//double c = x;
+	//for (int i = 1; i <= k; ++i)
+	//{
+	//	result += rand_coeff[i] * c;
+	//	c *= x;
+	//}
+	double result = 1;
+	for (int i = 0; i < k; ++i)
 	{
-		result += rand_coeff[i] * c;
-		c *= x;
+		result *= x;
 	}
 	return result;
 }
