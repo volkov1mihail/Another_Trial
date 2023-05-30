@@ -51,14 +51,15 @@ int main()
 	p.second = exact_value(p.first);
 	v.push_back(p);
 	cout << "«начени€ точного решени€:" << endl;
-	cout << "y(x_" << -2 << ") = " << p.second << endl;
+	//cout << "y(x_" << -2 << ") = " << p.second << endl;
 	for (int i = -1; i <= N; ++i)
 	{
 		p.first += h;
 		p.second = exact_value(p.first);
 		v.push_back(p);
-		cout << "y(x_" << i << ") = " << p.second << endl;
+		//cout << "y(x_" << i << ") = " << p.second << endl;
 	}
+	cout << "y(x_" << N << ") = " << v[v.size() - 1].second << endl;
 
 	double m;
 	cout << "¬ведите, до какой производной считать многочлен “ейлора" << endl;
@@ -69,12 +70,12 @@ int main()
 	for (int i = -2; i <= N; ++i)
 	{
 		p = Taylor(Taylor_0, v[i + 2].first);
-		cout << "y(x_" << i << ") = " << p.first << ", значение абсолютной погрешности: " << abs(v[i + 2].second - p.first) << endl;
+		//cout << "y(x_" << i << ") = " << p.first << ", значение абсолютной погрешности: " << abs(v[i + 2].second - p.first) << endl;
 		p.second = p.first;
 		p.first = v[i + 2].first;
 		v1.push_back(p);
 	}
-
+	cout << "y(x_" << N << ") = " << v1[v1.size() - 1].second << ", значение абсолютной погрешности: " << abs(v[v.size() - 1].second - v1[v1.size() - 1].second) << endl;
 
 	vector<pair<double, double>> v2;
 	vector<vector<double>> q;
@@ -88,13 +89,15 @@ int main()
 	Adams(v2, q, N);
 
 	cout << endl << "Ёкстрапол€ционный метод јдамса:" << endl;
-	for (int i = -2; i <= N; ++i)
-		cout << "y(x_" << i << ") = " << v2[i + 2].second << ", значение абсолютной погрешности: " << abs(v2[i + 2].second - v[i + 2].second) << endl;
+	//for (int i = -2; i <= N; ++i)
+		//cout << "y(x_" << i << ") = " << v2[i + 2].second << ", значение абсолютной погрешности: " << abs(v2[i + 2].second - v[i + 2].second) << endl;
+		cout << "y(x_" << N << ") = " << v2[v2.size() - 1].second << ", значение абсолютной погрешности: " << abs(v[v.size() - 1].second - v2[v2.size() - 1].second) << endl;
 
 	cout << endl << "ћетод –унге- утты:" << endl;
 	vector<pair<double, double>> v3 = Runge_Kutta(x0, y0, h, N);
-	for (int i = 0; i <= N; ++i)
-		cout << "y(x_" << i << ") = " << v3[i].second << ", значение абсолютной погрешности: " << abs(v3[i].second - v[i + 2].second) << endl;
+	//for (int i = 0; i <= N; ++i)
+		//cout << "y(x_" << i << ") = " << v3[i].second << ", значение абсолютной погрешности: " << abs(v3[i].second - v[i + 2].second) << endl;
+	cout << "y(x_" << N << ") = " << v3[v3.size() - 1].second << ", значение абсолютной погрешности: " << abs(v[v.size() - 1].second - v3[v3.size() - 1].second) << endl;
 
 	cout << endl << "ћетод Ёйлера:" << endl;
 	vector<pair<double, double>> v4;
@@ -106,8 +109,10 @@ int main()
 		p.second += h * func(p.first, p.second);
 		p.first += h;
 		v4.push_back(p);
-		cout << "y(x_" << i << ") = " << v4[i].second << ", значение абсолютной погрешности: " << abs(v4[i].second - v[i + 2].second) << endl;
+		//cout << "y(x_" << i << ") = " << v4[i].second << ", значение абсолютной погрешности: " << abs(v4[i].second - v[i + 2].second) << endl;
 	}
+
+	cout << "y(x_" << N << ") = " << v4[v4.size() - 1].second << ", значение абсолютной погрешности: " << abs(v[v.size() - 1].second - v4[v4.size() - 1].second) << endl;
 
 	cout << endl << "”лучшенный метод Ёйлера I:" << endl;
 	vector<pair<double, double>> v5;
@@ -121,8 +126,10 @@ int main()
 		p.second += h * func(p.first + h / 2, t);
 		p.first += h;
 		v5.push_back(p);
-		cout << "y(x_" << i << ") = " << v5[i].second << ", значение абсолютной погрешности: " << abs(v5[i].second - v[i + 2].second) << endl;
+		//cout << "y(x_" << i << ") = " << v5[i].second << ", значение абсолютной погрешности: " << abs(v5[i].second - v[i + 2].second) << endl;
 	}
+
+	cout << "y(x_" << N << ") = " << v5[v5.size() - 1].second << ", значение абсолютной погрешности: " << abs(v[v.size() - 1].second - v5[v5.size() - 1].second) << endl;
 
 	cout << endl << "”лучшенный метод Ёйлера II:" << endl;
 	vector<pair<double, double>> v6;
@@ -135,8 +142,11 @@ int main()
 		p.second += h * (func(p.first, p.second) + func(p.first + h, t)) / 2;
 		p.first += h;
 		v6.push_back(p);
-		cout << "y(x_" << i << ") = " << v6[i].second << ", значение абсолютной погрешности: " << abs(v6[i].second - v[i + 2].second) << endl;
+		//cout << "y(x_" << i << ") = " << v6[i].second << ", значение абсолютной погрешности: " << abs(v6[i].second - v[i + 2].second) << endl;
 	}
+
+	cout << "y(x_" << N << ") = " << v6[v6.size() - 1].second << ", значение абсолютной погрешности: " << abs(v[v.size() - 1].second - v6[v6.size() - 1].second) << endl;
+
 	return 0;
 }
 
