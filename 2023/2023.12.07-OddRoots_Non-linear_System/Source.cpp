@@ -26,19 +26,19 @@ void correction(std::vector<double*>& roots, double precision);
 
 int main() {
 	setlocale(LC_ALL, "Russian");
-	std::cout << "×èñëåííîå ðåøåíèå ñèñòåìû íåëèíåéíûõ óðàâíåíèé" << std::endl;
+	std::cout << "Ð§Ð¸ÑÐ»ÐµÐ½Ð½Ð¾Ðµ Ñ€ÐµÑˆÐµÐ½Ð¸Ðµ ÑÐ¸ÑÑ‚ÐµÐ¼Ñ‹ Ð½ÐµÐ»Ð¸Ð½ÐµÐ¹Ð½Ñ‹Ñ… ÑƒÑ€Ð°Ð²Ð½ÐµÐ½Ð¸Ð¹" << std::endl;
 	double a_x{ 0 }, a_y{ 0 }, b_x{ 0 }, b_y{ 0 };
 	int N = 0;
 	double precision = 0;
-	std::cout << std::setprecision(18) << "Ââåäèòå çíà÷åíèå èíòåðâàë äëÿ ïåðåìåííîé x" << std::endl;
+	std::cout << std::setprecision(18) << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¸Ð½Ñ‚ÐµÑ€Ð²Ð°Ð» Ð´Ð»Ñ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð¾Ð¹ x" << std::endl;
 	std::cin >> a_x >> b_x;
-	std::cout << "Ââåäèòå çíà÷åíèå èíòåðâàë äëÿ ïåðåìåííîé y" << std::endl;
+	std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¸Ð½Ñ‚ÐµÑ€Ð²Ð°Ð» Ð´Ð»Ñ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð¾Ð¹ y" << std::endl;
 	std::cin >> a_y >> b_y;
-	std::cout << "Âåäèòå çíà÷åíèå N" << std::endl;
+	std::cout << "Ð’ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ N" << std::endl;
 	std::cin >> N;
-	std::cout << "Âåäèòå çíà÷åíèå precision" << std::endl;
+	std::cout << "Ð’ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ precision" << std::endl;
 	std::cin >> precision;
-	std::cout << "Èñõîäíûå ïàðàìåòðû: " << a_x << "<= x <= " << b_x << ", " << a_y << "<= y <= " << b_y << std::endl;
+	std::cout << "Ð˜ÑÑ…Ð¾Ð´Ð½Ñ‹Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹: " << a_x << "<= x <= " << b_x << ", " << a_y << "<= y <= " << b_y << std::endl;
 	std::cout << "N = " << N << "precision = " << precision << std::endl;
 
 	double* array = new double[4]{ 0 };
@@ -70,7 +70,7 @@ int main() {
 
 void Newton(double& a_x, double& b_x, double& a_y, double& b_y, double precision)
 {
-	std::cout << "Íà÷àëüíîå ïðèáëèæåíèå: [" << a_x << " <= x <= " << b_x << ",    " << a_y << " <= y <= " << b_y << std::endl;
+	std::cout << "ÐÐ°Ñ‡Ð°Ð»ÑŒÐ½Ð¾Ðµ Ð¿Ñ€Ð¸Ð±Ð»Ð¸Ð¶ÐµÐ½Ð¸Ðµ: [" << a_x << " <= x <= " << b_x << ",    " << a_y << " <= y <= " << b_y << std::endl;
 	double x0 = (a_x + b_x) / 2;
 	double y0 = (a_y + b_y) / 2;
 	int i = 1;
@@ -87,7 +87,7 @@ void Newton(double& a_x, double& b_x, double& a_y, double& b_y, double precision
 		++i;
 		if (i > 1000000)
 		{
-			std::cout << "Êîëè÷åñòâî èòåðàöèé ïðåâûñèëî 1000000, ñõîäèìîñòü ìàëîâåðîÿòíà." << std::endl;
+			std::cout << "ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¸Ñ‚ÐµÑ€Ð°Ñ†Ð¸Ð¹ Ð¿Ñ€ÐµÐ²Ñ‹ÑÐ¸Ð»Ð¾ 1000000, ÑÑ…Ð¾Ð´Ð¸Ð¼Ð¾ÑÑ‚ÑŒ Ð¼Ð°Ð»Ð¾Ð²ÐµÑ€Ð¾ÑÑ‚Ð½Ð°." << std::endl;
 			return;
 		}
 	}
@@ -148,7 +148,7 @@ std::vector<double*> search(double* array, double a_x, double b_x, double a_y, d
 		value_g = func_g(previous_x, previous_y);
 		value_g_x = func_g(current_x, previous_y);
 	}
-	std::cout << "Êîëè÷åñòâî îáëàñòåé ïåðåìåíû çíàêîâ ðàâíî " << result.size() << std::endl << std::endl;
+	std::cout << "ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¾Ð±Ð»Ð°ÑÑ‚ÐµÐ¹ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ñ‹ Ð·Ð½Ð°ÐºÐ¾Ð² Ñ€Ð°Ð²Ð½Ð¾ " << result.size() << std::endl << std::endl;
 	return result;
 }
 

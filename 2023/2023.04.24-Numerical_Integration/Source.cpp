@@ -198,13 +198,13 @@ double Q(double a, double b, int k, int m)
 double left_rectangle(double a, double b, int k, int m, double W)
 {
 	double result = (m == 1 ? (b - a) * choice(a, k) : (b - a) * (choice(a, k) + W) / m);
-	cout << "Ôîðìóëà ëåâîãî ïðÿìîóãîëüíèêà: " << result << endl;
-	cout << "Àáñîëþòíàÿ ôàêòè÷åñêàÿ ïîãðåøíîñòü |J-J(h)| = " << abs(real_value(a, b, k) - result) << endl;
+	cout << "Ð¤Ð¾Ñ€Ð¼ÑƒÐ»Ð° Ð»ÐµÐ²Ð¾Ð³Ð¾ Ð¿Ñ€ÑÐ¼Ð¾ÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸ÐºÐ°: " << result << endl;
+	cout << "ÐÐ±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð°Ñ Ñ„Ð°ÐºÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚ÑŒ |J-J(h)| = " << abs(real_value(a, b, k) - result) << endl;
 	if (m > 1)
 	{
-		cout << "Òåîðåòè÷åñêàÿ îöåíêà ïîãðåøíîñòè: ";
+		cout << "Ð¢ÐµÐ¾Ñ€ÐµÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¾Ñ†ÐµÐ½ÐºÐ° Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: ";
 		if (k == 1 or k == 2)
-			cout << "ïðåäïîëàãàåòñÿ max|f'(x)| = 1,   ";
+			cout << "Ð¿Ñ€ÐµÐ´Ð¿Ð¾Ð»Ð°Ð³Ð°ÐµÑ‚ÑÑ max|f'(x)| = 1,   ";
 		cout << (b - a) * (b - a) * error(a, b, k, m) / 2 / m << endl;
 	}
 	return result;
@@ -213,13 +213,13 @@ double left_rectangle(double a, double b, int k, int m, double W)
 double right_rectangle(double a, double b, int k, int m, double W)
 {
 	double result = m == 1 ? (b - a) * choice(b, k) : (b - a) * (choice(b, k) + W) / m;
-	cout << "Ôîðìóëà ïðàâîãî ïðÿìîóãîëüíèêà: " << result << endl;
-	cout << "Àáñîëþòíàÿ ôàêòè÷åñêàÿ ïîãðåøíîñòü |J-J(h)| = " << abs(real_value(a, b, k) - result) << endl;
+	cout << "Ð¤Ð¾Ñ€Ð¼ÑƒÐ»Ð° Ð¿Ñ€Ð°Ð²Ð¾Ð³Ð¾ Ð¿Ñ€ÑÐ¼Ð¾ÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸ÐºÐ°: " << result << endl;
+	cout << "ÐÐ±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð°Ñ Ñ„Ð°ÐºÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚ÑŒ |J-J(h)| = " << abs(real_value(a, b, k) - result) << endl;
 	if (m > 1)
 	{
-		cout << "Òåîðåòè÷åñêàÿ îöåíêà ïîãðåøíîñòè: ";
+		cout << "Ð¢ÐµÐ¾Ñ€ÐµÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¾Ñ†ÐµÐ½ÐºÐ° Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: ";
 		if (k == 1 or k == 2)
-			cout << "ïðåäïîëàãàåòñÿ max|f'(x)| = 1,   ";
+			cout << "Ð¿Ñ€ÐµÐ´Ð¿Ð¾Ð»Ð°Ð³Ð°ÐµÑ‚ÑÑ max|f'(x)| = 1,   ";
 		cout << (b - a) * (b - a) * error(a, b, k, m) / 2 / m << endl;
 	}
 	return result;
@@ -228,13 +228,13 @@ double right_rectangle(double a, double b, int k, int m, double W)
 double middle_rectangle(double a, double b, int k, int m, double Q)
 {
 	double result = m == 1 ? (b - a) * choice((a + b) / 2, k) : (b - a) * Q / m;
-	cout << "Ôîðìóëà ñðåäíåãî ïðÿìîóãîëüíèêà: " << result << endl;
-	cout << "Àáñîëþòíàÿ ôàêòè÷åñêàÿ ïîãðåøíîñòü |J-J(h)| = " << abs(real_value(a, b, k) - result) << endl;
+	cout << "Ð¤Ð¾Ñ€Ð¼ÑƒÐ»Ð° ÑÑ€ÐµÐ´Ð½ÐµÐ³Ð¾ Ð¿Ñ€ÑÐ¼Ð¾ÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸ÐºÐ°: " << result << endl;
+	cout << "ÐÐ±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð°Ñ Ñ„Ð°ÐºÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚ÑŒ |J-J(h)| = " << abs(real_value(a, b, k) - result) << endl;
 	if (m > 1)
 	{
-		cout << "Òåîðåòè÷åñêàÿ îöåíêà ïîãðåøíîñòè: ";
+		cout << "Ð¢ÐµÐ¾Ñ€ÐµÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¾Ñ†ÐµÐ½ÐºÐ° Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: ";
 		if (k == 1 or k == 2)
-			cout << "ïðåäïîëàãàåòñÿ max|f'(x)| = 1,   ";
+			cout << "Ð¿Ñ€ÐµÐ´Ð¿Ð¾Ð»Ð°Ð³Ð°ÐµÑ‚ÑÑ max|f'(x)| = 1,   ";
 		cout << (b - a) * (b - a) * (b - a) * error2(a, b, k, m) / 24 / m / m << endl;;
 	}
 	return result;
@@ -247,13 +247,13 @@ double trapeze(double a, double b, int k, int m, double W)
 		result = (b - a) * (choice(a, k) + choice(b, k)) / 2;
 	else
 		result = (b - a) * (choice(a, k) + choice(b, k) + 2 * W) / 2 / m;
-	cout << "Ôîðìóëà òðàïåöèè: " << result << endl;
-	cout << "Àáñîëþòíàÿ ôàêòè÷åñêàÿ ïîãðåøíîñòü |J-J(h)| = " << abs(real_value(a, b, k) - result) << endl;
+	cout << "Ð¤Ð¾Ñ€Ð¼ÑƒÐ»Ð° Ñ‚Ñ€Ð°Ð¿ÐµÑ†Ð¸Ð¸: " << result << endl;
+	cout << "ÐÐ±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð°Ñ Ñ„Ð°ÐºÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚ÑŒ |J-J(h)| = " << abs(real_value(a, b, k) - result) << endl;
 	if (m > 1)
 	{
-		cout << "Òåîðåòè÷åñêàÿ îöåíêà ïîãðåøíîñòè: ";
+		cout << "Ð¢ÐµÐ¾Ñ€ÐµÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¾Ñ†ÐµÐ½ÐºÐ° Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: ";
 		if (k == 1 or k == 2)
-			cout << "ïðåäïîëàãàåòñÿ max|f'(x)| = 1,   ";
+			cout << "Ð¿Ñ€ÐµÐ´Ð¿Ð¾Ð»Ð°Ð³Ð°ÐµÑ‚ÑÑ max|f'(x)| = 1,   ";
 		cout << (b - a) * (b - a) * (b - a) * error2(a, b, k, m) / 12 / m / m << endl;;
 	}
 	return result;
@@ -266,13 +266,13 @@ double Simpson(double a, double b, int k, int m, double W, double Q)
 		result = (b - a) * (choice(a, k) + 4 * choice((a + b) / 2, k) + choice(b, k)) / 6;
 	else
 		result = (b - a) * (choice(a, k) + choice(b, k) + 2 * W + 4 * Q) / 6 / m;
-	cout << "Ôîðìóëà Ñèìïñîíà: " << result << endl;
-	cout << "Àáñîëþòíàÿ ôàêòè÷åñêàÿ ïîãðåøíîñòü |J-J(h)| = " << abs(real_value(a, b, k) - result) << endl;
+	cout << "Ð¤Ð¾Ñ€Ð¼ÑƒÐ»Ð° Ð¡Ð¸Ð¼Ð¿ÑÐ¾Ð½Ð°: " << result << endl;
+	cout << "ÐÐ±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð°Ñ Ñ„Ð°ÐºÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚ÑŒ |J-J(h)| = " << abs(real_value(a, b, k) - result) << endl;
 	if (m > 1)
 	{
-		cout << "Òåîðåòè÷åñêàÿ îöåíêà ïîãðåøíîñòè: ";
+		cout << "Ð¢ÐµÐ¾Ñ€ÐµÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¾Ñ†ÐµÐ½ÐºÐ° Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: ";
 		if (k == 1 or k == 2)
-			cout << "ïðåäïîëàãàåòñÿ max|f'(x)| = 1,   ";
+			cout << "Ð¿Ñ€ÐµÐ´Ð¿Ð¾Ð»Ð°Ð³Ð°ÐµÑ‚ÑÑ max|f'(x)| = 1,   ";
 		cout << (b - a) * (b - a) * (b - a) * (b - a) * (b - a) * error4(a, b, k, m) / 2880 / m / m / m / m << endl;
 	}
 	return result;
@@ -281,13 +281,13 @@ double Simpson(double a, double b, int k, int m, double W, double Q)
 void three_eighths(double a, double b, int k, int m)
 {
 	double result = (b - a) * (choice(a, k) + 3 * (choice(a + (b - a) / 3, k) + choice(a + 2 * (b - a) / 3, k)) + choice(b, k)) / 8;
-	cout << "Ôîðìóëà 3/8: " << result << endl;
-	cout << "Àáñîëþòíàÿ ôàêòè÷åñêàÿ ïîãðåøíîñòü |J-J(h)| = " << abs(real_value(a, b, k) - result) << endl;
+	cout << "Ð¤Ð¾Ñ€Ð¼ÑƒÐ»Ð° 3/8: " << result << endl;
+	cout << "ÐÐ±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð°Ñ Ñ„Ð°ÐºÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚ÑŒ |J-J(h)| = " << abs(real_value(a, b, k) - result) << endl;
 }
 
 void polynomials(double a, double b, int m)
 {
-	cout << "Íóëåâàÿ ñòåïåíü:" << endl;
+	cout << "ÐÑƒÐ»ÐµÐ²Ð°Ñ ÑÑ‚ÐµÐ¿ÐµÐ½ÑŒ:" << endl;
 	int k = 6;
 	double w = W(a, b, k, m);
 	double q = Q(a, b, k, m);
@@ -307,7 +307,7 @@ void polynomials(double a, double b, int m)
 	trapeze(a, b, k, m, w);
 	Simpson(a, b, k, m, w, q);
 
-	cout << endl << "Ïåðâàÿ ñòåïåíü:" << endl;
+	cout << endl << "ÐŸÐµÑ€Ð²Ð°Ñ ÑÑ‚ÐµÐ¿ÐµÐ½ÑŒ:" << endl;
 	k = 7;
 	w = W(a, b, k, m);
 	q = Q(a, b, k, m);
@@ -327,7 +327,7 @@ void polynomials(double a, double b, int m)
 	trapeze(a, b, k, m, w);
 	Simpson(a, b, k, m, w, q);
 
-	cout << endl << "Âòîðàÿ ñòåïåíü:" << endl;
+	cout << endl << "Ð’Ñ‚Ð¾Ñ€Ð°Ñ ÑÑ‚ÐµÐ¿ÐµÐ½ÑŒ:" << endl;
 	k = 8;
 	w = W(a, b, k, m);
 	q = Q(a, b, k, m);
@@ -347,7 +347,7 @@ void polynomials(double a, double b, int m)
 	trapeze(a, b, k, m, w);
 	Simpson(a, b, k, m, w, q);
 
-	cout << endl << "Òðåòüÿ ñòåïåíü:" << endl;
+	cout << endl << "Ð¢Ñ€ÐµÑ‚ÑŒÑ ÑÑ‚ÐµÐ¿ÐµÐ½ÑŒ:" << endl;
 	k = 9;
 	w = W(a, b, k, m);
 	q = Q(a, b, k, m);
@@ -371,27 +371,27 @@ void polynomials(double a, double b, int m)
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	cout << setprecision(13) << "Ïðèáëèæ¸ííîå âû÷èñëåíèå èíòåãðàëà ïî êâàäðàòóðíûì ôîðìóëàì" << endl;
+	cout << setprecision(13) << "ÐŸÑ€Ð¸Ð±Ð»Ð¸Ð¶Ñ‘Ð½Ð½Ð¾Ðµ Ð²Ñ‹Ñ‡Ð¸ÑÐ»ÐµÐ½Ð¸Ðµ Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ð»Ð° Ð¿Ð¾ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚ÑƒÑ€Ð½Ñ‹Ð¼ Ñ„Ð¾Ñ€Ð¼ÑƒÐ»Ð°Ð¼" << endl;
 	int m, l;
 
 	double a, b;
 
-	cout << "Ââåäèòå ëåâûé êîíåö ïðîìåæóòêà A" << endl;
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð»ÐµÐ²Ñ‹Ð¹ ÐºÐ¾Ð½ÐµÑ† Ð¿Ñ€Ð¾Ð¼ÐµÐ¶ÑƒÑ‚ÐºÐ° A" << endl;
 	cin >> a;
-	cout << "Ââåäèòå ïðàâûé êîíåö ïðîìåæóòêà B" << endl;
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¿Ñ€Ð°Ð²Ñ‹Ð¹ ÐºÐ¾Ð½ÐµÑ† Ð¿Ñ€Ð¾Ð¼ÐµÐ¶ÑƒÑ‚ÐºÐ° B" << endl;
 	cin >> b;
-	cout << "Ââåäèòå m - ÷èñëî ïðîìåæóòêîâ äåëåíèÿ â çàäàíèè 4.2" << endl;
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ m - Ñ‡Ð¸ÑÐ»Ð¾ Ð¿Ñ€Ð¾Ð¼ÐµÐ¶ÑƒÑ‚ÐºÐ¾Ð² Ð´ÐµÐ»ÐµÐ½Ð¸Ñ Ð² Ð·Ð°Ð´Ð°Ð½Ð¸Ð¸ 4.2" << endl;
 	cin >> m;
 
 	double memory[10]{ 0 };
 	int k;
-	cout << endl << "Âûáåðèòå, íà ïðèìåðå êàêîé ôóíêöèè âû÷èñëèòü êâàäðàòóðíûå ôîðìóëû:" << endl;
-	cout << "1 - sin(x)" << endl << "2 - cos(x)" << endl << "3 - ln(x)" << endl << "4 - exp(x)" << endl << "5 - func(x), õðàíÿùàÿñÿ â êîäå ïðîãðàììû" << endl;
+	cout << endl << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ, Ð½Ð° Ð¿Ñ€Ð¸Ð¼ÐµÑ€Ðµ ÐºÐ°ÐºÐ¾Ð¹ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð²Ñ‹Ñ‡Ð¸ÑÐ»Ð¸Ñ‚ÑŒ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚ÑƒÑ€Ð½Ñ‹Ðµ Ñ„Ð¾Ñ€Ð¼ÑƒÐ»Ñ‹:" << endl;
+	cout << "1 - sin(x)" << endl << "2 - cos(x)" << endl << "3 - ln(x)" << endl << "4 - exp(x)" << endl << "5 - func(x), Ñ…Ñ€Ð°Ð½ÑÑ‰Ð°ÑÑÑ Ð² ÐºÐ¾Ð´Ðµ Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹" << endl;
 	cin >> k;
 
-	cout << "Òî÷íîå çíà÷åíèå èíòåãðàëà:   " << real_value(a, b, k) << endl;
+	cout << "Ð¢Ð¾Ñ‡Ð½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ð»Ð°:   " << real_value(a, b, k) << endl;
 
-	cout << "Çàäàíèå 4.1" << endl << endl;
+	cout << "Ð—Ð°Ð´Ð°Ð½Ð¸Ðµ 4.1" << endl << endl;
 	left_rectangle(a, b, k, 1, 0);
 	right_rectangle(a, b, k, 1, 0);
 	middle_rectangle(a, b, k, 1, 0);
@@ -399,7 +399,7 @@ int main()
 	Simpson(a, b, k, 1, 0, 0);
 	three_eighths(a, b, k, 1);
 
-	cout << endl << "Çàäàíèå 4.2" << endl << endl;
+	cout << endl << "Ð—Ð°Ð´Ð°Ð½Ð¸Ðµ 4.2" << endl << endl;
 	double w = W(a, b, k, m);
 	double q = Q(a, b, k, m);
 	memory[0] = left_rectangle(a, b, k, m, w);
@@ -417,8 +417,8 @@ int main()
 		coeff[3] = ((double)(rand() % 1000)) / 100;
 	}
 
-	cout << endl << "Çàäàíèå 4.3" << endl;
-	cout << "Ââåäèòå l - âî ñêîëüêî ðàç íóæíî óâåëè÷èòü ïàðàìåòð m äëÿ çàäàíèÿ 4.3" << endl;
+	cout << endl << "Ð—Ð°Ð´Ð°Ð½Ð¸Ðµ 4.3" << endl;
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ l - Ð²Ð¾ ÑÐºÐ¾Ð»ÑŒÐºÐ¾ Ñ€Ð°Ð· Ð½ÑƒÐ¶Ð½Ð¾ ÑƒÐ²ÐµÐ»Ð¸Ñ‡Ð¸Ñ‚ÑŒ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ m Ð´Ð»Ñ Ð·Ð°Ð´Ð°Ð½Ð¸Ñ 4.3" << endl;
 	cin >> l;
 	cout << endl;
 
@@ -437,21 +437,21 @@ int main()
 	memory[3] = (l * l * memory[8] - memory[3]) / (l * l - 1);
 	memory[4] = (l * l * l * l * memory[9] - memory[4]) / (l * l * l * l - 1);
 
-	cout << endl << "Óòî÷íåíèå ïî ôîðìóëå Ðóíãå" << endl << endl;
-	cout << "Ôîðìóëà ëåâîãî òðåóãîëüíèêà:   " << memory[0] << endl;
-	cout << "Àáñîëþòíàÿ ôàêòè÷åñêàÿ ïîãðåøíîñòü:    " << abs(memory[0] - real_value(a, b, k)) << endl << endl;
-	cout << "Ôîðìóëà ïðàâîãî òðåóãîëüíèêà:   " << memory[1] << endl;
-	cout << "Àáñîëþòíàÿ ôàêòè÷åñêàÿ ïîãðåøíîñòü:    " << abs(memory[1] - real_value(a, b, k)) << endl << endl;
-	cout << "Ôîðìóëà ñðåäíåãî òðåóãîëüíèêà:   " << memory[2] << endl;
-	cout << "Àáñîëþòíàÿ ôàêòè÷åñêàÿ ïîãðåøíîñòü:    " << abs(memory[2] - real_value(a, b, k)) << endl << endl;
-	cout << "Ôîðìóëà òðàïåöèè:   " << memory[3] << endl;
-	cout << "Àáñîëþòíàÿ ôàêòè÷åñêàÿ ïîãðåøíîñòü:    " << abs(memory[3] - real_value(a, b, k)) << endl << endl;
-	cout << "Ôîðìóëà Ñèìïñîíà:   " << memory[4] << endl;
-	cout << "Àáñîëþòíàÿ ôàêòè÷åñêàÿ ïîãðåøíîñòü:    " << abs(memory[4] - real_value(a, b, k)) << endl << endl;
+	cout << endl << "Ð£Ñ‚Ð¾Ñ‡Ð½ÐµÐ½Ð¸Ðµ Ð¿Ð¾ Ñ„Ð¾Ñ€Ð¼ÑƒÐ»Ðµ Ð ÑƒÐ½Ð³Ðµ" << endl << endl;
+	cout << "Ð¤Ð¾Ñ€Ð¼ÑƒÐ»Ð° Ð»ÐµÐ²Ð¾Ð³Ð¾ Ñ‚Ñ€ÐµÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸ÐºÐ°:   " << memory[0] << endl;
+	cout << "ÐÐ±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð°Ñ Ñ„Ð°ÐºÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚ÑŒ:    " << abs(memory[0] - real_value(a, b, k)) << endl << endl;
+	cout << "Ð¤Ð¾Ñ€Ð¼ÑƒÐ»Ð° Ð¿Ñ€Ð°Ð²Ð¾Ð³Ð¾ Ñ‚Ñ€ÐµÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸ÐºÐ°:   " << memory[1] << endl;
+	cout << "ÐÐ±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð°Ñ Ñ„Ð°ÐºÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚ÑŒ:    " << abs(memory[1] - real_value(a, b, k)) << endl << endl;
+	cout << "Ð¤Ð¾Ñ€Ð¼ÑƒÐ»Ð° ÑÑ€ÐµÐ´Ð½ÐµÐ³Ð¾ Ñ‚Ñ€ÐµÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸ÐºÐ°:   " << memory[2] << endl;
+	cout << "ÐÐ±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð°Ñ Ñ„Ð°ÐºÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚ÑŒ:    " << abs(memory[2] - real_value(a, b, k)) << endl << endl;
+	cout << "Ð¤Ð¾Ñ€Ð¼ÑƒÐ»Ð° Ñ‚Ñ€Ð°Ð¿ÐµÑ†Ð¸Ð¸:   " << memory[3] << endl;
+	cout << "ÐÐ±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð°Ñ Ñ„Ð°ÐºÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚ÑŒ:    " << abs(memory[3] - real_value(a, b, k)) << endl << endl;
+	cout << "Ð¤Ð¾Ñ€Ð¼ÑƒÐ»Ð° Ð¡Ð¸Ð¼Ð¿ÑÐ¾Ð½Ð°:   " << memory[4] << endl;
+	cout << "ÐÐ±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð°Ñ Ñ„Ð°ÐºÑ‚Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚ÑŒ:    " << abs(memory[4] - real_value(a, b, k)) << endl << endl;
 
 	int t = 0;
-	cout << endl << "×òîáû ïðîâåðèòü ÀÑÒ êâàäðàòóðíûõ ôîðìóë íà ìíîãî÷ëåíàõ, ââåäèòå 1" << endl;
-	cout << "×òîáû çàêîí÷èòü ðàáîòó ïðîãðàììû, ââåäèòå 0" << endl;
+	cout << endl << "Ð§Ñ‚Ð¾Ð±Ñ‹ Ð¿Ñ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ ÐÐ¡Ð¢ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚ÑƒÑ€Ð½Ñ‹Ñ… Ñ„Ð¾Ñ€Ð¼ÑƒÐ» Ð½Ð° Ð¼Ð½Ð¾Ð³Ð¾Ñ‡Ð»ÐµÐ½Ð°Ñ…, Ð²Ð²ÐµÐ´Ð¸Ñ‚Ðµ 1" << endl;
+	cout << "Ð§Ñ‚Ð¾Ð±Ñ‹ Ð·Ð°ÐºÐ¾Ð½Ñ‡Ð¸Ñ‚ÑŒ Ñ€Ð°Ð±Ð¾Ñ‚Ñƒ Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹, Ð²Ð²ÐµÐ´Ð¸Ñ‚Ðµ 0" << endl;
 	cin >> t;
 	cout << endl;
 	m *= l;

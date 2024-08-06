@@ -2,7 +2,7 @@
 using namespace std;
 int main(int argc, char* argv[])
 {
-	int n = 0; //Ïîêàçàòåëü ñòåïåíè
+	int n = 0; //ÐŸÐ¾ÐºÐ°Ð·Ð°Ñ‚ÐµÐ»ÑŒ ÑÑ‚ÐµÐ¿ÐµÐ½Ð¸
 	cin >> n;
 	n = 1 << n;
 	cout << "n=" << n << endl;

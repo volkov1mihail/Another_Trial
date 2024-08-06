@@ -3,7 +3,7 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	int x = 0;
-	int square = 0; //Простите, мне так проще :/
+	int square = 0; //РџСЂРѕСЃС‚РёС‚Рµ, РјРЅРµ С‚Р°Рє РїСЂРѕС‰Рµ :/
 	int answer = 0; //square=x^2, answer=x^4+x^3+x^2+x+1=(x^2+1)*(x^2+x)+1
 	cin >> x;
 	square = x * x;

@@ -35,21 +35,21 @@ int main()
 {
 	srand(time(0));
 	setlocale(LC_ALL, "Russian");
-	cout << "×ÈÑËÅÍÍÛÅ ÌÅÒÎÄÛ ÐÅØÅÍÈß ÍÅËÈÍÅÉÍÛÕ ÓÐÀÂÍÅÍÈÉ" << endl;
+	cout << "Ð§Ð˜Ð¡Ð›Ð•ÐÐÐ«Ð• ÐœÐ•Ð¢ÐžÐ”Ð« Ð Ð•Ð¨Ð•ÐÐ˜Ð¯ ÐÐ•Ð›Ð˜ÐÐ•Ð™ÐÐ«Ð¥ Ð£Ð ÐÐ’ÐÐ•ÐÐ˜Ð™" << endl;
 	int  N = 0;
 	double a = 0;
 	double b = 0;
 	double e = 0;
 	double h = 0;
-	cout << setprecision(18) << "Ââåäèòå çíà÷åíèå A" << endl;
+	cout << setprecision(18) << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ A" << endl;
 	cin >> a;
-	cout << "Âåäèòå çíà÷åíèå B" << endl;
+	cout << "Ð’ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ B" << endl;
 	cin >> b;
-	cout << "Âåäèòå çíà÷åíèå N" << endl;
+	cout << "Ð’ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ N" << endl;
 	cin >> N;
-	cout << "Âåäèòå çíà÷åíèå e" << endl;
+	cout << "Ð’ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ e" << endl;
 	cin >> e;
-	cout << "Èñõîäíûå ïàðàìåòðû: [A,B] = [" << a << "," << b << "], f(x) = pow(2,-x)-sin(x), e = " << e << "." << endl;
+	cout << "Ð˜ÑÑ…Ð¾Ð´Ð½Ñ‹Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹: [A,B] = [" << a << "," << b << "], f(x) = pow(2,-x)-sin(x), e = " << e << "." << endl;
 	h = (b - a) / N;
 	double x1 = a;
 	double x2 = x1 + h;
@@ -71,24 +71,24 @@ int main()
 		x2 += h;
 		y1 = y2;
 	}
-	cout << "Êîëè÷åñòâî îòðåçêîâ ïåðåìåíû çíàêà ðàâíî " << v.size() << endl << endl;
+	cout << "ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¾Ñ‚Ñ€ÐµÐ·ÐºÐ¾Ð² Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ñ‹ Ð·Ð½Ð°ÐºÐ° Ñ€Ð°Ð²Ð½Ð¾ " << v.size() << endl << endl;
 
-	cout << "Áèñåêöèÿ:" << endl;
+	cout << "Ð‘Ð¸ÑÐµÐºÑ†Ð¸Ñ:" << endl;
 	for (int i = 0; i < v.size(); ++i)
 	{
 		bisection(v[i], e);
 	}
-	cout << endl << "Ìåòîä Íüþòîíà:" << endl;
+	cout << endl << "ÐœÐµÑ‚Ð¾Ð´ ÐÑŒÑŽÑ‚Ð¾Ð½Ð°:" << endl;
 	for (int i = 0; i < v.size(); ++i)
 	{
 		Newton(v[i], e);
 	}
-	cout << endl << "Ìîäèôèöèðîâàííûé ìåòîä Íüþòîíà:" << endl;
+	cout << endl << "ÐœÐ¾Ð´Ð¸Ñ„Ð¸Ñ†Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ñ‹Ð¹ Ð¼ÐµÑ‚Ð¾Ð´ ÐÑŒÑŽÑ‚Ð¾Ð½Ð°:" << endl;
 	for (int i = 0; i < v.size(); ++i)
 	{
 		modNewton(v[i], e);
 	}
-	cout << endl << "Ìåòîä ñåêóùèõ:" << endl;
+	cout << endl << "ÐœÐµÑ‚Ð¾Ð´ ÑÐµÐºÑƒÑ‰Ð¸Ñ…:" << endl;
 	for (int i = 0; i < v.size(); ++i)
 	{
 		secant(v[i], e);
@@ -99,7 +99,7 @@ int main()
 
 void bisection(pair<double, double>& p, double e)
 {
-	cout << "Íà÷àëüíîå ïðèáëèæåíèå: [" << p.first << "," << p.second << "]" << endl;
+	cout << "ÐÐ°Ñ‡Ð°Ð»ÑŒÐ½Ð¾Ðµ Ð¿Ñ€Ð¸Ð±Ð»Ð¸Ð¶ÐµÐ½Ð¸Ðµ: [" << p.first << "," << p.second << "]" << endl;
 	double a = p.first;
 	double b = p.second;
 	double c = 0;
@@ -111,12 +111,12 @@ void bisection(pair<double, double>& p, double e)
 		++i;
 	}
 	c = (a + b) / 2;
-	cout << "xm = " << c << ",  d = " << (b - a) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". Êîëè÷åñòâî èòåðàöèé: " << i << endl;
+	cout << "xm = " << c << ",  d = " << (b - a) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¸Ñ‚ÐµÑ€Ð°Ñ†Ð¸Ð¹: " << i << endl;
 }
 
 void Newton(pair<double, double>& p, double e)
 {
-	cout << "Íà÷àëüíîå ïðèáëèæåíèå: [" << p.first << "," << p.second << "]" << endl;
+	cout << "ÐÐ°Ñ‡Ð°Ð»ÑŒÐ½Ð¾Ðµ Ð¿Ñ€Ð¸Ð±Ð»Ð¸Ð¶ÐµÐ½Ð¸Ðµ: [" << p.first << "," << p.second << "]" << endl;
 	double x0 = (p.first + p.second) / 2;
 	int i = 1;
 	double x1 = x0 - function(x0) / f_deriv(x0);
@@ -127,21 +127,21 @@ void Newton(pair<double, double>& p, double e)
 		++i;
 		if (i > 1000000)
 		{
-			cout << "Êîëè÷åñòâî èòåðàöèé ïðåâûñèëî 1000000, ñõîäèìîñòü ìàëîâåðîÿòíà." << endl;
+			cout << "ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¸Ñ‚ÐµÑ€Ð°Ñ†Ð¸Ð¹ Ð¿Ñ€ÐµÐ²Ñ‹ÑÐ¸Ð»Ð¾ 1000000, ÑÑ…Ð¾Ð´Ð¸Ð¼Ð¾ÑÑ‚ÑŒ Ð¼Ð°Ð»Ð¾Ð²ÐµÑ€Ð¾ÑÑ‚Ð½Ð°." << endl;
 			break;
 		}
 	}
 	if (i <= 1000000)
 	{
 		double c = (x1 + x0) / 2;
-		cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". Êîëè÷åñòâî èòåðàöèé: " << i << endl;
+		cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¸Ñ‚ÐµÑ€Ð°Ñ†Ð¸Ð¹: " << i << endl;
 	}
 }
 
 
 void modNewton(pair<double, double>& p, double e)
 {
-	cout << "Íà÷àëüíîå ïðèáëèæåíèå: [" << p.first << "," << p.second << "]" << endl;
+	cout << "ÐÐ°Ñ‡Ð°Ð»ÑŒÐ½Ð¾Ðµ Ð¿Ñ€Ð¸Ð±Ð»Ð¸Ð¶ÐµÐ½Ð¸Ðµ: [" << p.first << "," << p.second << "]" << endl;
 	double x0 = (p.first + p.second) / 2;
 	int i = 1;
 	double a = 1 / f_deriv(x0);
@@ -154,21 +154,21 @@ void modNewton(pair<double, double>& p, double e)
 		++i;
 		if (i > 1000000)
 		{
-			cout << "Êîëè÷åñòâî èòåðàöèé ïðåâûñèëî 1000000, ñõîäèìîñòü ìàëîâåðîÿòíà." << endl;
+			cout << "ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¸Ñ‚ÐµÑ€Ð°Ñ†Ð¸Ð¹ Ð¿Ñ€ÐµÐ²Ñ‹ÑÐ¸Ð»Ð¾ 1000000, ÑÑ…Ð¾Ð´Ð¸Ð¼Ð¾ÑÑ‚ÑŒ Ð¼Ð°Ð»Ð¾Ð²ÐµÑ€Ð¾ÑÑ‚Ð½Ð°." << endl;
 			break;
 		}
 	}
 	if (i <= 1000000)
 	{
 		double c = (x1 + x0) / 2;
-		cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". Êîëè÷åñòâî èòåðàöèé: " << i << endl;
+		cout << "xm = " << c << ",  d = " << abs(x0 - x1) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¸Ñ‚ÐµÑ€Ð°Ñ†Ð¸Ð¹: " << i << endl;
 	}
 }
 
 
 void secant(pair<double, double>& p, double e)
 {
-	cout << "Íà÷àëüíîå ïðèáëèæåíèå: [" << p.first << "," << p.second << "]" << endl;
+	cout << "ÐÐ°Ñ‡Ð°Ð»ÑŒÐ½Ð¾Ðµ Ð¿Ñ€Ð¸Ð±Ð»Ð¸Ð¶ÐµÐ½Ð¸Ðµ: [" << p.first << "," << p.second << "]" << endl;
 	double x0 = p.first;
 	double x1 = p.second;
 	double g = function(x1);
@@ -182,5 +182,5 @@ void secant(pair<double, double>& p, double e)
 		++i;
 	}
 	double c = (x2 + x1) / 2;
-	cout << "xm = " << c << ",  d = " << abs(x2 - x1) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". Êîëè÷åñòâî èòåðàöèé: " << i << endl;
+	cout << "xm = " << c << ",  d = " << abs(x2 - x1) / 2 << ",  |f(xm)-0| = " << abs(function(c)) << ". ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¸Ñ‚ÐµÑ€Ð°Ñ†Ð¸Ð¹: " << i << endl;
 }

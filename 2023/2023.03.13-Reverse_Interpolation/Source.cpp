@@ -205,7 +205,7 @@ void bisection(pair<double, double>& p, double e, vector<vector<double>> v, int 
 		}
 	}
 	c = (a + b) / 2;
-	cout << "xm = " << c << ",  d = " << (b - a) / 2 << ",		|f(xm)-F| = " << abs(func(c) - F) << ". Êîëè÷åñòâî èòåðàöèé: " << i << endl;
+	cout << "xm = " << c << ",  d = " << (b - a) / 2 << ",		|f(xm)-F| = " << abs(func(c) - F) << ". ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¸Ñ‚ÐµÑ€Ð°Ñ†Ð¸Ð¹: " << i << endl;
 }
 
 void boolean(int& count, double y1, double y2, vector<pair<double, double>>& w, pair<double, double>& p, int& rise, double& memory, double x0, double x1, double F)
@@ -323,7 +323,7 @@ vector<pair<double, double>> procedure(vector<vector<double>>& v, int n, int N, 
 	if ((memory <= F && F <= y2) or (memory >= F && F >= y2))
 		w.push_back(p);
 	++count;
-	cout << "Êîëè÷åñòâî ïðîìåæóòêîâ ìîíîòîííîñòè ðàâíî " << count << endl << endl;
+	cout << "ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¿Ñ€Ð¾Ð¼ÐµÐ¶ÑƒÑ‚ÐºÐ¾Ð² Ð¼Ð¾Ð½Ð¾Ñ‚Ð¾Ð½Ð½Ð¾ÑÑ‚Ð¸ Ñ€Ð°Ð²Ð½Ð¾ " << count << endl << endl;
 	return w;
 }
 
@@ -379,7 +379,7 @@ vector<pair<double, double>> procedure(vector<vector<double>>& v, int n, int N, 
 //	p1.second = y2;
 //	values.push_back(p1);
 //	++count;
-//	cout << "Êîëè÷åñòâî ïðîìåæóòêîâ ìîíîòîííîñòè ðàâíî " << count << endl << endl;
+//	cout << "ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¿Ñ€Ð¾Ð¼ÐµÐ¶ÑƒÑ‚ÐºÐ¾Ð² Ð¼Ð¾Ð½Ð¾Ñ‚Ð¾Ð½Ð½Ð¾ÑÑ‚Ð¸ Ñ€Ð°Ð²Ð½Ð¾ " << count << endl << endl;
 //	return w;
 //}
 
@@ -490,20 +490,20 @@ int main()
 {
 	srand(time(0));
 	setlocale(LC_ALL, "Russian");
-	cout << setprecision(13) << "Çàäà÷à îáðàòíîãî èíòåðïîëèðîâàíèÿ, âàðèàíò 2, ôóíêöèÿ f(x) = ln(1+x)" << endl;
-	cout << "Ââåäèòå ÷èñëî òàáëè÷íûõ çíà÷åíèé" << endl;
+	cout << setprecision(13) << "Ð—Ð°Ð´Ð°Ñ‡Ð° Ð¾Ð±Ñ€Ð°Ñ‚Ð½Ð¾Ð³Ð¾ Ð¸Ð½Ñ‚ÐµÑ€Ð¿Ð¾Ð»Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ, Ð²Ð°Ñ€Ð¸Ð°Ð½Ñ‚ 2, Ñ„ÑƒÐ½ÐºÑ†Ð¸Ñ f(x) = ln(1+x)" << endl;
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾ Ñ‚Ð°Ð±Ð»Ð¸Ñ‡Ð½Ñ‹Ñ… Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ð¹" << endl;
 	int m = 0;
 	cin >> m;
 	--m;
 	double a = 0;
 	double b = 0;
 	double F = 0;
-	cout << "Ââåäèòå ëåâóþ ãðàíèöó îòðåçêà à > -1" << endl;
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð»ÐµÐ²ÑƒÑŽ Ð³Ñ€Ð°Ð½Ð¸Ñ†Ñƒ Ð¾Ñ‚Ñ€ÐµÐ·ÐºÐ° Ð° > -1" << endl;
 	cin >> a;
 	b = a;
 	while (b <= a)
 	{
-		cout << "Ââåäèòå ïðàâóþ ãðàíèöó îòðåçêà b > " << a << endl;
+		cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¿Ñ€Ð°Ð²ÑƒÑŽ Ð³Ñ€Ð°Ð½Ð¸Ñ†Ñƒ Ð¾Ñ‚Ñ€ÐµÐ·ÐºÐ° b > " << a << endl;
 		cin >> b;
 	}
 
@@ -517,18 +517,18 @@ int main()
 	int t = 1;
 	while (t == 1)
 	{
-		cout << "Ââåäèòå çíà÷åíèå ôóíêöèè F" << endl;
+		cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ F" << endl;
 		cin >> F;
 		while (n > m)
 		{
-			cout << "Ââåäèòå ñòåïåíü èíòåðïîëèðîâàíèÿ ìíîãî÷ëåíà n <= " << m << endl;
+			cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÑÑ‚ÐµÐ¿ÐµÐ½ÑŒ Ð¸Ð½Ñ‚ÐµÑ€Ð¿Ð¾Ð»Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ Ð¼Ð½Ð¾Ð³Ð¾Ñ‡Ð»ÐµÐ½Ð° n <= " << m << endl;
 			cin >> n;
 		}
 		int N = 0;
-		cout << "Âåäèòå çíà÷åíèå N - ÷èñëî íà÷àëüíûõ ïðîìåæóòêîâ äëÿ ïîèñêà ïðîìåæóòêîâ ìîíîòîííîñòè" << endl;
+		cout << "Ð’ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ N - Ñ‡Ð¸ÑÐ»Ð¾ Ð½Ð°Ñ‡Ð°Ð»ÑŒÐ½Ñ‹Ñ… Ð¿Ñ€Ð¾Ð¼ÐµÐ¶ÑƒÑ‚ÐºÐ¾Ð² Ð´Ð»Ñ Ð¿Ð¾Ð¸ÑÐºÐ° Ð¿Ñ€Ð¾Ð¼ÐµÐ¶ÑƒÑ‚ÐºÐ¾Ð² Ð¼Ð¾Ð½Ð¾Ñ‚Ð¾Ð½Ð½Ð¾ÑÑ‚Ð¸" << endl;
 		cin >> N;
 
-		cout << endl << "3.1, ïåðâûé ñïîñîá:" << endl << endl;
+		cout << endl << "3.1, Ð¿ÐµÑ€Ð²Ñ‹Ð¹ ÑÐ¿Ð¾ÑÐ¾Ð±:" << endl << endl;
 		//vector<pair<double, double>> w = procedure(v2, n, N, F, values);
 		//for (int i = 0; i < w.size(); ++i)
 		//{
@@ -542,8 +542,8 @@ int main()
 		}
 
 
-		cout << endl << "3.1, âòîðîé ñïîñîá:" << endl;
-		cout << "Ââåäèòå òî÷íîñòü å" << endl << endl;
+		cout << endl << "3.1, Ð²Ñ‚Ð¾Ñ€Ð¾Ð¹ ÑÐ¿Ð¾ÑÐ¾Ð±:" << endl;
+		cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‚Ð¾Ñ‡Ð½Ð¾ÑÑ‚ÑŒ Ðµ" << endl << endl;
 		double e;
 		cin >> e;
 
@@ -551,12 +551,12 @@ int main()
 		{
 			search2(v2, w[i], F, n, e);
 		}
-		cout << endl << "Íàéäåíî ðåøåíèé: " << w.size() << endl;
+		cout << endl << "ÐÐ°Ð¹Ð´ÐµÐ½Ð¾ Ñ€ÐµÑˆÐµÐ½Ð¸Ð¹: " << w.size() << endl;
 		w.clear();
 		v2 = v;
 
-		cout << endl << "×òîáû ââåñòè íîâûå çíà÷åíèÿ F, n èëè e, ââåäèòå 1" << endl;
-		cout << "×òîáû çàêîí÷èòü ðàáîòó ïðîãðàììû, ââåäèòå 0" << endl << endl;
+		cout << endl << "Ð§Ñ‚Ð¾Ð±Ñ‹ Ð²Ð²ÐµÑÑ‚Ð¸ Ð½Ð¾Ð²Ñ‹Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ F, n Ð¸Ð»Ð¸ e, Ð²Ð²ÐµÐ´Ð¸Ñ‚Ðµ 1" << endl;
+		cout << "Ð§Ñ‚Ð¾Ð±Ñ‹ Ð·Ð°ÐºÐ¾Ð½Ñ‡Ð¸Ñ‚ÑŒ Ñ€Ð°Ð±Ð¾Ñ‚Ñƒ Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹, Ð²Ð²ÐµÐ´Ð¸Ñ‚Ðµ 0" << endl << endl;
 		cin >> t;
 	}
 	return 0;
@@ -614,6 +614,6 @@ int main()
 //		x1 += h;
 //		y1 = y2;
 //	}
-//	cout << "Êîëè÷åñòâî ïðîìåæóòêîâ ñìåíû çíàêà ôóíêöèè f'(x)-F ðàâíî " << w.size() << endl;
+//	cout << "ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¿Ñ€Ð¾Ð¼ÐµÐ¶ÑƒÑ‚ÐºÐ¾Ð² ÑÐ¼ÐµÐ½Ñ‹ Ð·Ð½Ð°ÐºÐ° Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ f'(x)-F Ñ€Ð°Ð²Ð½Ð¾ " << w.size() << endl;
 //	return w;
 //}

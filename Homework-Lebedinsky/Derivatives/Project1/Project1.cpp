@@ -16,7 +16,7 @@ bool check(string str)
 	{
 		if (!isCoefficient(str, index) && !isBrackets(str[index++]) && !isSin(str, index) && !isCos(str, index) && !isE(str, index) && !isNotE(str, index) && !isLn(str, index) && !isLog(str, index) && !isOper(str[index++]) && !isConst(str, index) && str[index++] != 'x')
 		{
-			cout << "Ââåäåííîå âûðàæåíèå íå ìîæåò áûòü ïðîäèôôåðåíöèðîâàííî ýòèì êàëüêóëÿòîðîì" << endl;
+			cout << "Â¬Ð²ÐµÐ´ÐµÐ½Ð½Ð¾Ðµ Ð²Ñ‹Ñ€Ð°Ð¶ÐµÐ½Ð¸Ðµ Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð¿Ñ€Ð¾Ð´Ð¸Ñ„Ñ„ÐµÑ€ÐµÐ½Ñ†Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾ ÑÑ‚Ð¸Ð¼ ÐºÐ°Ð»ÑŒÐºÑƒÐ»Â¤Ñ‚Ð¾Ñ€Ð¾Ð¼" << endl;
 			return false;
 		}
 	}

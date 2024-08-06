@@ -2,45 +2,45 @@
 #include <iomanip>
 #include <ctime>
 
-float* float_array(long n);                 //создание массива с n элементов типа float
-double* double_array(long n);               //создание массива с n элементов типа double 
+float* float_array(long n);                 //СЃРѕР·РґР°РЅРёРµ РјР°СЃСЃРёРІР° СЃ n СЌР»РµРјРµРЅС‚РѕРІ С‚РёРїР° float
+double* double_array(long n);               //СЃРѕР·РґР°РЅРёРµ РјР°СЃСЃРёРІР° СЃ n СЌР»РµРјРµРЅС‚РѕРІ С‚РёРїР° double 
 template <class T>
-void moving_average(T* a, long n, int k);   //вычисление скользящего среднего  и производительности для конкретного массива
+void moving_average(T* a, long n, int k);   //РІС‹С‡РёСЃР»РµРЅРёРµ СЃРєРѕР»СЊР·СЏС‰РµРіРѕ СЃСЂРµРґРЅРµРіРѕ  Рё РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё РґР»СЏ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ РјР°СЃСЃРёРІР°
 
 int main(int argc, char* argv[])
 {
 	srand(time(0));
 	setlocale(LC_ALL, "Russian");
-	int k = 0;                                             //длина окна
-	long n = 0;                                            //общее кличество элементов
-	std::cout << std::setprecision(13) << "Введите количество элементов n" << std::endl;
+	int k = 0;                                             //РґР»РёРЅР° РѕРєРЅР°
+	long n = 0;                                            //РѕР±С‰РµРµ РєР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ
+	std::cout << std::setprecision(13) << "Р’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ n" << std::endl;
 	std::cin >> n;
 
-	int windows[6]{ 4, 8, 16, 32, 64, 128 };               //длины окон, для которых вычислнения производятся автоматически
+	int windows[6]{ 4, 8, 16, 32, 64, 128 };               //РґР»РёРЅС‹ РѕРєРѕРЅ, РґР»СЏ РєРѕС‚РѕСЂС‹С… РІС‹С‡РёСЃР»РЅРµРЅРёСЏ РїСЂРѕРёР·РІРѕРґСЏС‚СЃСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё
 	float* a_f = float_array(n);                           
 	double* a_d = double_array(n);
 
-	std::cout << std::endl << "float:" << std::endl;       //вычисление производительности для случаев 
-	for (int i = 0; i < 6; ++i)                            //k = 4, 8, 16, 32, 64 и 128 и типа float
+	std::cout << std::endl << "float:" << std::endl;       //РІС‹С‡РёСЃР»РµРЅРёРµ РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё РґР»СЏ СЃР»СѓС‡Р°РµРІ 
+	for (int i = 0; i < 6; ++i)                            //k = 4, 8, 16, 32, 64 Рё 128 Рё С‚РёРїР° float
 		moving_average(a_f, n, windows[i]);
 
-	std::cout << std::endl << "double:" << std::endl;      //вычисление производительности для случаев
-	for (int i = 0; i < 6; ++i)                            //k = 4, 8, 16, 32, 64 и 128 и типа double
+	std::cout << std::endl << "double:" << std::endl;      //РІС‹С‡РёСЃР»РµРЅРёРµ РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё РґР»СЏ СЃР»СѓС‡Р°РµРІ
+	for (int i = 0; i < 6; ++i)                            //k = 4, 8, 16, 32, 64 Рё 128 Рё С‚РёРїР° double
 		moving_average(a_d, n, windows[i]);
 
-	std::cout << std::endl << "Введите длину окна k, чтобы продолжить" << std::endl;
-	std::cout << "Введите 0, чтобы завершить" << std::endl;
+	std::cout << std::endl << "Р’РІРµРґРёС‚Рµ РґР»РёРЅСѓ РѕРєРЅР° k, С‡С‚РѕР±С‹ РїСЂРѕРґРѕР»Р¶РёС‚СЊ" << std::endl;
+	std::cout << "Р’РІРµРґРёС‚Рµ 0, С‡С‚РѕР±С‹ Р·Р°РІРµСЂС€РёС‚СЊ" << std::endl;
 	std::cin >> k;
 
-	while (k != 0)                                         //ожидание от пользователя окончания работы программы
+	while (k != 0)                                         //РѕР¶РёРґР°РЅРёРµ РѕС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РѕРєРѕРЅС‡Р°РЅРёСЏ СЂР°Р±РѕС‚С‹ РїСЂРѕРіСЂР°РјРјС‹
 	{
 		std::cout << "float:" << std::endl;
 		moving_average(a_f, n, k);
 		std::cout << std::endl << "double:" << std::endl;
 		moving_average(a_d, n, k);
 
-		std::cout << std::endl << "Введите длину окна k, чтобы продолжить" << std::endl;
-		std::cout << "Введите 0, чтобы завершить" << std::endl;
+		std::cout << std::endl << "Р’РІРµРґРёС‚Рµ РґР»РёРЅСѓ РѕРєРЅР° k, С‡С‚РѕР±С‹ РїСЂРѕРґРѕР»Р¶РёС‚СЊ" << std::endl;
+		std::cout << "Р’РІРµРґРёС‚Рµ 0, С‡С‚РѕР±С‹ Р·Р°РІРµСЂС€РёС‚СЊ" << std::endl;
 		std::cin >> k;
 	}
 	return 0;
@@ -52,7 +52,7 @@ float* float_array(long n)
 	float* a = new float[n];
 	for (int i = 0; i < n; ++i)
 	{
-		a[i] = (float)(rand()) / 32767;                    //заполнение массива числами от 0 до 1 типа float
+		a[i] = (float)(rand()) / 32767;                    //Р·Р°РїРѕР»РЅРµРЅРёРµ РјР°СЃСЃРёРІР° С‡РёСЃР»Р°РјРё РѕС‚ 0 РґРѕ 1 С‚РёРїР° float
 	}
 	return a;
 }
@@ -62,7 +62,7 @@ double* double_array(long n)
 	double* a = new double[n];
 	for (int i = 0; i < n; ++i)
 	{
-		a[i] = (double)(rand()) / 32767;                   //заполнение массива числами от 0 до 1 типа double
+		a[i] = (double)(rand()) / 32767;                   //Р·Р°РїРѕР»РЅРµРЅРёРµ РјР°СЃСЃРёРІР° С‡РёСЃР»Р°РјРё РѕС‚ 0 РґРѕ 1 С‚РёРїР° double
 	}
 	return a;
 }
@@ -70,19 +70,19 @@ double* double_array(long n)
 template <class T>
 void moving_average(T* a, long n, int k)
 {
-	unsigned int start_time = clock();                     //начало работы программы
-	T average = 0;                                         //значение скользящего среднего
+	unsigned int start_time = clock();                     //РЅР°С‡Р°Р»Рѕ СЂР°Р±РѕС‚С‹ РїСЂРѕРіСЂР°РјРјС‹
+	T average = 0;                                         //Р·РЅР°С‡РµРЅРёРµ СЃРєРѕР»СЊР·СЏС‰РµРіРѕ СЃСЂРµРґРЅРµРіРѕ
 	for (int i = 0; i < k; ++i)                            
 	{
-		average += a[i];                                   //вычисление среднего для первых k элементов
+		average += a[i];                                   //РІС‹С‡РёСЃР»РµРЅРёРµ СЃСЂРµРґРЅРµРіРѕ РґР»СЏ РїРµСЂРІС‹С… k СЌР»РµРјРµРЅС‚РѕРІ
 	}
 	average /= k;
 
 	for (int i = k; i < n; ++i)
 	{
-		average += (a[i] - a[i - k]) / k;                  //вычисление скользящего среднего от k+1-вого до n-ного элемента
+		average += (a[i] - a[i - k]) / k;                  //РІС‹С‡РёСЃР»РµРЅРёРµ СЃРєРѕР»СЊР·СЏС‰РµРіРѕ СЃСЂРµРґРЅРµРіРѕ РѕС‚ k+1-РІРѕРіРѕ РґРѕ n-РЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
 	}
-	unsigned int t = clock() - start_time;                 //конец работы программы
-	std::cout << "Время действия при k = " << k << ": " << t << std::endl;
-	std::cout << "Производительность: " << (double)(n) / t << std::endl;
+	unsigned int t = clock() - start_time;                 //РєРѕРЅРµС† СЂР°Р±РѕС‚С‹ РїСЂРѕРіСЂР°РјРјС‹
+	std::cout << "Р’СЂРµРјСЏ РґРµР№СЃС‚РІРёСЏ РїСЂРё k = " << k << ": " << t << std::endl;
+	std::cout << "РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚СЊ: " << (double)(n) / t << std::endl;
 }

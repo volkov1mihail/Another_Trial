@@ -21,29 +21,29 @@ int main()
 	setlocale(LC_ALL, "Russian");
 	int n = 0;
 	double a{ 0 }, b{ 0 };
-	std::cout << "×èñëåííîå ðåøåíèå èíòåãðàëüíîãî óðàâíåíèÿ" << std::endl;
-	std::cout << "Ââåäèòå ãðàíèöû ïðîìåæóòêà [a,b]" << std::endl;
+	std::cout << "â€žÐ¸ÑÐ»ÐµÐ½Ð½Ð¾Ðµ Ñ€ÐµÑˆÐµÐ½Ð¸Ðµ Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ð»ÑŒÐ½Ð¾Ð³Ð¾ ÑƒÑ€Ð°Ð²Ð½ÐµÐ½Ð¸Â¤" << std::endl;
+	std::cout << "Â¬Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð³Ñ€Ð°Ð½Ð¸Ñ†Ñ‹ Ð¿Ñ€Ð¾Ð¼ÐµÐ¶ÑƒÑ‚ÐºÐ° [a,b]" << std::endl;
 	std::cin >> a >> b;
-	std::cout << "Ââåäèòå ÷èñëî ðàçáèåíèé n" << std::endl;
+	std::cout << "Â¬Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾ Ñ€Ð°Ð·Ð±Ð¸ÐµÐ½Ð¸Ð¹ n" << std::endl;
 	std::cin >> n;
 
-	//std::cout << "Ìåòîä ñðåäíèõ ïðÿìîóãîëüíèêîâ:" << std::endl;
+	//std::cout << "Ñ›ÐµÑ‚Ð¾Ð´ ÑÑ€ÐµÐ´Ð½Ð¸Ñ… Ð¿Ñ€Â¤Ð¼Ð¾ÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸ÐºÐ¾Ð²:" << std::endl;
 	//arma::vec result = solution(a, b, n, middle_rectangle);
 	//for (int i = 0; i < result.n_rows; ++i)
 	//	std::cout << "u(x" << i << ") = " << result(i) << std::endl;
 
-	//std::cout << std::endl << "Ìåòîä òðàïåöèé:" << std::endl;
+	//std::cout << std::endl << "Ñ›ÐµÑ‚Ð¾Ð´ Ñ‚Ñ€Ð°Ð¿ÐµÑ†Ð¸Ð¹:" << std::endl;
 	//result = solution(a, b, n, trapeze);
 	//for (int i = 0; i < result.n_rows; ++i)
 	//	std::cout << "u(x" << i << ") = " << result(i) << std::endl;
 
-	std::cout << std::endl << "Ìåòîä òðàïåöèé, óðàâíåíèå ïåðâîãî ðîäà:" << std::endl;
+	std::cout << std::endl << "Ñ›ÐµÑ‚Ð¾Ð´ Ñ‚Ñ€Ð°Ð¿ÐµÑ†Ð¸Ð¹, ÑƒÑ€Ð°Ð²Ð½ÐµÐ½Ð¸Ðµ Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾ Ñ€Ð¾Ð´Ð°:" << std::endl;
 	arma::vec result = solutionFirstKind(a, b, n, trapezeFirstKind);
 	for (int i = 0; i < result.n_rows; ++i)
 		std::cout << "u(x" << i << ") = " << result(i) << std::endl;
 
 
-	//std::cout << "Ñðàâíåíèå â êðàòíûõ òî÷êàõ, ìåòîä òðàïåöèé, óðàâíåíèå ïåðâîãî ðîäà:" << std::endl;
+	//std::cout << "â€”Ñ€Ð°Ð²Ð½ÐµÐ½Ð¸Ðµ Ð² ÐºÑ€Ð°Ñ‚Ð½Ñ‹Ñ… Ñ‚Ð¾Ñ‡ÐºÐ°Ñ…, Ð¼ÐµÑ‚Ð¾Ð´ Ñ‚Ñ€Ð°Ð¿ÐµÑ†Ð¸Ð¹, ÑƒÑ€Ð°Ð²Ð½ÐµÐ½Ð¸Ðµ Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾ Ñ€Ð¾Ð´Ð°:" << std::endl;
 	//computationalErrorFirstKind(a, b, 9, 19, trapezeFirstKind);
 	//std::cout << std::endl;
 	//computationalErrorFirstKind(a, b, 19, 39, trapezeFirstKind);
@@ -55,7 +55,7 @@ int main()
 	//computationalErrorFirstKind(a, b, 159, 319, trapezeFirstKind);
 	//std::cout << std::endl;
 	//computationalErrorFirstKind(a, b, 319, 639, trapezeFirstKind);
-	//std::cout << "Ñðàâíåíèå â êðàòíûõ òî÷êàõ, ìåòîä ñðåäíèõ ïðÿìîóãîëüíèêîâ:" << std::endl;
+	//std::cout << "â€”Ñ€Ð°Ð²Ð½ÐµÐ½Ð¸Ðµ Ð² ÐºÑ€Ð°Ñ‚Ð½Ñ‹Ñ… Ñ‚Ð¾Ñ‡ÐºÐ°Ñ…, Ð¼ÐµÑ‚Ð¾Ð´ ÑÑ€ÐµÐ´Ð½Ð¸Ñ… Ð¿Ñ€Â¤Ð¼Ð¾ÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸ÐºÐ¾Ð²:" << std::endl;
 	//computationalError(a, b, 10, 20, middle_rectangle);
 	//std::cout << std::endl;
 	//computationalError(a, b, 20, 40, middle_rectangle);
@@ -68,7 +68,7 @@ int main()
 	//std::cout << std::endl;
 	//computationalError(a, b, 320, 640, middle_rectangle);
 
-	//std::cout << "Ñðàâíåíèå â êðàòíûõ òî÷êàõ, ìåòîä òðàïåöèé:" << std::endl;
+	//std::cout << "â€”Ñ€Ð°Ð²Ð½ÐµÐ½Ð¸Ðµ Ð² ÐºÑ€Ð°Ñ‚Ð½Ñ‹Ñ… Ñ‚Ð¾Ñ‡ÐºÐ°Ñ…, Ð¼ÐµÑ‚Ð¾Ð´ Ñ‚Ñ€Ð°Ð¿ÐµÑ†Ð¸Ð¹:" << std::endl;
 	//computationalError(a, b, 9, 19, trapeze);
 	//std::cout << std::endl;
 	//computationalError(a, b, 19, 39, trapeze);

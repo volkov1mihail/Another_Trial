@@ -3,9 +3,9 @@ using namespace std;
 int main(int argc,
 	char* argv[])
 {
-	int a = 0; //Äåëèìîå
-	int b = 0; //Äåëèòåëü
-	int c = 0; //Íåïîëíîå ÷àñòíîå
+	int a = 0; //Ð”ÐµÐ»Ð¸Ð¼Ð¾Ðµ
+	int b = 0; //Ð”ÐµÐ»Ð¸Ñ‚ÐµÐ»ÑŒ
+	int c = 0; //ÐÐµÐ¿Ð¾Ð»Ð½Ð¾Ðµ Ñ‡Ð°ÑÑ‚Ð½Ð¾Ðµ
 	cin >> a >> b;
 	while (a >= b) {
 		a = a - b;

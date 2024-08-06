@@ -28,21 +28,21 @@ vector<pair<double, double>> Runge_Kutta(double x0, double y0, double h, int N);
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	cout << setprecision(13) << "×èñëåííîå ðåøåíèå Çàäà÷è Êîøè äëÿ îáûêíîâåííîãî äèôôåðåíöèàëüíîãî óðàâíåíèÿ ïåðâîãî ïîðÿäêà" << endl;
+	cout << setprecision(13) << "â€žÐ¸ÑÐ»ÐµÐ½Ð½Ð¾Ðµ Ñ€ÐµÑˆÐµÐ½Ð¸Ðµ Â«Ð°Ð´Ð°Ñ‡Ð¸ Â Ð¾ÑˆÐ¸ Ð´Ð»Â¤ Ð¾Ð±Ñ‹ÐºÐ½Ð¾Ð²ÐµÐ½Ð½Ð¾Ð³Ð¾ Ð´Ð¸Ñ„Ñ„ÐµÑ€ÐµÐ½Ñ†Ð¸Ð°Ð»ÑŒÐ½Ð¾Ð³Ð¾ ÑƒÑ€Ð°Ð²Ð½ÐµÐ½Ð¸Â¤ Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾ Ð¿Ð¾Ñ€Â¤Ð´ÐºÐ°" << endl;
 	double x0, y0;
-	cout << "Ââåäèòå çíà÷åíèå x0" << endl;
+	cout << "Â¬Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ x0" << endl;
 	cin >> x0;
-	cout << "Ââåäèòå çíà÷åíèå y0" << endl;
+	cout << "Â¬Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ y0" << endl;
 	cin >> y0;
 	c1 = exp(x0) * (y0 - x0 + 1);
 
-	cout << "Çàäà÷à Êîøè: y'(x) = -y(x) + x, y(" << x0 << ") = " << y0 << endl;
-	cout << "Òî÷íîå ðåøåíèå: y(x) = " << c1 << "*exp(-x)+x-1" << endl;
+	cout << "Â«Ð°Ð´Ð°Ñ‡Ð° Â Ð¾ÑˆÐ¸: y'(x) = -y(x) + x, y(" << x0 << ") = " << y0 << endl;
+	cout << "â€œÐ¾Ñ‡Ð½Ð¾Ðµ Ñ€ÐµÑˆÐµÐ½Ð¸Ðµ: y(x) = " << c1 << "*exp(-x)+x-1" << endl;
 	double h;
 	int N;
-	cout << "Ââåäèòå çíà÷åíèå h" << endl;
+	cout << "Â¬Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ h" << endl;
 	cin >> h;
-	cout << "Ââåäèòå çíà÷åíèå N" << endl;
+	cout << "Â¬Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ N" << endl;
 	cin >> N;
 
 	vector<pair<double, double>> v;
@@ -50,7 +50,7 @@ int main()
 	p.first = x0 - 2 * h;
 	p.second = exact_value(p.first);
 	v.push_back(p);
-	cout << "Çíà÷åíèÿ òî÷íîãî ðåøåíèÿ:" << endl;
+	cout << "Â«Ð½Ð°Ñ‡ÐµÐ½Ð¸Â¤ Ñ‚Ð¾Ñ‡Ð½Ð¾Ð³Ð¾ Ñ€ÐµÑˆÐµÐ½Ð¸Â¤:" << endl;
 	//cout << "y(x_" << -2 << ") = " << p.second << endl;
 	for (int i = -1; i <= N; ++i)
 	{
@@ -62,20 +62,20 @@ int main()
 	cout << "y(x_" << N << ") = " << v[v.size() - 1].second << endl;
 
 	double m;
-	cout << "Ââåäèòå, äî êàêîé ïðîèçâîäíîé ñ÷èòàòü ìíîãî÷ëåí Òåéëîðà" << endl;
+	cout << "Â¬Ð²ÐµÐ´Ð¸Ñ‚Ðµ, Ð´Ð¾ ÐºÐ°ÐºÐ¾Ð¹ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð½Ð¾Ð¹ ÑÑ‡Ð¸Ñ‚Ð°Ñ‚ÑŒ Ð¼Ð½Ð¾Ð³Ð¾Ñ‡Ð»ÐµÐ½ â€œÐµÐ¹Ð»Ð¾Ñ€Ð°" << endl;
 	cin >> m;
 	vector<double> Taylor_0 = Taylor_poly(x0, y0, m);
-	cout << "Ìåòîä ðàçëîæåíèÿ â ðÿä Òåéëîðà" << endl;
+	cout << "Ñ›ÐµÑ‚Ð¾Ð´ Ñ€Ð°Ð·Ð»Ð¾Ð¶ÐµÐ½Ð¸Â¤ Ð² Ñ€Â¤Ð´ â€œÐµÐ¹Ð»Ð¾Ñ€Ð°" << endl;
 	vector<pair<double, double>> v1;
 	for (int i = -2; i <= N; ++i)
 	{
 		p = Taylor(Taylor_0, v[i + 2].first);
-		//cout << "y(x_" << i << ") = " << p.first << ", çíà÷åíèå àáñîëþòíîé ïîãðåøíîñòè: " << abs(v[i + 2].second - p.first) << endl;
+		//cout << "y(x_" << i << ") = " << p.first << ", Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð°Ð±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð¾Ð¹ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: " << abs(v[i + 2].second - p.first) << endl;
 		p.second = p.first;
 		p.first = v[i + 2].first;
 		v1.push_back(p);
 	}
-	cout << "y(x_" << N << ") = " << v1[v1.size() - 1].second << ", çíà÷åíèå àáñîëþòíîé ïîãðåøíîñòè: " << abs(v[v.size() - 1].second - v1[v1.size() - 1].second) << endl;
+	cout << "y(x_" << N << ") = " << v1[v1.size() - 1].second << ", Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð°Ð±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð¾Ð¹ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: " << abs(v[v.size() - 1].second - v1[v1.size() - 1].second) << endl;
 
 	vector<pair<double, double>> v2;
 	vector<vector<double>> q;
@@ -88,18 +88,18 @@ int main()
 	}
 	Adams(v2, q, N);
 
-	cout << endl << "Ýêñòðàïîëÿöèîííûé ìåòîä Àäàìñà:" << endl;
+	cout << endl << "ÐÐºÑÑ‚Ñ€Ð°Ð¿Ð¾Ð»Â¤Ñ†Ð¸Ð¾Ð½Ð½Ñ‹Ð¹ Ð¼ÐµÑ‚Ð¾Ð´ Ñ˜Ð´Ð°Ð¼ÑÐ°:" << endl;
 	//for (int i = -2; i <= N; ++i)
-		//cout << "y(x_" << i << ") = " << v2[i + 2].second << ", çíà÷åíèå àáñîëþòíîé ïîãðåøíîñòè: " << abs(v2[i + 2].second - v[i + 2].second) << endl;
-		cout << "y(x_" << N << ") = " << v2[v2.size() - 1].second << ", çíà÷åíèå àáñîëþòíîé ïîãðåøíîñòè: " << abs(v[v.size() - 1].second - v2[v2.size() - 1].second) << endl;
+		//cout << "y(x_" << i << ") = " << v2[i + 2].second << ", Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð°Ð±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð¾Ð¹ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: " << abs(v2[i + 2].second - v[i + 2].second) << endl;
+		cout << "y(x_" << N << ") = " << v2[v2.size() - 1].second << ", Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð°Ð±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð¾Ð¹ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: " << abs(v[v.size() - 1].second - v2[v2.size() - 1].second) << endl;
 
-	cout << endl << "Ìåòîä Ðóíãå-Êóòòû:" << endl;
+	cout << endl << "Ñ›ÐµÑ‚Ð¾Ð´ â€“ÑƒÐ½Ð³Ðµ-Â ÑƒÑ‚Ñ‚Ñ‹:" << endl;
 	vector<pair<double, double>> v3 = Runge_Kutta(x0, y0, h, N);
 	//for (int i = 0; i <= N; ++i)
-		//cout << "y(x_" << i << ") = " << v3[i].second << ", çíà÷åíèå àáñîëþòíîé ïîãðåøíîñòè: " << abs(v3[i].second - v[i + 2].second) << endl;
-	cout << "y(x_" << N << ") = " << v3[v3.size() - 1].second << ", çíà÷åíèå àáñîëþòíîé ïîãðåøíîñòè: " << abs(v[v.size() - 1].second - v3[v3.size() - 1].second) << endl;
+		//cout << "y(x_" << i << ") = " << v3[i].second << ", Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð°Ð±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð¾Ð¹ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: " << abs(v3[i].second - v[i + 2].second) << endl;
+	cout << "y(x_" << N << ") = " << v3[v3.size() - 1].second << ", Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð°Ð±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð¾Ð¹ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: " << abs(v[v.size() - 1].second - v3[v3.size() - 1].second) << endl;
 
-	cout << endl << "Ìåòîä Ýéëåðà:" << endl;
+	cout << endl << "Ñ›ÐµÑ‚Ð¾Ð´ ÐÐ¹Ð»ÐµÑ€Ð°:" << endl;
 	vector<pair<double, double>> v4;
 	p.first = x0;
 	p.second = y0;
@@ -109,12 +109,12 @@ int main()
 		p.second += h * func(p.first, p.second);
 		p.first += h;
 		v4.push_back(p);
-		//cout << "y(x_" << i << ") = " << v4[i].second << ", çíà÷åíèå àáñîëþòíîé ïîãðåøíîñòè: " << abs(v4[i].second - v[i + 2].second) << endl;
+		//cout << "y(x_" << i << ") = " << v4[i].second << ", Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð°Ð±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð¾Ð¹ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: " << abs(v4[i].second - v[i + 2].second) << endl;
 	}
 
-	cout << "y(x_" << N << ") = " << v4[v4.size() - 1].second << ", çíà÷åíèå àáñîëþòíîé ïîãðåøíîñòè: " << abs(v[v.size() - 1].second - v4[v4.size() - 1].second) << endl;
+	cout << "y(x_" << N << ") = " << v4[v4.size() - 1].second << ", Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð°Ð±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð¾Ð¹ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: " << abs(v[v.size() - 1].second - v4[v4.size() - 1].second) << endl;
 
-	cout << endl << "Óëó÷øåííûé ìåòîä Ýéëåðà I:" << endl;
+	cout << endl << "â€Ð»ÑƒÑ‡ÑˆÐµÐ½Ð½Ñ‹Ð¹ Ð¼ÐµÑ‚Ð¾Ð´ ÐÐ¹Ð»ÐµÑ€Ð° I:" << endl;
 	vector<pair<double, double>> v5;
 	p.first = x0;
 	p.second = y0;
@@ -126,12 +126,12 @@ int main()
 		p.second += h * func(p.first + h / 2, t);
 		p.first += h;
 		v5.push_back(p);
-		//cout << "y(x_" << i << ") = " << v5[i].second << ", çíà÷åíèå àáñîëþòíîé ïîãðåøíîñòè: " << abs(v5[i].second - v[i + 2].second) << endl;
+		//cout << "y(x_" << i << ") = " << v5[i].second << ", Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð°Ð±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð¾Ð¹ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: " << abs(v5[i].second - v[i + 2].second) << endl;
 	}
 
-	cout << "y(x_" << N << ") = " << v5[v5.size() - 1].second << ", çíà÷åíèå àáñîëþòíîé ïîãðåøíîñòè: " << abs(v[v.size() - 1].second - v5[v5.size() - 1].second) << endl;
+	cout << "y(x_" << N << ") = " << v5[v5.size() - 1].second << ", Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð°Ð±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð¾Ð¹ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: " << abs(v[v.size() - 1].second - v5[v5.size() - 1].second) << endl;
 
-	cout << endl << "Óëó÷øåííûé ìåòîä Ýéëåðà II:" << endl;
+	cout << endl << "â€Ð»ÑƒÑ‡ÑˆÐµÐ½Ð½Ñ‹Ð¹ Ð¼ÐµÑ‚Ð¾Ð´ ÐÐ¹Ð»ÐµÑ€Ð° II:" << endl;
 	vector<pair<double, double>> v6;
 	p.first = x0;
 	p.second = y0;
@@ -142,10 +142,10 @@ int main()
 		p.second += h * (func(p.first, p.second) + func(p.first + h, t)) / 2;
 		p.first += h;
 		v6.push_back(p);
-		//cout << "y(x_" << i << ") = " << v6[i].second << ", çíà÷åíèå àáñîëþòíîé ïîãðåøíîñòè: " << abs(v6[i].second - v[i + 2].second) << endl;
+		//cout << "y(x_" << i << ") = " << v6[i].second << ", Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð°Ð±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð¾Ð¹ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: " << abs(v6[i].second - v[i + 2].second) << endl;
 	}
 
-	cout << "y(x_" << N << ") = " << v6[v6.size() - 1].second << ", çíà÷åíèå àáñîëþòíîé ïîãðåøíîñòè: " << abs(v[v.size() - 1].second - v6[v6.size() - 1].second) << endl;
+	cout << "y(x_" << N << ") = " << v6[v6.size() - 1].second << ", Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð°Ð±ÑÐ¾Ð»ÑŽÑ‚Ð½Ð¾Ð¹ Ð¿Ð¾Ð³Ñ€ÐµÑˆÐ½Ð¾ÑÑ‚Ð¸: " << abs(v[v.size() - 1].second - v6[v6.size() - 1].second) << endl;
 
 	return 0;
 }

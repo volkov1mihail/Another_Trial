@@ -2,7 +2,7 @@
 using namespace std;
 int main(int argc, char* argv[])
 {
-	int n = 0; //Показатель степени
+	int n = 0; //РџРѕРєР°Р·Р°С‚РµР»СЊ СЃС‚РµРїРµРЅРё
 	int k = 0; //2^n-1
 	cin >> n;
 	if (n == 0)
@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 	else
 	{
 		k = ~1;
-		k = (unsigned int)k >> (32 - n); //Надеюсь, (unsigned int) можно использовать...
+		k = (unsigned int)k >> (32 - n); //РќР°РґРµСЋСЃСЊ, (unsigned int) РјРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ...
 		cout << "k=" << k << endl;
 	}
 	return EXIT_SUCCESS;
