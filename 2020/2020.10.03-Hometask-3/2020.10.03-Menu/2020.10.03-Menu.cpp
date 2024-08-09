@@ -3,7 +3,7 @@
 using namespace std;
 
 
-void printMenu()
+void printMenu()																					//Вывод меню на экран
 {
 	cout << "МЕНЮ" << endl;
 	cout << "0 - Выход из программы" << endl;
