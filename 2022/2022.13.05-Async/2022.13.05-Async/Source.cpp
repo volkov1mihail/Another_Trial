@@ -1,152 +1,140 @@
 #include <iostream>
 #include <future>
-#include <chrono>
-#include <vector>
-#include <cmath>
-#include<iomanip>
-#include <cstdlib>
+#include <iomanip>
 #include <omp.h>
 #include <string>
 using namespace std;
-using namespace std::chrono;
+//Программа вычисляет число PI с высокой точностью с помощью формулы 4 * PI = artcg(1), используя линейное решение и 
+//решение с применением параллельных потоков библиотеки future
+//Также программа выполняет поиск всех нахождений строки what в строке s
+//Время, затраченное на выполнение вычеслений для линейного и параллельного решения выводятся на экран для сравнения
+const int N = 100000000;											//Число итерация для нахождения числа PI
 
-
-const int N = 100000000;
-const int n = N + 1;
-vector <double> v(n);
-
-
-long double pi_(int, int);
-long double Multi_pi(int);
-int block_size(int);
-long double pi_slow();
-int MultiThreadFind(int, string, string);
-int Find_thread(string, string, int, int);
-int Find(string, string, int, int);
-int Find_slow(string, string);
-
+long double pi_(int, int);										//Функция, вызываемая одним из параллельных потоков.
+long double Multi_pi(int);										//Вычисление числа PI, используя параллельеные потоки. threads - количество потоков
+int block_size(int);													//Функция, определяющая количество итераций, отводимое на один поток
+long double pi_slow();												//Линейной вычисление PI
+int MultiThreadFind(int, string, string);			//Поиск вхождений, использующий параллельеные потоки. threads - количество потоков
+int Find(string, string, int, int);						//Функция, счетающая количество вхождений строки what в промежуток строки s между индексами a и b
+int Find_slow(string, string);								//Линейный поиск вхождений
 
 
 int main()
 {
 	srand(time(0));
-	string what = "2518";
+	string what = "2518";												//Искомая подстрока
+	//Строка, внутри которой происходит поиск вхождений строки what
 	string s = "1298251817249918287931857251801928848235092358923980983460293850923241765953279125182963197642197481276525923956839039152159174921678293297342971428417292783927952397124572195427698329735967129748521794653895934946179452542926389379681279432917529863297341972582997296463192439762982979159963972532973491672827387274910247198759289182361047019230192398127497812659182125091720398102937918292836587391824659180410928301927918239817287650182791825012948029384092371";
-	double pi = pi_slow();
-	pi = Multi_pi(2);
-	int n = Find_slow(what, s);
-	n = MultiThreadFind(8, what, s);
+	//string s = "2518251825182518251825182518251825182518";
+	double pi = pi_slow();											//Линейной вычисление PI
+	pi = Multi_pi(8);														//Вычисление числа PI, используя 8 потоков
+	int n = Find_slow(what, s);									//Линейный поиск вхождений
+	n = MultiThreadFind(8, what, s);						//Поиск вхождений, использующий 8 потоков
 	return 0;
 }
 
 
-
-long double pi_slow()
+long double pi_slow()													//Линейной вычисление PI
 {
 	long double pi = 0;
-	double t = omp_get_wtime();
+	double t = omp_get_wtime();									//Момент перед началом вычислений
 	for (int i = 0; i < N; ++i)
-	{
-		pi += (1.0 / (1.0 + ((2.0 * i - 1) / (2.0 * N)) * ((2.0 * i - 1) / (2.0 * N))));
-	}
+		pi += (1.0 / (1.0 + ((2.0 * i - 1) / (2.0 * N)) * ((2.0 * i - 1) / (2.0 * N)))); //Представление artcg(1) через интеграл
 	pi = pi * 4 / N;
-	cout << "pi_slow::" << endl;
-	cout << setprecision(15) << "pi = " << pi << endl;
-	cout << "pi_slow:: " << omp_get_wtime() - t << endl;
+
+	cout << "pi_slow:: " << omp_get_wtime() - t << endl;	//Время, затраченное на вычисления
+	cout << "pi_slow::" << setprecision(15) << "pi = " << pi << endl;
+
 	return pi;
 }
 
-
-long double pi_(int threads, int first_index)
-{
-	long double pi = 0;
-	int bl_size = block_size(threads);
+long double pi_(int bl_size, int first_index)	//Функция, вызываемая одним из параллельных потоков.
+{																							//first_index - номер итерации, с которой поток должен начать свои вычисления
+	long double pi = 0;													//bl_size - максимальное количество итераций, отведенно на один поток
+	//Если общее число итераций N не делится без остатка на количество потоков, последний поток будет выполнять
+	//на несколько итераций меньше других. Чтобы это учесть, счетчик i достигает либо начала итераций следующего потока,
+	//увеличиваясь на bl_size, либо общего числа итераций N в зависимости от того, что окажется ближе.
 	for (int i = first_index; i < min(first_index + bl_size, N); i++)
-		pi += (1.0 / (1.0 + ((2.0 * i - 1) / (2.0 * N)) * ((2.0 * i - 1) / (2.0 * N))));
+		pi += (1.0 / (1.0 + ((2.0 * i - 1) / (2.0 * N)) * ((2.0 * i - 1) / (2.0 * N))));	//Представление artcg(1) через интеграл
 	return pi;
 }
 
-
-long double Multi_pi(int threads)
+long double Multi_pi(int threads)							//Вычисление числа PI, используя параллельеные потоки. threads - количество потоков
 {
 	long double pi = 0;
-	int bl_size = block_size(threads);
-	int first_index = 0;
-	int i = 0;
-	vector<future <long double>> fut(threads);
-	double t = omp_get_wtime();
-	while (first_index < N)
+	int bl_size = block_size(threads);					//Количество итераций, отводимое на один поток
+	int first_index = 0;												//Счетчик, определяющий, с какой итерации должен начать вычисления следующий поток
+	future<long double>* fut = new future<long double>[threads];	//Инициализация потоков, используемых при вычислениях
+	double t = omp_get_wtime();									//Момент времени перед началом вычислений
+	for (int i = 0; first_index < N; ++i)
 	{
-		fut[i] = async(pi_, threads, first_index);
+		fut[i] = async(pi_, bl_size, first_index);//Запуск i-го потока и вызов функции pi_
 		first_index += bl_size;
-		i++;
 	}
-	for (int j = 0; j < i; ++j)
-	{
-		pi += fut[j].get();
-	}
+	for (int i = 0; i < threads; ++i)					  //Сложение результатов разных потоков
+		pi += fut[i].get();
 	pi = pi * 4 / N;
-	cout << "Multi_pi:: " << omp_get_wtime() - t << endl;
-	cout << "Multi_pi::" << endl;
-	cout << setprecision(15) << "pi = " << pi << endl;
+
+	cout << "Multi_pi:: " << omp_get_wtime() - t << endl;	//Время, затраченное на вычисления
+	cout << "Multi_pi:: " << setprecision(15) << "pi = " << pi << endl;
+
+	delete[] fut;																//Освобождение памяти
 	return pi;
 }
 
-
-int block_size(int threads)
+int block_size(int threads)										//Функция, определяющая количество итераций, отводимое на один поток
 {
+	//Если общее число итераций N не делится без остатка на количество потоков, block_size увеличивается на 1 итерацию на поток
+	//Таким образом, первые несколько потоков выполняют на 1 итерацию больше, но ни одна итерация не будет пропущена
 	return N / threads + (N % threads ? 1 : 0);
 }
 
-
-int MultiThreadFind(int thread, string what, string s)
+int MultiThreadFind(int threads, string what, string s)	//Поиск вхождений, использующий параллельеные потоки. threads - количество потоков
 {
-	int n = 0;
-	int i = 1;
-	int length = s.size() / thread + (s.size() % thread ? 1 : 0);
-	int first_index = length;
-	vector<future <int>> fut(thread);
-	double t = omp_get_wtime();
+	int n = 0;																	//Количество найденных вхождений
+	int length = s.length() / threads + (s.length() % threads ? 1 : 0);	//Длина промежутка, выделенного на один поток для проверки
+	int first_index = 0;												//Счетчик, определяющий, с какого символа должен начать вычисления следующий поток
+	future<int>* fut = new future<int>[threads];//Инициализация потоков, используемых при вычислениях
 
-	fut[0] = async(Find_thread, what, s, thread, 1 - what.size());
-	while (first_index < s.size())
+	double t = omp_get_wtime();									//Момент времени перед началом вычислений
+	for (int i = 0; first_index < s.length(); ++i)
 	{
-		fut[i] = async(Find_thread, what, s, thread, first_index - what.size() + 1);
+		//В аргумент a функции Find подается значение first_index, уменьшенное на what.length() - 1
+		//Это нужно для предотвращения потерь вхождений на границе двух промежутков, обрабытываемых разными потоками
+		//Каждый поток, кроме первого, начинает поиск вхождений на what.length() - 1 символ левее, чем если бы
+		//вся длина строки s была разделена потоками на равные промежутки
+		//Таким образом учитываются случаи, когда вхождение строки what в строку s оказалось "разрезанным" двумя потоками и не учлось ни одним из них
+		//Самый первый поток принимает в качестве аргумента a отрицательное(в общем случае) значение 1 - what.length(), что учитывается внутри функции Find
+		fut[i] = async(Find, what, s, first_index - what.length() + 1, first_index + length);	//Запуск i-го потока и вызов функции Find
 		first_index += length;
-		i++;
 	}
-	for (int j = 0; j < i; ++j)
-	{
-		n += fut[j].get();
-	}
-	cout << "MultiThreadFind:: " << omp_get_wtime() - t << endl;
+	for (int i = 0; i < threads; ++i)
+		n += fut[i].get();
+
+	cout << "MultiThreadFind:: " << omp_get_wtime() - t << endl;	//Время, затраченное на вычисления
 	cout << "n = " << n << endl;
+
+	delete[] fut;																//Освобождение памяти
 	return n;
 }
 
-
-int Find_thread(string what, string s, int thread, int first_index)
+int Find(string what, string s, int a, int b)	//Функция, счетающая количество вхождений строки what в промежуток строки s между индексами a и b
 {
-	int n = 0;
-	int length = s.size() / thread + (s.size() % thread ? 1 : 0);
-	return n = Find(what, s, first_index, first_index + length + what.size() - 1);
-}
-
-
-int Find(string what, string s, int a, int b)
-{
-	int n = 0;
-	int i = a < 0 ? 0 : a;
-	int j = 0;
-	int l = 0;
-	while (i < b + 1 - what.size())
-	{
-		while (j < what.size() && j + i < s.size())
-		{
-			l = what[j] == s[i + j] ? l + 1 : l;
+	int n = 0;																	//Количество найденных вхождений
+	int i = (a < 0 ? 0 : a);										//Индекс, начиная с котрого проверяется точное совпадение символов в строке s и строке what
+	//При вызове первого потока индекс a равен 1 - what.length(), меньше 0. В таком случае индекс i приравнивается 0 и поиск начинается с начала строки
+	int j = 0;																	//Индекс, указывающий на символ, который предполагаемо совпадает в друх строках
+	int l = 0;																	//Счетик совпавших символов
+	//Индекс i останавливается на расстоянии what.length() от конца рассматриваемого промежутка, чтобы следующий индекс j не вышелза пределы промежутка
+	//Для каждого индекса i создается новый индекс j, проверяющий, находится ли в строке s на i-том индексе вхождение строки what
+	//Для каждого совпавшего (учитывая порядок символов) в двух строках символа, счетчик l увеличивается на 1
+	//Если после прохождения индексом j, значение l совпадает с длиной строки what, то обнаружено новое вхождение и счетик n увеличивается на 1
+	while (i < b + 1 - what.length()) {
+		while (j < what.length() && i + j < s.length()) {	//j + i < s.length() - проверка, предотвращающая выход за пределы строки s
+			l = (what[j] == s[i + j] ? l + 1 : l);
 			++j;
 		}
-		n = l == what.size() ? n + 1 : n;
+		n = (l == what.length() ? n + 1 : n);
 		j = 0;
 		l = 0;
 		++i;
@@ -154,27 +142,11 @@ int Find(string what, string s, int a, int b)
 	return n;
 }
 
-
-int Find_slow(string what, string s)
+int Find_slow(string what, string s)					//Линейный поиск вхождений
 {
-	int n = 0;
-	int i = 0;
-	int j = 0;
-	int l = 0;
-	double t = omp_get_wtime();
-	while (i < s.size())
-	{
-		while (j < what.size() && j + i < s.size())
-		{
-			l = what[j] == s[i + j] ? l + 1 : l;
-			++j;
-		}
-		n = l == what.size() ? n + 1 : n;
-		j = 0;
-		l = 0;
-		++i;
-	}
-	cout << "Find_slow:: " << omp_get_wtime() - t << endl;
+	double t = omp_get_wtime();									//Момент перед началом вычислений
+	int n = Find(what, s, 0, s.length());
+	cout << "Find_slow:: " << omp_get_wtime() - t << endl; //Время, затраченное на вычисления
 	cout << "n = " << n << endl;
 	return n;
 }

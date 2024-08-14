@@ -4,6 +4,7 @@
 #include <utility>
 #include <iomanip>
 #include <ctime>
+#include <clocale>
 
 using namespace std;
 
