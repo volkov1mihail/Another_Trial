@@ -140,10 +140,10 @@ double** implicitMethod(double T, int N1)
 		for (int i = N1 - 1; i >= 1; --i)
 			result[i][j] = L[i + 1] * result[i + 1][j] + K[i + 1];
 	}
-	//delete[] t; 
-	//delete[] X;
-	//delete[] K;
-	//delete[] L;
+	delete[] t; 
+	delete[] X;
+	delete[] K;
+	delete[] L;
 	return result;
 }
 
