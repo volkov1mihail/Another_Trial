@@ -6,146 +6,154 @@
 #include <clocale>
 using namespace std;
 
-double func(double x)
+
+typedef vector<vector<double>> vecVector;
+typedef pair<double, double> Pair;
+typedef vector<Pair> vecPair;
+
+struct Point {
+	double x;
+	double y;
+	Point(double data_x = 0, double data_y = 0) : x{ data_x }, y{ data_y }{};
+};
+
+double func(double x)																	//Функция, приближенное представление которой нужно получить благодаря обратному интерполированию
 {
 	//return log(1 + x);
 	return sin(x) - x * x / 2;
 }
 
-void print_coeff(vector<double> v)
+void print_coeff(vector<double> vector)										//Вывод коэффициентов многочлена на экран
 {
-	for (auto x : v)
+	for (auto x : vector)
 		cout << x << endl;
 	return;
 }
 
-vector<vector<double>> nodes(int m, double a, double b)
+vecVector nodes(int points, double a, double b)						//Заполнение вектора точками, равномерно распределенными на промежутке [a;b]
 {
-	vector<vector<double>> v;
-	vector<double> p;
-	for (int i = 0; i <= m; ++i)
+	vecVector Nodes;																				//Итоговый веткор
+	vector<double> node;																		//Вектор, представляющий собой одну точку на промежутке
+	for (int i = 0; i <= points; ++i)
 	{
-		p.push_back(i);
-		p.push_back(a + (b - a) * i / m);
-		p.push_back(0);
-		p.push_back(func(p[1]));
-		v.push_back(p);
-		p.clear();
+		node.push_back(i);																		//Номер точки
+		node.push_back(a + (b - a) * i / points);							//Положение точки на промежутке [a;b]
+		node.push_back(0);																		//Выделяется память для будущего заполнения расстоянием от точки i до точки x(см. функцию sort())
+		node.push_back(func(node[1]));												//Значение функции func() в данной точке
+		Nodes.push_back(node);
+		node.clear();
 	}
-	return v;
+	return Nodes;
 }
 
-void print(vector<vector< double>> v)
-{
+void print(vecVector nodes)									//Вывод вектора точек на экран
+{//Выводится i[0] - номер точки , i[1] - ее положение на промежутке [a;b], i[3] - значение функции func() в этой точке
 	int k = 0;
 	cout << "xk			 |f(xk)" << endl;
-	for (auto i : v)
+	for (auto i : nodes)
 	{
 		cout << k << "	x" << i[0] << " =	" << i[1] << "			|f(x" << i[0] << ") = " << i[3] << endl;
 		++k;
 	}
 }
 
-void print_reverse(vector<vector<double>> v, int n)
-{
+void print_reverse(vecVector nodes, int power)		//Вывод "перевернутого" вектора, в котором поменялись местами положение точки и значение функции func()
+{																									//Здесь i[0] - номер точки , i[1] - значение функции func(), i[3] - ее положение на промежутке [a;b]
 	int count = 0;
 	cout << "f(xk)				||f(xk)-F|				|f^-1(f(xk))" << endl;
-	for (auto i : v)
+	for (auto i : nodes)
 	{
-		if (count == n + 1)
+		if (count == power + 1)												//Если искомая степень многочлена power меньше количества точек - 1, то часть точек не потребуется для интерполяции
 			break;
 		cout << "f(x" << i[0] << ") = " << i[1] << "			||f(x" << i[0] << ")-F| = " << i[2] << "			|f^-1(f(x" << i[0] << ")) = " << i[3] << endl;
 		++count;
 	}
 }
 
-vector<vector<double>> swap(vector<vector<double>> v)
+vecVector swap(vecVector nodes)	//"Переворачивание" вектора путем перестановки местами положения точки i[1] и значения функции в ней i[3]
 {
-	vector<vector<double>> v1 = v;
+	vecVector swappedNodes = nodes;
 	double a = 0;
-	for (int i = 0; i < v.size(); ++i)
+	for (int i = 0; i < nodes.size(); ++i)
 	{
-		v1[i][1] = v[i][3];
-		v1[i][3] = v[i][1];
+		swappedNodes[i][1] = nodes[i][3];
+		swappedNodes[i][3] = nodes[i][1];
 	}
-	return v1;
+	return swappedNodes;
 }
 
-vector<vector<double>> sort(vector<vector<double>> v, double x)
+vecVector sort(vecVector nodes, double Fvalue)									//Сортировка вектора точек в зависимости от расстояния до точки Fvalue
 {
-	vector<double> p;
 	double a = 0;
-	for (int i = 0; i < v.size(); ++i)
-		v[i][2] = abs(v[i][1] - x);
+	int length = nodes.size() - 1;
+	for (int i = 0; i < length; ++i)
+		nodes[i][2] = abs(nodes[i][1] - Fvalue);										//Вычисление расстояния от i-той точки до точки Fvalue
 
-	for (int i = 0; i < v.size() - 1; ++i)
-		for (int j = 0; j < v.size() - i - 1; ++j)
-			if (v[j][2] > v[j + 1][2])
-			{
-				p = v[j];
-				v[j] = v[j + 1];
-				v[j + 1] = p;
-			}
-	return v;
+	for (int i = 0; i < length; ++i)
+		for (int j = 0; j < length - i; ++j)
+			if (nodes[j][2] > nodes[j + 1][2])												//Сортировка вектора nodes в порядке увеличения расстояния до точки Fvalue
+				nodes[j].swap(nodes[j + 1]);
+
+	return nodes;
 }
 
-double Lagrange(vector<vector<double>> v, double x, int n)
-{
+double Lagrange(vecVector nodes, double x, int power)	//Значение интерполяционного многочлена Лагранжа степени power в точке x,
+{																											//построенного на точках nodes[i][1] с соответствующими значениями функции nodes[i][3]
 	double a = 1;
 	double b = 1;
-	double s = 0;
-	for (int i = 0; i < n; ++i)
+	double result = 0;
+	for (int i = 0; i <= power; ++i)
 	{
-		for (int j = 0; j < n; ++j)
+		for (int j = 0; j <= power; ++j)
 			if (j != i)
 			{
-				a *= x - v[j][1];
-				b *= v[i][1] - v[j][1];
+				a *= x - nodes[j][1];
+				b *= nodes[i][1] - nodes[j][1];
 			}
-		s += v[i][3] * a / b;
+		result += nodes[i][3] * a / b;
 		a = 1;
 		b = 1;
 	}
-	return s;
+	return result;
 }
 
-vector<double> coefficients(vector<vector<double>> v, int n)
-{
-	double w = 1;
-	vector<double> A;
-	A.push_back(v[0][3]);
-	double s = 0;
-	for (int k = 1; k <= n; ++k)
+vector<double> coefficients(vecVector nodes, int power)	//Вычисление коэффициентов интерполяционного многочлена Ньютона степени power
+{																												//nodes - вектор точек на числовой прямой и соответствующих им значений функции func()			
+	double a = 1;
+	vector<double> coeffVector{ nodes[0][3] };						//Вектор коэффициентов при соответствующих слагаемых в выражении для интерполяционного многочлена
+	double sum = 0;
+	for (int k = 1; k <= power; ++k)
 	{
 		for (int i = 0; i <= k; ++i)
 		{
 			for (int j = 0; j <= k; ++j)
 				if (j != i)
-					w *= (v[i][1] - v[j][1]);
-			s += v[i][3] / w;
-			w = 1;
+					a *= (nodes[i][1] - nodes[j][1]);
+
+			sum += nodes[i][3] / a;
+			a = 1;
 		}
-		A.push_back(s);
-		s = 0;
+		coeffVector.push_back(sum);
+		sum = 0;
 	}
-	return A;
+	return coeffVector;
 }
 
-double Newton(vector<vector<double>> v, vector<double> A, double x, int n)
-{
-	double s = A[0];
-	double b = 1;
-	for (int i = 1; i < n; ++i)
+double Newton(vecVector nodes, vector<double> coeffArray, double x, int power)//Значение интерполяционного многочлена Ньютона степени power в точке x,
+{																																							//построенного на точках nodes[i][1] с соответствующими значениями функции nodes[i][3]
+	double result = coeffArray[0];																							//и коэффициентами coeffArray[i] перед i-тыми степенями многочлена 
+	double a = 1;
+	for (int i = 1; i <= power; ++i)
 	{
 		for (int j = 0; j < i; ++j)
-			b *= (x - v[j][1]);
-		s += A[i] * b;
-		b = 1;
+			a *= (x - nodes[j][1]);
+		result += coeffArray[i] * a;
+		a = 1;
 	}
-	return s;
+	return result;
 }
 
-double leftmost(vector<vector<double>> v, double a, int n)
+double leftmost(vecVector v, double a, int n)
 {
 	double x = v[0][1];
 	for (int i = 0; i <= n; ++i)
@@ -153,7 +161,7 @@ double leftmost(vector<vector<double>> v, double a, int n)
 	return x;
 }
 
-void bisection(pair<double, double>& p, double e, vector<vector<double>> v, int n, double F)
+void bisection(Pair& p, double e, vecVector v, int n, double F)
 {
 	double a = p.first;
 	double b = p.second;
@@ -172,8 +180,8 @@ void bisection(pair<double, double>& p, double e, vector<vector<double>> v, int 
 	}
 	else
 	{
-		vector<vector<double>> va = sort(v, a);
-		vector<vector<double>> vc = sort(v, c);
+		vecVector va = sort(v, a);
+		vecVector vc = sort(v, c);
 		while (leftmost(va, a, n) != leftmost(vc, c, n) && b - a > 2 * e)
 		{
 			c = (a + b) / 2;
@@ -194,153 +202,147 @@ void bisection(pair<double, double>& p, double e, vector<vector<double>> v, int 
 	cout << "xm = " << c << ",  d = " << (b - a) / 2 << ",		|f(xm)-F| = " << abs(func(c) - F) << ". Количество итераций: " << i << endl;
 }
 
-void boolean(int& count, double y1, double y2, vector<pair<double, double>>& w, pair<double, double>& p, int& rise, double& memory, double x0, double x1, double F)
-{
-	if (y1 <= y2 && rise == 0)
-	{
-		cout << "[a" << count << ",b" << count << "]=[" << p.first << "," << p.second << "],		f'(a) = " << memory << ",	f'(b) = " << y2 << endl;
-		if ((memory <= F && F <= y2) or (memory >= F && F >= y2))
-			w.push_back(p);
-		memory = y1;
-		p.first = x0;
-		p.second = x1;
-		rise = 1;
-		++count;
-	}
-	else if ((y1 >= y2 && rise == 0) or (y1 <= y2 && rise == 1))
-		p.second = x1;
+void boundaries(int& count, Point& point_1, Point& point_2, vecPair& monotVector, Pair& monotInterval, bool& isIncreasing, double& boundaryValue, double Fvalue)
+{ //Функция, определяющая границы промежутков монотонности и вносящая их в вектор monotVector
 
-	else if (y1 >= y2 && rise == 1)
+	//Если происходило убывание, но значение point_1.y меньше либо равно значению point_2.y,
+	//то достигнут конец промежутка монотонности, на котором интерполяционный многочлен убывал
+	//В таком случае на экран выводится номер этого промежутка с его границами
+	//После этого, если число Fvalue лежит между значениями интерполяционного многочлена в крайних точках
+	//промежутка(boundaryValue - значение на левой границе, point_2.y - на правой), промежуток монотонности вносится в monotVector для обратного интерполирования
+	if (point_1.y <= point_2.y && isIncreasing == 0)
 	{
-		cout << "[a" << count << ",b" << count << "]=[" << p.first << "," << p.second << "],		f'(a) = " << memory << ",	f'(b) = " << y2 << endl;
-		if ((memory <= F && F <= y2) or (memory >= F && F >= y2))
-			w.push_back(p);
-		memory = y1;
-		p.first = x0;
-		p.second = x1;
-		rise = 0;
+		cout << "[a" << count << ",b" << count << "]=[" << monotInterval.first << "," << monotInterval.second
+			<< "],		f'(a) = " << boundaryValue << ",	f'(b) = " << point_2.y << endl;
+		if ((boundaryValue <= Fvalue && Fvalue <= point_2.y) or (boundaryValue >= Fvalue && Fvalue >= point_2.y))
+			monotVector.push_back(monotInterval);
+
+		monotInterval.first = point_1.x;											//Начало нового промежутка монотонности(возрастания)
+		monotInterval.second = point_2.x;											//Его конец(до тех пор, пока не станет известно обратное)
+		boundaryValue = point_1.y;														//Значение на левой границе промежутка возрастания
+		isIncreasing = 1;																			//Индикатор того, что происходит возрастание
+		++count;																							//Общий счетчик промежутков монотонности
+	}
+	//Случай, аналогичный первому, но с концом промежутка возрастания
+	else if (point_1.y >= point_2.y && isIncreasing == 1)
+	{
+		cout << "[a" << count << ",b" << count << "]=[" << monotInterval.first << "," << monotInterval.second
+			<< "],		f'(a) = " << boundaryValue << ",	f'(b) = " << point_2.y << endl;
+		if ((boundaryValue <= Fvalue && Fvalue <= point_2.y) or (boundaryValue >= Fvalue && Fvalue >= point_2.y))
+			monotVector.push_back(monotInterval);
+
+		boundaryValue = point_1.y;
+		monotInterval.first = point_1.x;
+		monotInterval.second = point_2.x;
+		isIncreasing = 0;
 		++count;
 	}
+	//Если не произошел ни один из вышеперечисленных случаев, граница промежутка монотонности еще не достигнута
+	//Тогда граница monotInterval сдвигается до позиции point_2.x для продолжения поиска
+	else   monotInterval.second = point_2.x;
 }
 
-vector<pair<double, double>> procedure(vector<vector<double>>& v, int n, int N, double F)
-{
-	double h = (v[v.size() - 1][1] - v[0][1]) / N;
-	vector<double> end = v[v.size() - 1];
-	double x0 = v[0][1];
-	double x1 = x0 + h;
-	int count = 0;
+vecPair monotonicityIntervals(vecVector& nodes, int power, int N, double Fvalue)
+{	//Функция разбивает промежуток [a;b] на последовательные промежутки монотонности и возвращает их внутри одного вектора с проверкой на содержание величины Fvalue
+	int length = nodes.size() - 1;
+	double step = (nodes[length][1] - nodes[0][1]) / N;						//Шаг, с которым изменяется точка интерполирования
+	vector<double> endpoint = nodes[length];											//Наиболее отдаленная точка промежтка на числовой прямой
+	int count = 0;																								//Общий счетчик промежутков монотонности
 
-	vector<double> A = coefficients(v, n);
-	pair<double, double> p;
-	p.first = x0;
-	p.second = x1;
-	vector<pair<double, double>> w;
+	vector<double> coeffVector = coefficients(nodes, power);//Вектор коэффициентов интерполяционного многочлена Ньютона степени power в крайней левой точке промежутка [a;b]
+	vecPair monotVector;																					//Вектор, хранящий все найденные промежутки монотонности, содержащие в себе значение Fvalue
 
-	double y1 = v[0][3];
-	double y2 = Newton(v, A, x1, n);
-	int rise = (y1 <= y2 ? 1 : 0);
-	double memory = y1;
+	Point point_1{ nodes[0][1], nodes[0][3] };										//Пара (x,y) в левой границе промежутка [a;b] (x = a, y = func(a))
+	Point point_2;																								//Пара (x,y) на расстоянии степ от границы a
+	point_2.x = point_1.x + step;																	//(x = a + step, y вычисляется с помощью интерполяционного многочлена Ньютона)
+	point_2.y = Newton(nodes, coeffVector, point_1.x + step, power);
 
-	int k = n;
-	while (k < v.size() - 2)
-	{
-		v[k + 1].swap(v[(k - n) % (n + 1)]);
-		A = coefficients(v, n);
-		y1 = Newton(v, A, x0, n);
-		while (x0 - v[(k - n) % (n + 1)][1] < v[k + 2][1] - x0)
+	Pair monotInterval{ point_1.x, point_2.x };										//Границы промежутка монотонности, в котором сейчас находятся точки points_1 и point_2
+	bool isIncreasing = (point_1.y <= point_2.y ? 1 : 0);					//Индикатор того, является данный промежуток монотонности промежутком возрастания(1) или убывания(0)
+	double boundaryValue = point_1.y;															//Фиксирование значения функции/интерполяционного многочлена на левой границе промежутка монотонности
+
+	int k = power;																								//Итератор, перебирающий вершины в векторе nodes
+	int swapIndex = 0;																						//Индекс, указывающий на вершину в веторке nodes, которую нужно поменять местами с (k + 1)-ой вершиной
+	//Цикл перемещает точки point_1 и point_2 до тех пор, пока дойдет до последней вершины в векторе nodes(тогда k == length)
+	while (k < length){
+		//Во время работы внешнего цикла приведенный ниже цикл меняет порядок вершин в векторе nodes
+		//Это делается, чтобы вершины, наиболее близкие к точке point_1.x(в которой происходят вычисления), находились на первых (power + 1) позициях в векторе nodes
+		//Тогда при вызове функции Newton() строится интерполяционный член степени power, основанный на самых близких к точке point_1.x вершинах
+		//Таким образом, в любой момент работы цикла построенный интерполяционный многочлен можно использовать для исследования функции на промежутки монотонности с высокой точностью
+		while ((point_1.x - nodes[swapIndex][1]) < (nodes[k + 1][1] - point_1.x))
 		{
-			y2 = Newton(v, A, x1, n);
-			boolean(count, y1, y2, w, p, rise, memory, x0, x1, F);
-			x0 += h;
-			x1 += h;
-			y1 = y2;
+			point_2.y = Newton(nodes, coeffVector, point_2.x, power);
+			boundaries(count, point_1, point_2, monotVector, monotInterval, isIncreasing, boundaryValue, Fvalue);
+			point_1.x = point_2.x;
+			point_2.x += step;
+			point_1.y = point_2.y;
 		}
+		nodes[k + 1].swap(nodes[swapIndex]);
+		coeffVector = coefficients(nodes, power);
+		point_1.y = Newton(nodes, coeffVector, point_1.x, power);
 		++k;
+		swapIndex = (k - power) % (power + 1);
 	}
-	A = coefficients(v, n);
-	y1 = Newton(v, A, x0, n);
-	while (x0 < v[(k - n) % (n + 1)][1])
+
+	while (point_1.x < endpoint[1])
 	{
-		y2 = Newton(v, A, x1, n);
-		boolean(count, y1, y2, w, p, rise, memory, x0, x1, F);
-		x0 += h;
-		x1 += h;
-		y1 = y2;
+		point_2.y = Newton(nodes, coeffVector, point_2.x, power);
+		boundaries(count, point_1, point_2, monotVector, monotInterval, isIncreasing, boundaryValue, Fvalue);
+		point_1.x = point_2.x;
+		point_2.x += step;
+		point_1.y = point_2.y;
 	}
-	p.second = end[1];
-	cout << "[a" << count << ",b" << count << "]=[" << p.first << "," << p.second << "],		f'(a) = " << memory << ",	f'(b) = " << end[3] << endl;
-	if ((memory <= F && F <= y2) or (memory >= F && F >= y2))
-		w.push_back(p);
+	monotInterval.second = endpoint[1];
+	cout << "[a" << count << ",b" << count << "]=[" << monotInterval.first << "," << monotInterval.second << "],		f'(a) = " << boundaryValue << ",	f'(b) = " << endpoint[3] << endl;
+	if ((boundaryValue <= Fvalue && Fvalue <= point_2.y) or (boundaryValue >= Fvalue && Fvalue >= point_2.y))
+		monotVector.push_back(monotInterval);
 	++count;
+
 	cout << "Количество промежутков монотонности равно " << count << endl << endl;
-	return w;
+	return monotVector;
 }
 
-void search1(vector<vector<double>> v, pair<double, double> p, double F, int n)
+void interpolationSearch(vecVector nodes, Pair monotInterval, double Fvalue, int power)
 {
 	vector<double> coeff;
-	vector<vector<double>> x;
-	for (int i = 0; i < v.size(); ++i)
-		if (v[i][1] >= p.first && v[i][1] <= p.second)
-			x.push_back(v[i]);
+	vecVector suitaleNodes;
+	for (int i = 0; i < nodes.size(); ++i)
+		if (nodes[i][1] >= monotInterval.first && nodes[i][1] <= monotInterval.second)
+			suitaleNodes.push_back(nodes[i]);
 
-	if (x.size() > n + 1)
-	{
-		x = sort(swap(x), F);
-		print(x);
-		coeff = coefficients(x, n);
-		print_coeff(coeff);
-		double answer = Lagrange(x, F, n);
-		cout << "X = f^-1(F) = " << answer << ",	|f(X)-F| = " << abs(F - func(answer)) << endl;
-	}
-	else if (x.size() == n + 1)
-	{
-		x = sort(swap(x), F);
-		print(x);
-		coeff = coefficients(x, n);
-		print_coeff(coeff);
-		double answer = Lagrange(x, F, n);
-		cout << "X = f^-1(F) = " << answer << ",	|f(X)-F| = " << abs(F - func(answer)) << endl;
-	}
-	else
-	{
-		x = sort(swap(x), F);
-		print(x);
-		coeff = coefficients(x, x.size() - 1);
-		print_coeff(coeff);
-		double answer = Lagrange(x, F, x.size());
-		cout << "X = f^-1(F) = " << answer << ",	|f(X)-F| = " << abs(F - func(answer)) << endl;
-	}
+	int minimum = (power < suitaleNodes.size() - 1) ? power : suitaleNodes.size() - 1;
+	suitaleNodes = sort(swap(suitaleNodes), Fvalue);
+	cout << "print(suitaleNodes)::" << endl;
+	print(suitaleNodes);
+	coeff = coefficients(suitaleNodes, minimum);
+	double answer = Lagrange(suitaleNodes, Fvalue, minimum);
+	cout << "X = f^-1(Fvalue) = " << answer << ",	|f(X)-Fvalue| = " << abs(Fvalue - func(answer)) << endl;
 }
 
-void search2(vector<vector<double>> v, pair<double, double> p, double F, int n, double e)
+void bisectionSearch(vecVector nodes, Pair monotInterval, double Fvalue, int power, double precision)
 {
-	vector<vector<double>> x;
-	for (int i = 0; i < v.size(); ++i)
-	{
-		if (v[i][1] >= p.first && v[i][1] <= p.second)
-			x.push_back(v[i]);
-	}
+	vecVector suitaleNodes;
+	for (int i = 0; i < nodes.size(); ++i)
+		if (nodes[i][1] >= monotInterval.first && nodes[i][1] <= monotInterval.second)
+			suitaleNodes.push_back(nodes[i]);
 
-	if (x.size() > n + 1)
-		bisection(p, e, x, n, F);
+	if (suitaleNodes.size() > power + 1)
+		bisection(monotInterval, precision, suitaleNodes, power, Fvalue);
 	else
-		bisection(p, e, x, x.size(), F);
+		bisection(monotInterval, precision, suitaleNodes, suitaleNodes.size(), Fvalue);
 }
 
 int main()
 {
 	srand(time(0));
 	setlocale(LC_ALL, "Russian");
-	cout << setprecision(13) << "Задача обратного интерполирования, вариант 2, функция f(x) = ln(1+x)" << endl;
+	cout << setprecision(13) << "Задача обратного интерполирования, вариант 2, функция f(x) = ln(1 + x)" << endl;
 	cout << "Введите число табличных значений" << endl;
-	int m = 0;
-	cin >> m;
-	--m;
+	int points = 0;
+	cin >> points;
 	double a = 0;
 	double b = 0;
-	double F = 0;
+	double Fvalue = 0;
 	cout << "Введите левую границу отрезка а > -1" << endl;
 	cin >> a;
 	b = a;
@@ -350,44 +352,44 @@ int main()
 		cin >> b;
 	}
 
-	double X = 0;
-	int n = m + 1;
-	vector<vector<double>> v = nodes(m, a, b);
-	vector<vector<double>> v2 = v;
-	print(v);
+	int power = points;
+	vecVector basicNodes = nodes(points - 1, a, b);
+	vecVector nodes = basicNodes;
+	print(basicNodes);
 
 	int t = 1;
 	while (t == 1)
 	{
-		cout << "Введите значение функции F" << endl;
-		cin >> F;
-		while (n > m)
+		cout << "Введите значение функции Fvalue" << endl;
+		cin >> Fvalue;
+		while (power > points - 1)
 		{
-			cout << "Введите степень интерполирования многочлена n <= " << m << endl;
-			cin >> n;
+			cout << "Введите степень интерполирования многочлена power <= " << points - 1 << endl;
+			cin >> power;
 		}
 		int N = 0;
 		cout << "Ведите значение N - число начальных промежутков для поиска промежутков монотонности" << endl;
 		cin >> N;
 
 		cout << endl << "3.1, первый способ:" << endl << endl;
-		vector<pair<double, double>> w = procedure(v2, n, N, F);
-		for (int i = 0; i < w.size(); ++i)
-			search1(v2, w[i], F, n);
+		vecPair monotVector = monotonicityIntervals(nodes, power, N, Fvalue);
+		for (int i = 0; i < monotVector.size(); ++i)
+			interpolationSearch(nodes, monotVector[i], Fvalue, power);
 
 
 		cout << endl << "3.1, второй способ:" << endl;
-		cout << "Введите точность е" << endl << endl;
-		double e;
-		cin >> e;
+		cout << "Введите точность precision" << endl << endl;
+		double precision;
+		cin >> precision;
 
-		for (int i = 0; i < w.size(); ++i)
-			search2(v2, w[i], F, n, e);
-		cout << endl << "Найдено решений: " << w.size() << endl;
-		w.clear();
-		v2 = v;
+		for (int i = 0; i < monotVector.size(); ++i)
+			bisectionSearch(nodes, monotVector[i], Fvalue, power, precision);
+		cout << endl << "Найдено решений: " << monotVector.size() << endl;
+		monotVector.clear();
+		nodes = basicNodes;
+		power = points;
 
-		cout << endl << "Чтобы ввести новые значения F, n или e, введите 1" << endl;
+		cout << endl << "Чтобы ввести новые значения Fvalue, power, N или precision, введите 1" << endl;
 		cout << "Чтобы закончить работу программы, введите 0" << endl << endl;
 		cin >> t;
 	}

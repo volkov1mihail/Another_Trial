@@ -58,7 +58,7 @@ void record(std::string text, int N1, double T, int numberOfGraphs, double** arr
 	double tau = 0.5 * h * h;
 	int N2 = (int)round(T / tau);
 	std::cout << text << std::endl;
-	int isComparisonTest = text[text.size() - 1] == 't' ? 1 : 0;
+	int isComparisonTest = (text[text.length() - 1] == 't' ? 1 : 0);
 	std::ofstream out;
 	out.open("text.txt");
 	if (out.is_open()) {
