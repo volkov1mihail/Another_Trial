@@ -1,203 +1,192 @@
 #include <iostream>
-#include <ctime>
 #include <iomanip>
-#include <cmath>
 #include <vector>
-#include <utility>
 using namespace std;
+//Программа решает задачу интерполирования заданной функции func() на промежутке [a;b]
+//Для этого по значениям функции строится интерполяционный многочлен заданной степени power
+//Используется интерполяционный многочлен в форме Лагранжа и в форме Ньютона
+//Точность, с которой было найдено решение, выводится на экран для сравнения двух интерполяционных многочленов
+typedef vector<vector<double>> vecVector;
 
 double func(double x)
 {
 	return log(1 + x);
 	//return x*x*x-x*x+3*x-5;
 }
-
-void nodes(int m, vector<vector<double>>& v, double a, double b);
-void print(vector<vector<double>> v, int n);
-vector<vector<double>> sort(vector<vector<double>> v, double x);
-double Lagrange(vector<vector<double>> v, double x, int n);
-double Newton(vector<vector<double>> v, double x, int n);
-double dd(vector<vector<double>> v, int a, int b);
+void print(vecVector const&);
+void printSorted(vecVector const&, int);
+vecVector nodes(int, double, double);
+vecVector sort(vecVector, double);
+double Lagrange(vecVector const&, double, int);
+double Newton(vecVector const&, double, int);
+double dividedDifference(vecVector const&, int, int);
 
 int main()
 {
 	srand(time(0));
 	setlocale(LC_ALL, "Russian");
-	cout << setprecision(13) << "«адача алгебраического интерполировани¤, вариант 2, функци¤ f(x) = ln(1+x)" << endl;
-	int t = 1;
-	cout << "¬ведите число табличных значений" << endl;
-	int m = 0;
-	cin >> m;
-	--m;
+	cout << setprecision(13) << "Задача алгебраического интерполирования, вариант 2, функция f(x) = ln(1+x)" << endl;
+	cout << "Введите число табличных значений" << endl;
+	int points = 0;
+	cin >> points;
+	int power = points;
+
 	double a = 0;
 	double b = 0;
-	cout << "¬ведите левую границу отрезка а > -1" << endl;
+	cout << "Введите левую границу отрезка а > -1" << endl;
 	cin >> a;
-	cout << "¬ведите правую границу отрезка b > " << a << endl;
+	cout << "Введите правую границу отрезка b > " << a << endl;
 	cin >> b;
 
-	double s = 0;
-	int c = -1;
-	double x = 0;
-	int n = 0;
-	vector<vector<double>> v1;
+	int index = -1;
+	double Point = 0;
 
-	vector<vector<double>> v;
-	nodes(m, v, a, b);
-	while (t == 1)
+	vecVector basicNodes = nodes(points, a, b);
+	vecVector nodes;
+
+	double result = 0;
+	int timer = 1;
+	while (timer == 1)																								//Индикатор, определяющий, когда нужно закончить работу программы
 	{
-		print(v, m + 1);
-		while (c != 1 and c != 0)
+		print(basicNodes);
+		while (index < 0 or index > 1)
 		{
-			cout << endl << "„тобы выбрать один из узлов за точку интерпол¤ции, введите 0" << endl;
-			cout << "„тобы выбрать произвольную точку интерпол¤ции, введите 1" << endl;
-			cin >> c;
-
-			if (c == 0)
-			{
-				cout << "¬ведите номер узла, который хотите выбрать в качестве точки инетрпол¤ции" << endl;
-				cin >> c;
-				x = v[c][1];
-				break;
-			}
-			else if (c == 1)
-			{
-				cout << "¬ведите точку интерполировани¤ x > -1" << endl;
-				cin >> x;
-			}
+			cout << endl << "Чтобы выбрать один из узлов за точку интерполяции, введите 0" << endl;
+			cout << "Чтобы выбрать произвольную точку интерполяции, введите 1" << endl;
+			cin >> index;
 		}
-		n = m + 1;
-		while (n > m)
+		switch (index) {
+		case 0:
+			cout << "Введите номер узла, который хотите выбрать в качестве точки инетрполяции" << endl;
+			cin >> index;
+			Point = basicNodes[index][1];
+			break;
+		case 1:
+			cout << "Введите точку интерполирования Point > -1" << endl;
+			cin >> Point;
+			break;
+		}
+
+		while (power >= points)
 		{
-			cout << "¬ведите степень интерполировани¤ многочлена n <= " << m << endl;
-			cin >> n;
+			cout << "Введите степень интерполирования многочлена power <= " << points - 1 << endl;
+			cin >> power;
 		}
-		v1 = sort(v, x);
-		cout << "ќтсортированна¤ таблица значений:" << endl;
-		print(v1, n + 1);
+		nodes = sort(basicNodes, Point);
+		cout << "Отсортированная таблица значений:" << endl;
+		printSorted(nodes, power);
 
-		s = Lagrange(v1, x, n);
-		cout << endl << "ћетод Ћагранжа:" << endl;
-		cout << "«начение интерпол¤ционного многочлена: " << s << endl;
-		cout << "«начение абсолютной фактической погрешности: " << abs(func(x) - s) << endl;
+		result = Lagrange(nodes, Point, power);													//Решение через интерполяционный многочлен Лагранжа
+		cout << endl << "Метод Лагранжа:" << endl;
+		cout << "Значение интерполяционного многочлена: " << result << endl;
+		cout << "Значение абсолютной фактической погрешности: " << abs(func(Point) - result) << endl;	//Точность решения
 
-		s = Newton(v1, x, n);
-		cout << endl << "ћетод Ќьютона:" << endl;
-		cout << "«начение интерпол¤ционного многочлена: " << s << endl;
-		cout << "«начение абсолютной фактической погрешности: " << abs(func(x) - s) << endl;
+		result = Newton(nodes, Point, power);														//Решение через интерполяционный многочлен Ньютона
+		cout << endl << "Метод Ньютона:" << endl;
+		cout << "Значение интерполяционного многочлена: " << result << endl;
+		cout << "Значение абсолютной фактической погрешности: " << abs(func(Point) - result) << endl;	//Точность решения
 
-		cout << endl << "„тобы ввести новые значени¤ дл¤ точки интерпол¤ции или степени многочлена, введите 1" << endl;
-		cout << "„тобы закончить работу программы, введите 0" << endl << endl;
-		cin >> t;
+		index = -1;																											//Возврат к начальным значениям переменных для повтороного выполнения программы
+		power = points;
+		nodes.clear();
+		cout << endl << "Чтобы ввести новые значения для точки интерполяции или степени многочлена, введите 1" << endl;
+		cout << "Чтобы закончить работу программы, введите 0" << endl << endl;
+		cin >> timer;
 	}
 	return 0;
 }
 
-
-void nodes(int m, vector<vector<double>>& v, double a, double b)
+vecVector nodes(int points, double a, double b)											//Заполнение вектора точками, случайно расположенными на промежутке [a;b]
 {
-	vector<double> p;
-	for (int i = 0; i <= m; ++i)
+	vector<double> Node;																							//Вектор, представляющий собой одну точку на промежутке
+	vecVector nodes;																									//Итоговый вектор точек
+	for (int i = 0; i < points; ++i)
 	{
-		p.push_back(i);
-		p.push_back(a + (b - a) * double((i + double((rand() % 100)) / 100)) / (m + 1));
-		p.push_back(0);
-		p.push_back(func(p[1]));
-		v.push_back(p);
-		p.clear();
+		Node.push_back(i);																							//Номер точки
+		Node.push_back(a + (b - a) * (double(i) + double((rand() % 100)) / 100) / points);	//Положение точки на промежутке [a;b]
+		Node.push_back(0);																							//Выделяется память для будущего заполнения расстоянием от точки i до точки point(см. функцию sort())
+		Node.push_back(func(Node[1]));																	//Значение функции func() в данной точке
+		nodes.push_back(Node);
+		Node.clear();
 	}
+	return nodes;
 }
 
-void print(vector<vector< double>> v, int n)
-{
+void print(vecVector const& nodes)																	//Вывод вектора точек на экран
+{	//Выводится i[0] - номер точки , i[1] - ее положение на промежутке [a;b], i[3] - значение функции func() в этой точке
 	int k = 0;
-	if (v[1][2] == 0)
+	cout << "xk		   |f(xk)" << endl;
+	for (auto i : nodes)
 	{
-		cout << "xk		   |f(xk)" << endl;
-		for (auto i : v)
-		{
-			cout << "x" << k << " =	" << i[1] << "			|f(x" << k << ") = " << i[3] << endl;
-			++k;
-		}
-	}
-	else
-	{
-		int count = 0;
-		cout << "xk				||xk-x|				|f(xk)" << endl;
-		for (auto i : v)
-		{
-			if (count == n)
-				break;
-			cout << "x" << i[0] << " = " << i[1] << "			||x" << i[0] << "-x| = " << i[2] << "			|f(x" << i[0] << ") = " << i[3] << endl;
-			++k;
-			++count;
-		}
+		cout << "x" << k << " =	" << i[1] << "			|f(x" << k << ") = " << i[3] << endl;
+		++k;
 	}
 }
 
-vector<vector<double>> sort(vector<vector<double>> v, double x)
-{
-	vector<double> p;
-	for (int i = 0; i < v.size(); ++i)
+void printSorted(vecVector const& nodes, int power)										//Вывод отсортированного вектора точек на экран
+{	//Выводится i[0] - номер точки , i[1] - ее положение на промежутке [a;b], i[2] - расстояние от точки до point(см. sort)
+	//i[3] - значение функции func() в этой точке. Выводятся ближайшие power + 1 точки, что обеспечивается счетчиком count
+	int count = 0;
+	cout << "xk				||xk-x|				|f(xk)" << endl;
+	for (auto i : nodes)
 	{
-		v[i][2] = abs(v[i][1] - x);
+		if (count == power + 1)
+			break;
+		cout << "x" << i[0] << " = " << i[1] << "			||x" << i[0] << "-x| = " << i[2] << "			|f(x" << i[0] << ") = " << i[3] << endl;
+		++count;
 	}
-	for (int i = 0; i < v.size() - 1; ++i)
-	{
-		for (int j = 0; j < v.size() - i - 1; ++j)
-		{
-			if (v[j][2] > v[j + 1][2])
-			{
-				/*v[i].swap(v[i + 1]);*/
-				p = v[j];
-				v[j] = v[j + 1];
-				v[j + 1] = p;
-			}
-		}
-	}
-	return v;
 }
 
-double Lagrange(vector<vector<double>> v, double x, int n)
+vecVector sort(vecVector nodes, double point)												//Сортировка вектора точек в зависимости от расстояние от точки до point
 {
+	for (int i = 0; i < nodes.size(); ++i)
+		nodes[i][2] = abs(nodes[i][1] - point);													//Вычисление расстояния от i-той точки до point
+
+	for (int i = 0; i < nodes.size() - 1; ++i)
+		for (int j = 0; j < nodes.size() - i - 1; ++j)
+			if (nodes[j][2] > nodes[j + 1][2])														//Сортировка вектора nodes в порядке увеличения расстояния до точки Fvalue
+				nodes[j].swap(nodes[j + 1]);
+
+	return nodes;
+}
+
+double Lagrange(vecVector const& nodes, double x, int power)	//Значение интерполяционного многочлена Лагранжа степени power в точке x,
+{																															//построенного на точках nodes[i][1] с соответствующими значениями функции nodes[i][3]
 	double a = 1;
 	double b = 1;
-	double s = 0;
-	for (int i = 0; i < n; ++i)
+	double result = 0;
+	for (int i = 0; i <= power; ++i)
 	{
-		for (int j = 0; j < n; ++j)
-		{
+		for (int j = 0; j <= power; ++j)
 			if (j != i)
 			{
-				a *= x - v[j][1];
-				b *= v[i][1] - v[j][1];
+				a *= x - nodes[j][1];
+				b *= nodes[i][1] - nodes[j][1];
 			}
-		}
-		s += v[i][3] * a / b;
+		result += nodes[i][3] * a / b;
 		a = 1;
 		b = 1;
 	}
-	return s;
+	return result;
 }
 
-double Newton(vector<vector<double>> v, double x, int n)
-{
-	double s = func(v[0][1]);
-	double c = 1;
-	for (int i = 1; i <= n; ++i)
+double Newton(vecVector const& nodes, double point, int power)
+{	//Значение интерполяционного многочлена Ньютона степени power в точке x, построенного
+	//на точках nodes[i][1] с соответствующими значениями функции nodes[i][3]
+	double result = func(nodes[0][1]);
+	double product = 1;
+	for (int i = 1; i <= power; ++i)
 	{
-		c *= x - v[i - 1][1];
-		s += dd(v, 0, i) * c;
+		product *= point - nodes[i - 1][1];
+		result += dividedDifference(nodes, 0, i) * product;							//Используется формула с разделенной разностью
 	}
-	return s;
+	return result;
 }
 
-double dd(vector<vector<double>> v, int a, int b)
+double dividedDifference(vecVector const& nodes, int index1, int index2)	//Вычисление разделенной разности
 {
-	if (b - a == 1)
-		return (v[b][3] - v[a][3]) / (v[b][1] - v[a][1]);
+	if (index2 - index1 == 1)
+		return (nodes[index2][3] - nodes[index1][3]) / (nodes[index2][1] - nodes[index1][1]);
 	else
-	{
-		return (dd(v, a + 1, b) - dd(v, a, b - 1)) / (v[b][1] - v[a][1]);
-	}
+		return (dividedDifference(nodes, index1 + 1, index2) - dividedDifference(nodes, index1, index2 - 1)) / (nodes[index2][1] - nodes[index1][1]);
 }

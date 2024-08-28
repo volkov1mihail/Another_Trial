@@ -1,8 +1,6 @@
 #include <iostream>
 #include <iomanip>
-#include <cmath>
 #include <vector>
-#include <utility>
 #include <clocale>
 using namespace std;
 //Программа, решающая задачу обратного интерполирования для заданной функции func(), промежутка [a;b]
@@ -27,11 +25,92 @@ double func(double x)																			//Функция, приближенно
 	//return sin(x) - x * x / 2;
 }
 
-void print_coeff(vector<double> const& vector)									//Вывод коэффициентов многочлена на экран
+//Инициализация вектора вершин, вывод его на экран, "разворот" и сортировка относительно данного значения
+vecVector nodes(int, double, double);
+void print(vecVector const&);
+vecVector swap(vecVector const&);
+vecVector sort(vecVector, double);
+
+//Интерполяционный многочлен в форме Лагранжа и в форме Ньютона
+//Форма Ньютона используется в случае, когда нужно вычислять значение интерполяционного многочлена в
+//большом количестве точек, расположенных вблизи одних и тех же вершин
+//В таком случае есть возможность заранее заполнить вектор кожффициентов интерполяционного многочлена и далее их не пересчитывать
+double Lagrange(vecVector const&, double, int);
+vector<double> coefficients(vecVector const&, int);
+double Newton(vecVector const&, vector<double> const&, double, int);
+
+//Реализация первого способа решения задачи об обратном интерполировании
+void boundaries(vecPair&, Pair&, Point const&, Point const&, int&, bool&, double&, double);
+vecPair monotonicityIntervals(vecVector&, int, int, double);
+void interpolationSearch(vecVector const&, Pair const&, int, double);
+
+//Реализация второго способа решения задачи об обратном интерполировании
+double leftmost(vecVector const&, int);
+void bisection(vecVector const&, Pair const&, int, double, double);
+void bisectionSearch(vecVector const&, Pair const&, int, double, double);
+
+int main()
 {
-	for (auto x : vector)
-		cout << x << endl;
-	return;
+	setlocale(LC_ALL, "Russian");
+	cout << setprecision(13) << "Задача обратного интерполирования, вариант 2, функция f(x) = ln(1 + x)" << endl;
+	cout << "Введите число табличных значений" << endl;
+	int points = 0;
+	cin >> points;
+	int power = points;
+
+	double a = 0;
+	double b = 0;
+	cout << "Введите левую границу отрезка а > -1" << endl;
+	cin >> a;
+	b = a;
+	while (b <= a)
+	{
+		cout << "Введите правую границу отрезка b > " << a << endl;
+		cin >> b;
+	}
+	
+	double Fvalue = 0;
+	vecVector basicNodes = nodes(points - 1, a, b);
+	vecVector nodes = basicNodes;
+	print(basicNodes);
+
+	int timer = 1;																													//Индикатор, определяющий, когда нужно закончить работу программы
+	while (timer == 1)
+	{
+		cout << "Введите значение функции Fvalue" << endl;
+		cin >> Fvalue;
+		while (power > points - 1)
+		{
+			cout << "Введите степень интерполирования многочлена power <= " << points - 1 << endl;
+			cin >> power;
+		}
+		int N = 0;
+		cout << "Ведите значение N - число начальных промежутков для поиска промежутков монотонности" << endl;
+		cin >> N;
+
+		vecPair monotVector = monotonicityIntervals(nodes, power, N, Fvalue);	//Определение промежутков монотонности функции func()
+		cout << endl << "3.1, первый способ:" << endl << endl;
+		for (int i = 0; i < monotVector.size(); ++i)
+			interpolationSearch(nodes, monotVector[i], power, Fvalue);					//Поиск решений путем обратного интерполирования
+
+
+		cout << endl << "3.1, второй способ:" << endl;
+		cout << "Введите точность precision" << endl << endl;
+		double precision;
+		cin >> precision;
+
+		for (int i = 0; i < monotVector.size(); ++i)
+			bisectionSearch(nodes, monotVector[i], power, Fvalue, precision);		//Поиск решений с помощью бисекции
+		cout << endl << "Найдено решений: " << monotVector.size() << endl;
+		monotVector.clear();																									//Возврат к начальным значениям переменных для повтороного выполнения программы
+		nodes = basicNodes;
+		power = points;
+
+		cout << endl << "Чтобы ввести новые значения Fvalue, power, N или precision, введите 1" << endl;
+		cout << "Чтобы закончить работу программы, введите 0" << endl << endl;
+		cin >> timer;
+	}
+	return 0;
 }
 
 vecVector nodes(int points, double a, double b)						//Заполнение вектора точками, равномерно распределенными на промежутке [a;b]
@@ -42,7 +121,7 @@ vecVector nodes(int points, double a, double b)						//Заполнение ве
 	{
 		node.push_back(i);																		//Номер точки
 		node.push_back(a + (b - a) * i / points);							//Положение точки на промежутке [a;b]
-		node.push_back(0);																		//Выделяется память для будущего заполнения расстоянием от точки i до точки x(см. функцию sort())
+		node.push_back(0);																		//Выделяется память для будущего заполнения разностью между значением функции в точке и величиной Fvalue(см. функцию sort())
 		node.push_back(func(node[1]));												//Значение функции func() в данной точке
 		Nodes.push_back(node);
 		node.clear();
@@ -50,7 +129,7 @@ vecVector nodes(int points, double a, double b)						//Заполнение ве
 	return Nodes;
 }
 
-void print(vecVector const& nodes)														//Вывод вектора точек на экран
+void print(vecVector const& nodes)												//Вывод вектора точек на экран
 {//Выводится i[0] - номер точки , i[1] - ее положение на промежутке [a;b], i[3] - значение функции func() в этой точке
 	int k = 0;
 	cout << "xk			 |f(xk)" << endl;
@@ -73,19 +152,20 @@ vecVector swap(vecVector const& nodes)	//"Разворачивание" вект
 	return swappedNodes;
 }
 
-vecVector sort(vecVector nodes, double Fvalue)									//Сортировка вектора точек в зависимости от расстояния до точки Fvalue
+vecVector sort(vecVector nodes, double Fvalue)								//Сортировка вектора точек в зависимости от разности между значением функции в точке и величиной  Fvalue
 {
 	int length = nodes.size() - 1;
 	for (int i = 0; i < length; ++i)
-		nodes[i][2] = abs(nodes[i][1] - Fvalue);										//Вычисление расстояния от i-той точки до точки Fvalue
+		nodes[i][2] = abs(nodes[i][1] - Fvalue);									//Вычисление разности для i-той точки
 
 	for (int i = 0; i < length; ++i)
 		for (int j = 0; j < length - i; ++j)
-			if (nodes[j][2] > nodes[j + 1][2])												//Сортировка вектора nodes в порядке увеличения расстояния до точки Fvalue
+			if (nodes[j][2] > nodes[j + 1][2])											//Сортировка вектора nodes в порядке увеличения разности
 				nodes[j].swap(nodes[j + 1]);
 
 	return nodes;
 }
+
 
 double Lagrange(vecVector const& nodes, double x, int power)	//Значение интерполяционного многочлена Лагранжа степени power в точке x,
 {																															//построенного на точках nodes[i][1] с соответствующими значениями функции nodes[i][3]
@@ -107,10 +187,10 @@ double Lagrange(vecVector const& nodes, double x, int power)	//Значение 
 	return result;
 }
 
-vector<double> coefficients(vecVector const& nodes, int power)	//Вычисление коэффициентов интерполяционного многочлена Ньютона степени power
-{																																//nodes - вектор точек на числовой прямой и соответствующих им значений функции func()			
+vector<double> coefficients(vecVector const& nodes, int power)//Вычисление коэффициентов интерполяционного многочлена Ньютона степени power
+{																															//nodes - вектор точек на числовой прямой и соответствующих им значений функции func()			
 	double a = 1;
-	vector<double> coeffVector{ nodes[0][3] };										//Вектор коэффициентов при соответствующих слагаемых в выражении для интерполяционного многочлена
+	vector<double> coeffVector{ nodes[0][3] };									//Вектор коэффициентов при соответствующих слагаемых в выражении для интерполяционного многочлена
 	double sum = 0;
 	for (int k = 1; k <= power; ++k)
 	{
@@ -144,76 +224,8 @@ double Newton(vecVector const& nodes, vector<double> const& coeffArray, double x
 	return result;
 }
 
-double leftmost(vecVector const& nodes, int power)
-{	//Функция, возвращающая координату вершины вектора nodes, находящуюся левее всех других(из первых power + 1)
-	double result = nodes[0][1];
-	for (int i = 0; i <= power; ++i)
-		result = min(result, nodes[i][1]);
-	return result;
-}
 
-void bisection(Pair const& monotInterval, double precision, vecVector const& nodes, int power, double Fvalue)
-{	//Функция решает задачу обратного интерполирования с заданной степенью интерполяционного многочлена power путем разбиения 
-	//данного промежутка монотонности на промежутки смены знака функции, длина которых постепенно уменьшается
-	vector<double> coeffVector;														//Вектор коэффициентов интерполяционного многочлена Ньютона степени power в некоторой точке
-	double left = monotInterval.first;										//Левый конец рассматриваемого промежутка
-	double right = monotInterval.second;									//Правый конец рассматриваемого промежутка
-	double middle = 0;																		//Середина рассматриваемого промежутка
-	int count = 0;																				//Количество проделанных итераций
-	double leftSign = 0;																	//Знак функции на левом конце промежутка
-	double middleSign = 0;																//Знак функции на правом конце промежутка
-
-	if (nodes.size() == power + 1)
-	{	//В данном случае все вершины nodes участвуют в построении интерполяционного многочлена для любой точки промежутка
-		coeffVector = coefficients(nodes, power);						//Соответствующие коэффициенты интерполяционного многочлена
-		while (right - left > 2 * precision)								//Ограничение на ширину рассматриваемого промежутка
-		{	//Цикл определяет, в какой половине рассматриваемого промежутка происходит смена знака функции func() - Fvalue
-			//Для этого вычисляется произведение значений этой функции в точках left и middle
-			//Если leftSign * middleSign <= 0, смена знака происходит на левой половине промежутка, которая выбирается за новый промежуток для продолжения цикла
-			//В противном случае выбирается правая половина промежутка
-			middle = (left + right) / 2;
-			leftSign = Newton(nodes, coeffVector, left, power) - Fvalue;
-			middleSign = Newton(nodes, coeffVector, middle, power) - Fvalue;
-
-			(leftSign * middleSign <= 0) ? right = middle : left = middle;
-			++count;																					//Учитывание проделанной итерации
-		}
-	}
-	else
-	{	//В данном случае часть вершин будет использоваться для построения интерполяционного многочлена около левой точки промежутка, а часть - около средней
-		//Эти вершины определяются путем сортировки вектора nodes относительно левой и средней точек промежутка
-		//Функция lefmost вызывается для сравнения самых левых используемых вершин в двух наборах
-		//Если самые левые вершины совпадают, то точки left и middle достаточно близки, чтобы для них можно было использовать одинаковый набор вершин
-		vecVector leftNodes = sort(nodes, left);
-		vecVector middleNodes = sort(nodes, middle);
-		while (leftmost(leftNodes, power) != leftmost(middleNodes, power))
-		{	//Процедура, аналогичная первому случаю, но с учетом изменения наборов вершин при каждой итерации
-			middle = (left + right) / 2;
-			leftSign = Newton(leftNodes, coefficients(leftNodes, power), left, power) - Fvalue;
-			middleSign = Newton(middleNodes, coefficients(middleNodes, power), middle, power) - Fvalue;
-
-			(leftSign * middleSign <= 0) ? right = middle : left = middle;
-			leftNodes = sort(nodes, left);
-			middleNodes = sort(nodes, middle);
-			++count;																					//Учитывание проделанной итерации
-		}
-
-		coeffVector = coefficients(leftNodes, power);
-		while (right - left > 2 * precision)
-		{	//Поиск промежутков смены знака функции func() - Fvalue до тех пор, пока не будет достигнута необходимая точность
-			middle = (left + right) / 2;
-			leftSign = Newton(leftNodes, coeffVector, left, power) - Fvalue;
-			middleSign = Newton(middleNodes, coeffVector, middle, power) - Fvalue;
-
-			(leftSign * middleSign <= 0) ? right = middle : left = middle; 
-			++count;																					//Учитывание проделанной итерации
-		}
-	}
-	middle = (left + right) / 2;													//За окончательный ответ выбирается середина последнего промежутка
-	cout << "xm = " << middle << ",  Delta = " << (right - left) / 2 << ",		|f(xm)-F| = " << abs(func(middle) - Fvalue) << ". Количество итераций: " << count << endl;
-}
-
-void boundaries(int& count, Point const& point_1, Point const& point_2, vecPair& monotVector, Pair& monotInterval, bool& isIncreasing, double& boundaryValue, double Fvalue)
+void boundaries(vecPair& monotVector, Pair& monotInterval, Point const& point_1, Point const& point_2, int& count, bool& isIncreasing, double& boundaryValue, double Fvalue)
 { //Функция, определяющая границы промежутков монотонности и вносящая их в вектор monotVector
 
 	//Если происходило убывание, но значение point_1.y меньше либо равно значению point_2.y,
@@ -287,7 +299,7 @@ vecPair monotonicityIntervals(vecVector& nodes, int power, int N, double Fvalue)
 			point_2.y = Newton(nodes, coeffVector, point_2.x, power);
 			//Функция boundaries сравнивает значение функции в точка point_1 и point_2 и делает вывод о том, находятся ли точки в
 			//промежутке возрастания, убывания или на границе промежутков монотонности
-			boundaries(count, point_1, point_2, monotVector, monotInterval, isIncreasing, boundaryValue, Fvalue);
+			boundaries(monotVector, monotInterval, point_1, point_2, count, isIncreasing, boundaryValue, Fvalue);
 			//Продвижение вдоль числовой прямой
 			point_1.x = point_2.x;
 			point_2.x += step;
@@ -303,7 +315,7 @@ vecPair monotonicityIntervals(vecVector& nodes, int power, int N, double Fvalue)
 	while (point_1.x < endpoint[1])
 	{
 		point_2.y = Newton(nodes, coeffVector, point_2.x, power);
-		boundaries(count, point_1, point_2, monotVector, monotInterval, isIncreasing, boundaryValue, Fvalue);
+		boundaries(monotVector, monotInterval, point_1, point_2, count, isIncreasing, boundaryValue, Fvalue);
 		point_1.x = point_2.x;
 		point_2.x += step;
 		point_1.y = point_2.y;
@@ -320,7 +332,7 @@ vecPair monotonicityIntervals(vecVector& nodes, int power, int N, double Fvalue)
 	return monotVector;
 }
 
-void interpolationSearch(vecVector const& nodes, Pair const& monotInterval, double Fvalue, int power)
+void interpolationSearch(vecVector const& nodes, Pair const& monotInterval, int power, double Fvalue)
 {	//Функция, решающая задачу обратного интерполирования путем построения построения интерполяционного многочлена обратной функции func^(-1)
 	//Для обеспечения существования обратной функции, рассматривается промежуток монотонности monotInterval
 	vecVector suitableNodes;																			//Вектор из вершин, содержащихся в данном промежутке монотонности
@@ -339,7 +351,77 @@ void interpolationSearch(vecVector const& nodes, Pair const& monotInterval, doub
 	cout << "X = f^-1(Fvalue) = " << answer << ",	|f(X)-Fvalue| = " << abs(Fvalue - func(answer)) << endl;	//Определение точности решения
 }
 
-void bisectionSearch(vecVector const& nodes, Pair const& monotInterval, double Fvalue, int power, double precision)
+
+double leftmost(vecVector const& nodes, int power)
+{	//Функция, возвращающая координату вершины вектора nodes, находящуюся левее всех других(из первых power + 1)
+	double result = nodes[0][1];
+	for (int i = 0; i <= power; ++i)
+		result = min(result, nodes[i][1]);
+	return result;
+}
+
+void bisection(vecVector const& nodes, Pair const& monotInterval, int power, double Fvalue, double precision)
+{	//Функция решает задачу обратного интерполирования с заданной степенью интерполяционного многочлена power путем разбиения 
+	//данного промежутка монотонности на промежутки смены знака функции, длина которых постепенно уменьшается
+	vector<double> coeffVector;														//Вектор коэффициентов интерполяционного многочлена Ньютона степени power в некоторой точке
+	double left = monotInterval.first;										//Левый конец рассматриваемого промежутка
+	double right = monotInterval.second;									//Правый конец рассматриваемого промежутка
+	double middle = 0;																		//Середина рассматриваемого промежутка
+	int count = 0;																				//Количество проделанных итераций
+	double leftSign = 0;																	//Знак функции на левом конце промежутка
+	double middleSign = 0;																//Знак функции на правом конце промежутка
+
+	if (nodes.size() == power + 1)
+	{	//В данном случае все вершины nodes участвуют в построении интерполяционного многочлена для любой точки промежутка
+		coeffVector = coefficients(nodes, power);						//Соответствующие коэффициенты интерполяционного многочлена
+		while (right - left > 2 * precision)								//Ограничение на ширину рассматриваемого промежутка
+		{	//Цикл определяет, в какой половине рассматриваемого промежутка происходит смена знака функции func() - Fvalue
+			//Для этого вычисляется произведение значений этой функции в точках left и middle
+			//Если leftSign * middleSign <= 0, смена знака происходит на левой половине промежутка, которая выбирается за новый промежуток для продолжения цикла
+			//В противном случае выбирается правая половина промежутка
+			middle = (left + right) / 2;
+			leftSign = Newton(nodes, coeffVector, left, power) - Fvalue;
+			middleSign = Newton(nodes, coeffVector, middle, power) - Fvalue;
+
+			(leftSign * middleSign <= 0) ? right = middle : left = middle;
+			++count;																					//Учитывание проделанной итерации
+		}
+	}
+	else
+	{	//В данном случае часть вершин будет использоваться для построения интерполяционного многочлена около левой точки промежутка, а часть - около средней
+		//Эти вершины определяются путем сортировки вектора nodes относительно левой и средней точек промежутка
+		//Функция lefmost вызывается для сравнения самых левых используемых вершин в двух наборах
+		//Если самые левые вершины совпадают, то точки left и middle достаточно близки, чтобы для них можно было использовать одинаковый набор вершин
+		vecVector leftNodes = sort(nodes, left);
+		vecVector middleNodes = sort(nodes, middle);
+		while (leftmost(leftNodes, power) != leftmost(middleNodes, power))
+		{	//Процедура, аналогичная первому случаю, но с учетом изменения наборов вершин при каждой итерации
+			middle = (left + right) / 2;
+			leftSign = Newton(leftNodes, coefficients(leftNodes, power), left, power) - Fvalue;
+			middleSign = Newton(middleNodes, coefficients(middleNodes, power), middle, power) - Fvalue;
+
+			(leftSign * middleSign <= 0) ? right = middle : left = middle;
+			leftNodes = sort(nodes, left);
+			middleNodes = sort(nodes, middle);
+			++count;																					//Учитывание проделанной итерации
+		}
+
+		coeffVector = coefficients(leftNodes, power);
+		while (right - left > 2 * precision)
+		{	//Поиск промежутков смены знака функции func() - Fvalue до тех пор, пока не будет достигнута необходимая точность
+			middle = (left + right) / 2;
+			leftSign = Newton(leftNodes, coeffVector, left, power) - Fvalue;
+			middleSign = Newton(middleNodes, coeffVector, middle, power) - Fvalue;
+
+			(leftSign * middleSign <= 0) ? right = middle : left = middle;
+			++count;																					//Учитывание проделанной итерации
+		}
+	}
+	middle = (left + right) / 2;													//За окончательный ответ выбирается середина последнего промежутка
+	cout << "xm = " << middle << ",  Delta = " << (right - left) / 2 << ",		|f(xm)-F| = " << abs(func(middle) - Fvalue) << ". Количество итераций: " << count << endl;
+}
+
+void bisectionSearch(vecVector const& nodes, Pair const& monotInterval, int power, double Fvalue, double precision)
 {	//Функция, решающая задачу обратного интерполирования с помощью бисекции.
 	//Для данного промежутка монотонности monotInterval определяются вершины вектора nodes, попадающие в него
 	vecVector suitableNodes;																			//Вектор из вершин, содержащихся в данном промежутке монотонности
@@ -353,68 +435,5 @@ void bisectionSearch(vecVector const& nodes, Pair const& monotInterval, double F
 	cout << "print(suitableNodes)::" << endl;											//Вывод вектора на экран
 	print(suitableNodes);
 
-	bisection(monotInterval, precision, suitableNodes, minimum, Fvalue);	//Результат решения задачи обратного инетрполирования
-}
-
-int main()
-{
-	setlocale(LC_ALL, "Russian");
-	cout << setprecision(13) << "Задача обратного интерполирования, вариант 2, функция f(x) = ln(1 + x)" << endl;
-	cout << "Введите число табличных значений" << endl;
-	int points = 0;
-	cin >> points;
-	double a = 0;
-	double b = 0;
-	double Fvalue = 0;
-	cout << "Введите левую границу отрезка а > -1" << endl;
-	cin >> a;
-	b = a;
-	while (b <= a)
-	{
-		cout << "Введите правую границу отрезка b > " << a << endl;
-		cin >> b;
-	}
-
-	int power = points;
-	vecVector basicNodes = nodes(points - 1, a, b);
-	vecVector nodes = basicNodes;
-	print(basicNodes);
-
-	int t = 1;																															//Индикатор, определяющий, когда нужно закончить работу программы
-	while (t == 1)
-	{
-		cout << "Введите значение функции Fvalue" << endl;
-		cin >> Fvalue;
-		while (power > points - 1)
-		{
-			cout << "Введите степень интерполирования многочлена power <= " << points - 1 << endl;
-			cin >> power;
-		}
-		int N = 0;
-		cout << "Ведите значение N - число начальных промежутков для поиска промежутков монотонности" << endl;
-		cin >> N;
-
-		vecPair monotVector = monotonicityIntervals(nodes, power, N, Fvalue);	//Определение промежутков монотонности функции func()
-		cout << endl << "3.1, первый способ:" << endl << endl;
-		for (int i = 0; i < monotVector.size(); ++i)
-			interpolationSearch(nodes, monotVector[i], Fvalue, power);					//Поиск решений путем обратного интерполирования
-
-
-		cout << endl << "3.1, второй способ:" << endl;
-		cout << "Введите точность precision" << endl << endl;
-		double precision;
-		cin >> precision;
-
-		for (int i = 0; i < monotVector.size(); ++i)
-			bisectionSearch(nodes, monotVector[i], Fvalue, power, precision);		//Поиск решений с помощью бисекции
-		cout << endl << "Найдено решений: " << monotVector.size() << endl;
-		monotVector.clear();																									//Возврат к начальным значениям переменных для повтороного выполнения программы
-		nodes = basicNodes;
-		power = points;
-
-		cout << endl << "Чтобы ввести новые значения Fvalue, power, N или precision, введите 1" << endl;
-		cout << "Чтобы закончить работу программы, введите 0" << endl << endl;
-		cin >> t;
-	}
-	return 0;
+	bisection(suitableNodes, monotInterval, minimum, Fvalue, precision);	//Результат решения задачи обратного инетрполирования
 }
