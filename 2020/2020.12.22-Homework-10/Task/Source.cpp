@@ -5,12 +5,12 @@ using namespace std;
 
 void printMenu()
 {
-	cout << "«акончить работу программы - 0" << endl;
-	cout << "–еализовать первый вариант заполнени¤ матрицы - 1" << endl;
-	cout << "–еализовать второй вариант заполнени¤ матрицы - 2" << endl;
-	cout << "–еализовать третий вариант заполнени¤ матрицы - 3" << endl;
-	cout << "–еализовать четвертый вариант заполнени¤ матрицы - 4" << endl;
-	cout << "–еализовать п¤тый вариант заполнени¤ матрицы - 5" << endl;
+	cout << "Закончить работу программы - 0" << endl;
+	cout << "Реализовать первый вариант заполнения матрицы - 1" << endl;
+	cout << "Реализовать второй вариант заполнения матрицы - 2" << endl;
+	cout << "Реализовать третий вариант заполнения матрицы - 3" << endl;
+	cout << "Реализовать четвертый вариант заполнения матрицы - 4" << endl;
+	cout << "Реализовать пятый вариант заполнения матрицы - 5" << endl;
 }
 
 
@@ -102,7 +102,7 @@ void processChoice(int n, int choice)
 	{
 	case 1:
 	{
-		cout << "¬ведите число n" << endl;
+		cout << "Введите число n" << endl;
 		cin >> n;
 		int** data = new int* [n] {0};
 		for (int i = 0; i < n; ++i)
@@ -122,7 +122,7 @@ void processChoice(int n, int choice)
 	}
 	case 2:
 	{
-		cout << "¬ведите число n" << endl;
+		cout << "Введите число n" << endl;
 		cin >> n;
 		int** data = new int* [n] {0};
 		for (int i = 0; i < n; ++i)
@@ -142,7 +142,7 @@ void processChoice(int n, int choice)
 	}
 	case 3:
 	{
-		cout << "¬ведите число n" << endl;
+		cout << "Введите число n" << endl;
 		cin >> n;
 		int** data = new int* [n] {0};
 		for (int i = 0; i < n; ++i)
@@ -162,7 +162,7 @@ void processChoice(int n, int choice)
 	}
 	case 4:
 	{
-		cout << "¬ведите число n" << endl;
+		cout << "Введите число n" << endl;
 		cin >> n;
 		int** data = new int* [n] {0};
 		for (int i = 0; i < n; ++i)
@@ -185,7 +185,7 @@ void processChoice(int n, int choice)
 	}
 	case 5:
 	{
-		cout << "¬ведите число n" << endl;
+		cout << "Введите число n" << endl;
 		cin >> n;
 		int** data = new int* [n] {0};
 		for (int i = 0; i < n; ++i)

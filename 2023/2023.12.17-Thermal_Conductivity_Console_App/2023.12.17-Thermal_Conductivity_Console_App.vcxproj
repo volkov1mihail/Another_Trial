@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{a82d108f-cad5-40d3-80c6-f60675bf3609}</ProjectGuid>
-    <RootNamespace>My20231207ThermalConductivity</RootNamespace>
+    <ProjectGuid>{cd9450b9-3446-461d-9fe5-a35675ed87d8}</ProjectGuid>
+    <RootNamespace>My20231217ThermalConductivityConsoleApp</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -30,7 +30,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -139,10 +139,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="2023.12.17-Thermal_Conductivity_Console_App.cpp" />
+    <ClCompile Include="dibutil.cpp" />
+    <ClCompile Include="drawing.cpp" />
+    <ClCompile Include="file.cpp" />
+    <ClCompile Include="image.cpp" />
+    <ClCompile Include="misc.cpp" />
+    <ClCompile Include="mouse.cpp" />
+    <ClCompile Include="palette.cpp" />
     <ClCompile Include="vscodeSource.cpp" />
+    <ClCompile Include="winbgi.cpp" />
+    <ClCompile Include="winthread.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dibapi.h" />
+    <ClInclude Include="dibutil.h" />
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="keys_n_colors.h" />
+    <ClInclude Include="winbgim.h" />
+    <ClInclude Include="winbgitypes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,4 +1,4 @@
-#include<iostream>
+﻿#include<iostream>
 #include<cmath>
 #include<iomanip>
 #include<fstream>
@@ -16,7 +16,7 @@ double** explicitMethod(double, int);																//Явный метод
 double** implicitMethod(double, int);																//Неявный метод
 void comparisonTest(double, int, int, int);													//Сравнение решений двух методов
 int min(int N1, int N2) { return N1 <= N2 ? N1 : N2; }							//Минимум двух целых чисел
-
+void visualisation();
 
 int main() {
 	double T = 0.01;																									//Ограничение по времени (0 <= t <= T)
@@ -31,7 +31,8 @@ int main() {
 
 	u = implicitMethod(T, N1);																				//Неявный метод
 	record("Implicit_method", N1, T, 2, u);
-	system("start vscodeSource.exe");
+	visualisation();
+	//system("start vscodeSource.exe");
 
 	//system("pause");
 	//comparisonTest(T, 10, 20, 1);																		//Сравнение результатов явного метода при удвоении точности разбиения
